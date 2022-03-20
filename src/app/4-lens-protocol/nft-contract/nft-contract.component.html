@@ -21,7 +21,7 @@
   </mat-tab-group>
   </div>
 
-  <div *ngIf="blockchain_status == 'ethereum-not-connected' || blockchain_status ==  'wallet-not-connected'">
+  <div *ngIf="blockchain_status ==  'wallet-not-connected'">
     <!-- <web3-modal></web3-modal>  -->
     <button  type="button" *ngIf="dappInjectorService.webModal?.ready == true"  class="btn btn-outline-success"  (click)="web3modalAction(true)"
   > Sign in with Metamask/Wallet

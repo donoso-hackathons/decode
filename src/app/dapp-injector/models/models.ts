@@ -53,7 +53,7 @@ export interface ICONTRACT{
   address:string;
   name:string;
   abi:Array<IABI_OBJECT>;
-  network: INETWORK;
+  network: string;
 }
 
 export interface IBALANCE {

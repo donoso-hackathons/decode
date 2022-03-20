@@ -95,6 +95,8 @@ export class NftContractComponent implements AfterViewInit {
     }
   }
 
+
+  
   async doFaucet() {
     this.store.dispatch(Web3Actions.chainBusy({ status: true }));
     if (this.dappInjectorService.config.connectedNetwork == 'localhost') {

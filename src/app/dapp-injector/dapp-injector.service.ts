@@ -13,6 +13,8 @@ import { uniswap_abi } from './helpers/uniswap_abi';
 import {
   ICONTRACT_METADATA,
   ISTARTUP_CONFIG,
+  ITRANSACTION_DETAILS,
+  ITRANSACTION_RESULT,
 } from './models';
 import { Web3Actions, web3Selectors } from './store';
 
@@ -76,6 +78,83 @@ export class DappInjectorService {
 
 
   async goScan() {}
+
+  async doTransaction(tx: any, signer?:any) {
+    let notification_message: ITRANSACTION_RESULT = {
+      success: false,
+    };
+
+    let transaction_details: ITRANSACTION_DETAILS = {
+      txhash: '',
+      bknr: 0,
+      from: '',
+      gas: '',
+      to: '',
+      value: '',
+    };
+    try {
+
+    let tx_obj;
+
+      if (!signer) {
+        tx_obj = await this.config.signer!.sendTransaction(tx);
+      } else {
+        tx_obj = await signer.sendTransaction(tx);
+      }
+
+     
+    
+
+      let tx_result = await tx_obj.wait();
+      const balance: any = await this.config.signer?.getBalance();
+      this.store.dispatch(
+        Web3Actions.updateWalletBalance({ walletBalance: balance })
+      );
+
+      const result = tx_result;
+      transaction_details.txhash = result.transactionHash;
+      transaction_details.from = result.from;
+      transaction_details.to = result.to;
+      transaction_details.gas = result.gasUsed.toString();
+      transaction_details.bknr = result.blockNumber;
+
+      tx_obj.value == undefined
+        ? (transaction_details.value = '0')
+        : (transaction_details.value = tx_obj.value.toString());
+      notification_message.success = true;
+      notification_message.success_result = transaction_details;
+    } catch (e: any) {
+      // console.log(e);
+      // Accounts for Metamask and default signer on all networks
+      let myMessage =
+        e.data && e.data.message
+          ? e.data.message
+          : e.error && JSON.parse(JSON.stringify(e.error)).body
+          ? JSON.parse(JSON.parse(JSON.stringify(e.error)).body).error.message
+          : e.data
+          ? e.data
+          : JSON.stringify(e);
+      if (!e.error && e.message) {
+        myMessage = e.message;
+      }
+
+      try {
+        let obj = JSON.parse(myMessage);
+        if (obj && obj.body) {
+          let errorObj = JSON.parse(obj.body);
+          if (errorObj && errorObj.error && errorObj.error.message) {
+            myMessage = errorObj.error.message;
+          }
+        }
+      } catch (e) {
+        //ignore
+      }
+
+      notification_message.error_message = myMessage;
+    }
+
+    return notification_message;
+  }
 
 
 

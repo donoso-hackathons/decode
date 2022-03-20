@@ -14,7 +14,7 @@ export class AngularContract implements OnDestroy {
   private _contract!: Contract;
   private _provider!: providers.JsonRpcProvider;
   private _balance: any;
-  private _network_deployed!: string;
+  private _network!: string;
   public eventSubscriptionObject: { [key: string]: ReplaySubject<any> } = {};
 
   public contractBalanceSubscription: ReplaySubject<any> = new ReplaySubject(1);
@@ -32,7 +32,7 @@ export class AngularContract implements OnDestroy {
 
   async init() {
     this._provider = this.contract_init.provider;
-    this._network_deployed = this.contract_init.metadata.network;
+    this._network = this.contract_init.metadata.network;
     this._contract = await new Contract(
       this.contract_init.metadata.address,
       this.contract_init.metadata.abi,
@@ -55,8 +55,8 @@ export class AngularContract implements OnDestroy {
     return this.contract_init.metadata.address;
   }
 
-  get network_deployed() {
-    return this._network_deployed;
+  get network() {
+    return this._network;
   }
 
   get contract() {
