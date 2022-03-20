@@ -966,7 +966,7 @@ contract LensHub is ILensHub, LensNFTBase, VersionedInitializable, LensMultiStat
     }
 
     function _validateCallerIsWhitelistedProfileCreator() internal view {
-        if (!_profileCreatorWhitelisted[msg.sender]) revert Errors.ProfileCreatorNotWhitelisted();
+       // if (!_profileCreatorWhitelisted[msg.sender]) revert Errors.ProfileCreatorNotWhitelisted();
     }
 
     function getRevision() internal pure virtual override returns (uint256) {
