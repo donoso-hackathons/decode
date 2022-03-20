@@ -7,7 +7,8 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import { readFileSync, writeFileSync } from "fs";
-
+import * as glob from 'glob';
+import { resolve } from "path";
 const INFURA_ID = 'YOUR KEY' //process.env["INFURA_ID"]
 const MORALIS_ID = 'YOUR KEY'; //process.env["MORALIS_ID"] 
 const ALCHEMY_ID_MUMBAI= 'YOUR KEY';  //process.env["ALCHEMY_ID_MUMBAI"]
@@ -15,57 +16,13 @@ const ALCHEMY_ID_MUMBAI= 'YOUR KEY';  //process.env["ALCHEMY_ID_MUMBAI"]
 
 dotenv.config();
 
-
+glob.sync('./tasks/**/*.ts').forEach(function (file:any) {
+  require(resolve(file));
+});
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-  const accounts = await hre.ethers.getSigners();
 
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-task(
-  "generate",
-  "Create a mnemonic for builder deploys",
-  async (_, { ethers }) => {
-    const DEBUG = true;
-    const bip39 = require("bip39")
-    const { hdkey } = require('ethereumjs-wallet')
-    const mnemonic = bip39.generateMnemonic();
-    if (DEBUG) console.log("mnemonic", mnemonic);
-    const seed = await bip39.mnemonicToSeed(mnemonic);
-    if (DEBUG) console.log("seed", seed);
-    const hdwallet = hdkey.fromMasterSeed(seed);
-    console.log(hdwallet)
-    const wallet_hdpath = "m/44'/60'/0'/0/";
-    const account_index = 0;
-    const fullPath = wallet_hdpath + account_index;
-    if (DEBUG) console.log("fullPath", fullPath);
-    const wallet = hdwallet.derivePath(fullPath).getWallet();
-    console.log(wallet)
-    console.log(JSON.stringify(wallet))
-    const privateKey = "0x" + wallet.privateKey.toString("hex");
-    if (DEBUG) console.log("privateKey", privateKey);
-    console.log(privateKey)
-    const EthUtil = require("ethereumjs-util");
-    const address =
-      "0x" + EthUtil.privateToAddress(wallet.privateKey).toString("hex");
-    console.log(
-      "🔐 Account Generated as " +
-        address +
-        " and set as mnemonic in packages/hardhat"
-    );
-    console.log(
-      "💬 Use 'yarn run account' to get more information about the deployment account."
-    );
-
-    writeFileSync("./" + address + ".txt", mnemonic.toString());
-    writeFileSync("./mnemonic.txt", mnemonic.toString());
-  }
-);
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -78,17 +35,44 @@ const mnemonic = () => {
   try {
     return readFileSync("./mnemonic.txt").toString().trim();
   } catch (e) {
-    if (defaultNetwork !== "localhost") {
-      console.log(
-        "☢️ WARNING: No mnemonic file created for a deploy account. Try `yarn run generate` and then `yarn run account`."
-      );
-    }
+    // if (defaultNetwork !== "localhost") {
+    //   console.log(
+    //     "☢️ WARNING: No mnemonic file created for a deploy account. Try `yarn run generate` and then `yarn run account`."
+    //   );
+    // }
   }
   return "";
 }
-const defaultNetwork = "localhost";
+const defaultNetwork = "mumbai";
 const config: HardhatUserConfig = {
-  solidity: "0.8.4",
+  solidity: {
+    compilers: [
+      {
+        version: '0.8.4',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+            details: {
+              yul: true,
+            },
+          },
+        },
+      },
+      {
+        version: '0.8.10',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+            details: {
+              yul: true,
+            },
+          },
+        },
+      },
+    ],
+  },
   paths: {
     artifacts: '../src/assets/artifacts'
   },
@@ -163,13 +147,10 @@ const config: HardhatUserConfig = {
       },
     },     
     mumbai: {
-      url: `https://speedy-nodes-nyc.moralis.io/${MORALIS_ID}/polygon/mumbai`,// <---- YOUR MORALIS ID! (not limited to infura)
-     // `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_ID_MUMBAI}`
-      gasPrice: 1000000000,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-    },    
+      url: `https://polygon-mumbai.g.alchemy.com/v2/P2lEQkjFdNjdN0M_mpZKB8r3fAa2M0vT`, // <---- YOUR MORALIS ID! (not limited to infura)
+      accounts: process.env["PRIVATE_KEY"] !== undefined ? [process.env["PRIVATE_KEY"]] : [],
+         gasPrice: 8000000000,
+    },
 
     matic: {
       url: "https://rpc-mainnet.maticvigil.com/",

@@ -4,7 +4,7 @@
   "compilerOptions": {
     "paths": {
       "angular-web3": [
-        "\"src/app/dapp-injector/index.ts\""
+        "src/app/dapp-injector/index.ts"
       ]
     },
     "baseUrl": "./",
