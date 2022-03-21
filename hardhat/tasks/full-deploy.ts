@@ -55,7 +55,6 @@ let treasuryAddress
 
   const privKeyGovernance = process.env["GOVERNANCE_KEY"] as BytesLike;
   const governance_wallet = new Wallet(privKeyGovernance);
-
   governance = await governance_wallet.connect(deployer_provider);
 
 
