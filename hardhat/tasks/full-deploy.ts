@@ -1,10 +1,11 @@
 import '@nomiclabs/hardhat-ethers';
 import { utils, Wallet } from 'ethers';
 import { BytesLike, hexlify, keccak256, RLP, SigningKey } from 'ethers/lib/utils';
-import { writeFileSync } from 'fs-extra';
+import { ensureDir, writeFileSync } from 'fs-extra';
 
 
 import { task } from 'hardhat/config';
+import { join } from 'path';
 import {
   LensHub__factory,
   ApprovalFollowModule__factory,
@@ -32,38 +33,65 @@ const TREASURY_FEE_BPS = 50;
 const LENS_HUB_NFT_NAME = 'Various Vegetables';
 const LENS_HUB_NFT_SYMBOL = 'VVGT';
 
+// to copy contract metadata to Assets Folder
+const contract_path_relative = '../src/assets/contracts/';
+const processDir = process.cwd()
+const contract_path = join(processDir,contract_path_relative)
+ensureDir(contract_path)
+
+const copyMetadataToassetsFolder = (module:any,factory:any,network:string) =>{
+
+  let metadata = {
+    name:  factory.name.replace('__factory',''),
+    address:module.address,
+    network:network,
+    abi:factory.abi
+  }
+
+  writeFileSync(`${contract_path}/${metadata.name.toLowerCase()}_metadata.json`, JSON.stringify({
+    abi:metadata.abi,
+    name:metadata.name
+    ,address: metadata.address,
+    network: metadata.network}));
+}
+
+
 task('full-deploy', 'deploys the entire Lens Protocol').setAction(async ({}, hre) => {
   // Note that the use of these signers is a placeholder and is not meant to be used in
   // production.
-
-let deployer;
+  let deployer;
 let governance;
 let treasuryAddress
+  let network = hre.hardhatArguments.network;
+  if (network == undefined) {
+    network = hre.network.name
+  }
 
-  ///// localhost  
-  // const accounts = await ethers.getSigners();
-  //  deployer = accounts[0];
-  //  governance = accounts[1];
-  //  treasuryAddress = accounts[2].address;
+  if (network == "localhost") { 
+    const accounts = await hre.ethers.getSigners();
+    deployer = accounts[0];
+    governance = accounts[1];
+    treasuryAddress = accounts[2].address;
+  } else {
+    const privKey = process.env["PRIVATE_KEY"] as BytesLike;
+    const deployer_wallet = new Wallet(privKey);
+    const deployer_provider = hre.ethers.provider
+    deployer = await deployer_wallet .connect(deployer_provider);
+  
+    const privKeyGovernance = process.env["GOVERNANCE_KEY"] as BytesLike;
+    const governance_wallet = new Wallet(privKeyGovernance);
+    governance = await governance_wallet.connect(deployer_provider);
+  
+  
+  
+    treasuryAddress = '0xe09E488A6E1B8237b63e028218CCf72a2a398CB1';
+  }
 
 
-  //// testnet
-  const privKey = process.env["PRIVATE_KEY"] as BytesLike;
-  const deployer_wallet = new Wallet(privKey);
-  const deployer_provider = hre.ethers.provider
-  deployer = await deployer_wallet .connect(deployer_provider);
-
-  const privKeyGovernance = process.env["GOVERNANCE_KEY"] as BytesLike;
-  const governance_wallet = new Wallet(privKeyGovernance);
-  governance = await governance_wallet.connect(deployer_provider);
-
-
-
-  treasuryAddress = '0xe09E488A6E1B8237b63e028218CCf72a2a398CB1';
 
   // Nonce management in case of deployment issues
   let deployerNonce = await hre.ethers.provider.getTransactionCount(deployer.address);
-
+  let my_factory;
   console.log('\n\t -- Deploying Module Globals --');
   const moduleGlobals = await deployContract(
     new ModuleGlobals__factory(deployer).deploy(
@@ -73,6 +101,12 @@ let treasuryAddress
       { nonce: deployerNonce++ }
     )
   );
+      console.log(ModuleGlobals__factory.name.replace('__factory',''))
+
+  
+      copyMetadataToassetsFolder(moduleGlobals,ModuleGlobals__factory,network)
+
+
 
   console.log('\n\t-- Deploying Logic Libs --');
 
@@ -114,11 +148,14 @@ let treasuryAddress
       nonce: deployerNonce++,
     })
   );
+  copyMetadataToassetsFolder(lensHubImpl,LensHub__factory,network)
+ 
 
   console.log('\n\t-- Deploying Follow & Collect NFT Implementations --');
   await deployContract(
     new FollowNFT__factory(deployer).deploy(hubProxyAddress, { nonce: deployerNonce++ })
   );
+
   await deployContract(
     new CollectNFT__factory(deployer).deploy(hubProxyAddress, { nonce: deployerNonce++ })
   );
@@ -143,6 +180,9 @@ let treasuryAddress
   // Connect the hub proxy to the LensHub factory and the governance for ease of use.
   const lensHub = LensHub__factory.connect(proxy.address, governance);
 
+  copyMetadataToassetsFolder(proxy ,LensHub__factory,network)
+
+
   const peripheryDataProvider = await new LensPeripheryDataProvider__factory(deployer).deploy(
     lensHub.address,
     { nonce: deployerNonce++ }
@@ -153,6 +193,7 @@ let treasuryAddress
   const currency = await deployContract(
     new Currency__factory(deployer).deploy({ nonce: deployerNonce++ })
   );
+  copyMetadataToassetsFolder(currency,Currency__factory,network)
 
   // Deploy collect modules
   console.log('\n\t-- Deploying feeCollectModule --');
@@ -162,7 +203,8 @@ let treasuryAddress
     })
   );
 
-    
+  copyMetadataToassetsFolder(feeCollectModule,FeeCollectModule__factory,network)
+
 
   console.log('\n\t-- Deploying limitedFeeCollectModule --');
   const limitedFeeCollectModule = await deployContract(
@@ -170,12 +212,17 @@ let treasuryAddress
       nonce: deployerNonce++,
     })
   );
+  copyMetadataToassetsFolder(limitedFeeCollectModule,LimitedFeeCollectModule__factory,network)
+
   console.log('\n\t-- Deploying timedFeeCollectModule --');
   const timedFeeCollectModule = await deployContract(
     new TimedFeeCollectModule__factory(deployer).deploy(lensHub.address, moduleGlobals.address, {
       nonce: deployerNonce++,
     })
   );
+
+  copyMetadataToassetsFolder(timedFeeCollectModule,TimedFeeCollectModule__factory,network)
+
   console.log('\n\t-- Deploying limitedTimedFeeCollectModule --');
   const limitedTimedFeeCollectModule = await deployContract(
     new LimitedTimedFeeCollectModule__factory(deployer).deploy(
@@ -184,15 +231,21 @@ let treasuryAddress
       { nonce: deployerNonce++ }
     )
   );
+  copyMetadataToassetsFolder(limitedTimedFeeCollectModule,LimitedTimedFeeCollectModule__factory,network)
 
   console.log('\n\t-- Deploying revertCollectModule --');
   const revertCollectModule = await deployContract(
     new RevertCollectModule__factory(deployer).deploy({ nonce: deployerNonce++ })
   );
+
+  copyMetadataToassetsFolder(revertCollectModule,RevertCollectModule__factory,network)
+
   console.log('\n\t-- Deploying emptyCollectModule --');
   const emptyCollectModule = await deployContract(
     new EmptyCollectModule__factory(deployer).deploy(lensHub.address, { nonce: deployerNonce++ })
   );
+
+  copyMetadataToassetsFolder(emptyCollectModule ,EmptyCollectModule__factory,network)
 
   // Deploy follow modules
   console.log('\n\t-- Deploying feeFollowModule --');
@@ -201,10 +254,15 @@ let treasuryAddress
       nonce: deployerNonce++,
     })
   );
+  copyMetadataToassetsFolder(feeFollowModule ,FeeFollowModule__factory,network)
+
+
+
   console.log('\n\t-- Deploying approvalFollowModule --');
   const approvalFollowModule = await deployContract(
     new ApprovalFollowModule__factory(deployer).deploy(lensHub.address, { nonce: deployerNonce++ })
   );
+  copyMetadataToassetsFolder(approvalFollowModule ,ApprovalFollowModule__factory,network)
 
   // Deploy reference module
   console.log('\n\t-- Deploying followerOnlyReferenceModule --');
@@ -214,63 +272,36 @@ let treasuryAddress
     })
   );
 
-  const addrs = {
-    'proxy': proxy.address,
-    'lensHub proxy': lensHub.address,
-    'lensHub impl:': lensHubImpl.address,
-    'publishing logic lib': publishingLogic.address,
-    'interaction logic lib': interactionLogic.address,
-    'follow NFT impl': followNFTImplAddress,
-    'collect NFT impl': collectNFTImplAddress,
-    currency: currency.address,
-    'periphery data provider': peripheryDataProvider.address,
-    'module globals': moduleGlobals.address,
-    'fee collect module': feeCollectModule.address,
-    'limited fee collect module': limitedFeeCollectModule.address,
-    'timed fee collect module': timedFeeCollectModule.address,
-    'limited timed fee collect module': limitedTimedFeeCollectModule.address,
-    'revert collect module': revertCollectModule.address,
-    'empty collect module': emptyCollectModule.address,
-    'fee follow module': feeFollowModule.address,
-    'approval follow module': approvalFollowModule.address,
-    'follower only reference module': followerOnlyReferenceModule.address,
-  };
-  const json = JSON.stringify(addrs, null, 2);
-  console.log(json);
+  copyMetadataToassetsFolder(followerOnlyReferenceModule ,FollowerOnlyReferenceModule__factory,network)
 
-  writeFileSync('addresses.json', json, 'utf-8');
 
 
   // Whitelist the collect modules
   console.log('\n\t-- Whitelisting Collect Modules --');
   let governanceNonce = await hre.ethers.provider.getTransactionCount(governance.address);
-  console.log(1)
   await waitForTx(
     lensHub.whitelistCollectModule(feeCollectModule.address, true, { nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-  console.log(2)
   await waitForTx(
     lensHub.whitelistCollectModule(limitedFeeCollectModule.address, true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-  console.log(3)
   await waitForTx(
     lensHub.whitelistCollectModule(timedFeeCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
 
-  console.log(4)
   await waitForTx(
     lensHub.whitelistCollectModule(limitedTimedFeeCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-  console.log(5)
+
   await waitForTx(
     lensHub.whitelistCollectModule(revertCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-  console.log(6)
+
   await waitForTx(
     lensHub.whitelistCollectModule(emptyCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
@@ -302,7 +333,7 @@ let treasuryAddress
       gasLimit: 2000000 })
     );
   // Save and log the addresses
-  const addrs_end = {
+  const addrs = {
     'proxy': proxy.address,
     'lensHub proxy': lensHub.address,
     'lensHub impl:': lensHubImpl.address,
@@ -323,8 +354,6 @@ let treasuryAddress
     'approval follow module': approvalFollowModule.address,
     'follower only reference module': followerOnlyReferenceModule.address,
   };
-  const json_end = JSON.stringify(addrs_end, null, 2);
-  console.log(json_end);
 
-  writeFileSync('addresses.json', json, 'utf-8');
+  writeFileSync('addresses.json', JSON.stringify(addrs), 'utf-8');
 });

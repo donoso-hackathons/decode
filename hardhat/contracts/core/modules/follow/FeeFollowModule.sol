@@ -11,7 +11,7 @@ import {FollowValidatorFollowModuleBase} from './FollowValidatorFollowModuleBase
 import {IERC20} from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import {SafeERC20} from '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 import {IERC721} from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
-
+import "hardhat/console.sol";
 /**
  * @notice A struct containing the necessary data to execute follow actions on a given profile.
  *
@@ -59,9 +59,11 @@ contract FeeFollowModule is IFollowModule, FeeModuleBase, FollowValidatorFollowM
             data,
             (uint256, address, address)
         );
+
         if (!_currencyWhitelisted(currency) || recipient == address(0) || amount < BPS_MAX)
             revert Errors.InitParamsInvalid();
 
+    
         _dataByProfile[profileId].amount = amount;
         _dataByProfile[profileId].currency = currency;
         _dataByProfile[profileId].recipient = recipient;
@@ -85,7 +87,6 @@ contract FeeFollowModule is IFollowModule, FeeModuleBase, FollowValidatorFollowM
         address recipient = _dataByProfile[profileId].recipient;
         uint256 treasuryAmount = (amount * treasuryFee) / BPS_MAX;
         uint256 adjustedAmount = amount - treasuryAmount;
-
         IERC20(currency).safeTransferFrom(follower, recipient, adjustedAmount);
         IERC20(currency).safeTransferFrom(follower, treasury, treasuryAmount);
     }

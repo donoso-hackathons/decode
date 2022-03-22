@@ -15,16 +15,33 @@ export enum ProtocolState {
   Paused,
 }
 
-export function getAddrs(network?:string): any {
-  if (network == "mumbai") {
-    const json = fs.readFileSync('addresses_mumbai.json', 'utf8');
+export function getHardhatNetwork(hre: HardhatRuntimeEnvironment){
+  let network = hre.hardhatArguments.network;
+  if (network == undefined) {
+    network = hre.network.name
+  }
+  return network
+}
+
+export function getAddrs(hre?:HardhatRuntimeEnvironment): any {
+  if (hre == undefined) {
+    const json = fs.readFileSync('addresses.json', 'utf8');
     const addrs = JSON.parse(json);
     return addrs;
+  }  else {
+    let network = getHardhatNetwork(hre)
+    if (network == "localhost"){
+      const json = fs.readFileSync('addresses.json', 'utf8');
+      const addrs = JSON.parse(json);
+      return addrs;
+    } else {
+    const json = fs.readFileSync(`addresses_${network}.json`, 'utf8');
+    const addrs = JSON.parse(json);
+    return addrs
+  }
+    
+  }
 
-  } 
-  const json = fs.readFileSync('addresses.json', 'utf8');
-  const addrs = JSON.parse(json);
-  return addrs;
 }
 
 export async function waitForTx(tx: Promise<ContractTransaction>) {
@@ -75,13 +92,20 @@ export async function deployWithVerify(
   return deployedContract;
 }
 
+export const randomString = (length:number): string => {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890';
+  const alphabet_length = alphabet.length - 1;
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const random_number = Math.floor(Math.random() * alphabet_length) + 1;
+    password += alphabet[random_number];
+  }
+  return password
+}
+
 export async function initEnv(hre: HardhatRuntimeEnvironment): Promise<any[]>  {
   
-  let network = hre.hardhatArguments.network;
-  if (network == undefined) {
-    network = hre.network.name
-  }
-
+  let network = getHardhatNetwork(hre);
   if (network == "localhost") {
   const ethers = hre.ethers; // This allows us to access the hre (Hardhat runtime environment)'s injected ethers instance easily
   const accounts = await ethers.getSigners(); // This returns an array of the default signers connected to the hre's ethers instance

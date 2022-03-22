@@ -6,7 +6,7 @@ import { LensHub__factory } from '../typechain-types';
 import { CreateProfileDataStruct } from '../typechain-types/LensHub';
 
 
-import { waitForTx, initEnv, getAddrs, ZERO_ADDRESS } from './helpers/utils';
+import { waitForTx, initEnv, getAddrs, ZERO_ADDRESS, randomString } from './helpers/utils';
 
 
 task('create-profile', 'creates a profile').setAction(async ({}, hre) => {
@@ -15,14 +15,14 @@ task('create-profile', 'creates a profile').setAction(async ({}, hre) => {
     const [governance, , user] = await initEnv(hre);
 
 
-    const addrs = getAddrs("mumbai");
+    const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
-    // await waitForTx(lensHub.whitelistProfileCreator(user.address, true,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
-    // gasLimit: 2000000 }));
+   await waitForTx(lensHub.whitelistProfileCreator(user.address, true,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
+     gasLimit: 2000000 }));
 
-
-    console.log(1)
+  let handle = randomString(10)
+  
     const inputStruct: CreateProfileDataStruct = {
         to: user.address,
         handle: 'zer1dot',
@@ -34,11 +34,13 @@ task('create-profile', 'creates a profile').setAction(async ({}, hre) => {
           'https://ipfs.fleek.co/ipfs/ghostplantghostplantghostplantghostplantghostplantghostplan',
       };
 
-      console.log(JSON.stringify(inputStruct))
+
 
       await waitForTx(lensHub.connect(user).createProfile(inputStruct,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
       gasLimit: 2000000 }));
-      console.log(2)
+ 
+
+
       console.log(`Total supply (should be 1): ${await lensHub.totalSupply()}`);
       console.log(
         `Profile owner: ${await lensHub.ownerOf(1)}, user address (should be the same): ${user.address}`

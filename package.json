@@ -9,6 +9,8 @@
     "test": "ng test",
     "chain": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json node",
     "accounts": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json accounts",
+    "clean": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json clean",
+    "play": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json play",
     "full-deploy": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json full-deploy",
     "white-list": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json white-list",
     "unpause": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json unpause",
