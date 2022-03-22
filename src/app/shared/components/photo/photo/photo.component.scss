@@ -1,0 +1,70 @@
+:host {
+margin:20px auto;
+display: block;
+}
+
+.photo-placeholder {
+  height: 455px;
+  position: relative;
+  background-size: cover;
+  background-color: #f3f5fb;
+  display: flex;
+  flex-direction: column;
+  background-position: center center;
+  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d1d8e5;
+  -o-border-image: initial;
+  border-image: initial;
+}
+
+:host.offer  .photo-placeholder {
+  height:200px;
+}
+
+.placeholder-wrapper {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+}
+
+.placeholder-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(45, 48, 85);
+  text-align: center;
+  display: inline-block;
+  word-break: normal;
+  line-height: 22px;
+  margin: 20px 0px;
+}
+
+.placeholder-action-btn {
+  font-size: 14px;
+  font-weight: 400;
+  width: 110px;
+  height: 40px;
+  color: rgb(45, 48, 85);
+  cursor: pointer;
+  background: white;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(208, 216, 229);
+  border-image: initial;
+  border-radius: 3px;
+  outline: 0px;
+}
+
+.placeholder-action-btn:hover {
+  color: white;
+  background: rgb(23, 25, 51);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(23, 25, 51);
+  border-image: initial;
+}

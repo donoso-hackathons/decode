@@ -1,0 +1,24 @@
+// @import '../../../../../assets/css/base/color';
+// @import '../../../../../assets/css/base/mixins';
+// @import '../../../../../assets/css/base/responsive';
+// @import '../../../../../assets/css/base/inci-text-block';
+// @import '../../../../../assets/css/base/inci-detail-more-info';
+// @import '../../../../../assets/css/component/input-form';
+// @import '../../../../../assets/css/base/inci-product-detail';
+
+section {
+    margin: 60px 0;
+  }
+  
+  label {
+      font-family: "Cera Pro Regular";
+      font-size: 16px;
+      color: #252525;
+      line-height: 1;
+      display: block;
+      margin-bottom: 10px;
+  }
+  
+  .blog_timestamp {
+      display:block;
+  }

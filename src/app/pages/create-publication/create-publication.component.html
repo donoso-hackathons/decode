@@ -1,1 +1,5 @@
 <p>create-publication works!</p>
+<blog-editor #editor *ngIf="blog_state !== undefined && blog_state.blog !== undefined"
+[blog]="blog_state.blog" [action]="'new'"
+  (editorChanged)="editorChanged()">
+</blog-editor>

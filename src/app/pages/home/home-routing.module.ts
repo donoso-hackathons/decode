@@ -11,7 +11,8 @@ const routes: Routes = [
         (m) => m.CreateProfileModule
       ),
   },
-  { path: 'create-publication', loadChildren: () => import('../create-publication/create-publication.module').then(m => m.CreatePublicationModule) },
+  { path: 'create-publication', 
+  loadChildren: () => import('../create-publication/create-publication.module').then(m => m.CreatePublicationModule) },
 ];
 
 @NgModule({

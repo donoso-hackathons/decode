@@ -1,0 +1,160 @@
+<div style="margin: 30px 0px 0px;">
+
+  <ng-content>
+
+  </ng-content>
+  <div [class.photo-placeholder-selected]="photoStatus == 1" style="position:relative;width: max-content;
+  margin: auto;">
+    <div *ngIf="photoStatus !== 0 && photo_state.mode !== 'display'" style="    position: absolute;
+     position: absolute;
+    top: 8px;
+    text-align: right;
+    z-index: 10;
+    right: 10px;
+    background: white;
+    border-radius: 50%;
+    height: 30px;
+    line-height: 17px;">
+      <button style="padding:unset;" class="icon-cards" mat-icon-button [matMenuTriggerFor]="menu"
+        aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="imageInput.click()">
+
+          <svg style="margin: 0 10px 0 0;cursor:pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+            fill="black" width="18px" height="18px">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+          </svg>Cambiar
+        </button>
+        <button mat-menu-item (click)="show_crop = true">
+
+
+          <svg style="margin: 0 10px 0 0;cursor:pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+            fill="black" width="18px" height="18px">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <circle cx="6" cy="18" fill="none" r="2" />
+            <circle cx="12" cy="12" fill="none" r=".5" />
+            <circle cx="6" cy="6" fill="none" r="2" />
+            <path
+              d="M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-1L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM19 3l-6 6 2 2 7-7V3z" />
+          </svg>Modificar
+        </button>
+        <button mat-menu-item (click)="clearPicture()">
+          <svg style="margin:0 10px 0 0;cursor:pointer;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+            fill="black" width="24px" height="24px">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+          </svg>Borrar
+        </button>
+
+      </mat-menu>
+
+
+    </div>
+
+    <div *ngIf="photoStatus === 0" class="photo-placeholder placeholder-wrapper"><span class="placeholder-text"
+        display="inline-block" color="#2d3055">Escoge Imágenes .jpg o png
+        <br>Una buena imagen del negocio consigue mayor atención de los clientes<br>
+        Si no tienes ahora, puedes subirla más tarde <br></span><button (click)="imageInput.click()" type="button"
+        class="Button-sc-108uqa2-0 placeholder-action-btn" kind="white">Escoger</button></div>
+    <div *ngIf="photoStatus  == 1 || photoStatus  == 2 || photoStatus  == 3">
+      <div class="example-boundary" style="position: relative;border:1px solid green;
+         width: 640px;
+        height: 480px;
+        object-fit: cover;
+        overflow: hidden;
+        background:white;">
+        <img draggable="false" #photo style="
+        width: 640px;
+        height: 480px;
+        object-fit: cover;object-position:'50%  0px'" src="{{selectedFile.src}}" alt="{{selectedFile.src}}">
+
+        <!-- <svg *ngIf="show_move == true" cdkDrag cdkDragBoundary=".example-boundary"
+        (cdkDragStarted)="startMoveImage(photo)"
+        (cdkDragMoved)="moveImage($event, photo)"
+        (cdkDragEnded)="endMoveImage($event, photo)"
+
+        style="position: absolute;
+      bottom: 120px;
+      right: 180px;
+      background: white;
+      display: block;
+      border: 1px solid green;
+      border-radius: 50%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px"
+          height="18px">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z" />
+        </svg> -->
+
+
+
+      </div>
+      <!--
+      <div styke="margin: 20px: auto;">
+
+        <svg  (click)="show_move = true"
+       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24px"
+            height="24px">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z" />
+          </svg>
+
+        <svg (click)="zoomIn(photo)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24px"
+          height="24px">
+          <path d="M0 0h24v24H0V0z" fill="none" />
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+          <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z" /></svg>
+
+          <svg (click)="zoomOut(photo)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" width="24px"
+          height="24px">
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z" />
+          </svg>
+      </div> -->
+
+
+    </div>
+
+    <div *ngIf="photoStatus  === 4" style="position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+    padding: 20px;
+    background:white;">
+      <mat-spinner style="margin:auto;" diameter="60" value="warn"></mat-spinner>
+    </div>
+    <div *ngIf="photoStatus  === 5" style="position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    background:white;">
+      <img style="
+       width: 360px;
+        height: 240px;
+    object-fit: cover;" src="{{downloadUrl}}" alt="">
+    </div>
+
+
+    <div class="sc-cMhqgX efodSF"></div>
+  </div>
+  <div class="validated__ValidationWrapper-sc-59uzjd-0 btTpKe">
+    <div class="validated__ContentWrapper-sc-59uzjd-1 febOwv"><input class="Input-j5n3q1-0 gUTlDM"
+        name="selectedImageUpload" type="hidden" height="40px" value=""></div>
+  </div>
+
+
+  <input style="visibility: hidden;position:absolute;" #imageInput class="image-input fileinput-new" type="file"
+    accept="image/*" (change)="processFile(imageInput)">
+</div>
+<app-cropp *ngIf="photoStatus === 1 &&  show_crop == true " [dimensions]="{'width': 320, 'height': 240}"  (result_cropp)="croppResult($event)" [src]="srcEncoded">
+</app-cropp>

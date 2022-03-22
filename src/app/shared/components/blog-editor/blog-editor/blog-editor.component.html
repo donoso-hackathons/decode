@@ -1,0 +1,157 @@
+<div class="inci-description-block">
+  <div class="inci-description_text">
+    <p>EL tamaño máximo del archivo de tu perfil incluyendo fotos no debe exceder de 1000 kb (1Mb) <br>
+      EL tamaño actual es de <span [ngStyle]="{color: size > 1000 ? 'red' : 'green'}">{{size?.toFixed(2)}} kb
+      </span>.<br>
+      Ten en cuenta que las imagenes muy grandes penalizarán el contenido para ser encontrapo por Google </p>
+  </div>
+  <div id="editor">
+
+  </div>
+
+  <!-- #region PHOTO ///////////////////////////////////////////////////// -->
+  <div style="margin: 30px 0px;" class="col-12 col-lg-12">
+    <div class="inci-description_text">
+      <h2  style=" width: fit-content;margin: 20px auto 10px;"
+        class="sub-title green-all-underline">Fotografía en Resumén</h2>
+      <p >Selecciona la fotografía que quieras para el resumen de tu blog, esta
+        fotografía sera la que aparezca en los listados de bl, una vez selecionada, haciendo clic
+        en el menu de tres puntos vertical, puedes cambiarla o modificarla
+      </p>
+      <!-- <inci-photo-wrapper (photoLoaded)="photoLoaded($event)" [photo_state]="photo_state">
+      </inci-photo-wrapper> -->
+    </div>
+  </div>
+
+
+  <!-- #endregion PHOTO ///////////////////////////////////////////////////// -->
+
+
+
+
+
+
+  <!-- #region METADATA  /////////////////////////////////////////////////// -->
+  <section>
+
+    <h2 style=" width: fit-content;margin: 40px auto 10px;"
+      class="sub-title green-all-underline">Para que te puedan encontrar
+    </h2>
+    <div class="inci-description_text">
+      <form [formGroup]="blogForm">
+        <p>La descripción que escribas servirá como resumén del blog en la busqueda de inci.es, así como para que te
+          encuentren los motores de busqueda de Google/Yahoo/etc..<br>
+          Una buena descripción y unas palabras claves (keywords) adecuadas harán que los buscadores te posicionen mejor
+          y que en el vasto mundo de Internet te encuentren más lectores </p>
+        <div class="form-row">
+          <div style="width: 100%;position:relative;" class="form-group col-md-12">
+            <label for="description">Descripción*</label>
+            <textarea style="height: unset;padding: 10px;line-height: 21px;font-family: 'Cera Pro Regular';"
+              formControlName="description" rows="3" class="no-round-input-bg" id="description" type="text"
+              required></textarea>
+            <span [ngStyle]="{'color': blogForm.controls['description'].value.length <=255 ? 'green' : 'red'}"
+              style="position:absolute;bottom:10px;right:10px">{{ 255 -
+              blogForm.controls['description'].value.length}}</span>
+
+
+            <!-- <div class="col-md-12">
+              <mat-form-field style="width: 100%;position:relative;" class="input-biz" appearance="fill">
+                <mat-label>Contenido</mat-label>
+                <textarea style="
+                          line-height: 21px;
+                          font-size: 16px;
+                          font-weight: 200;
+                        " formControlName="two_liner" rows="4" matInput></textarea>
+                                    </mat-form-field>
+            </div> -->
+
+          </div>
+
+
+          <div class="form-group col-md-12">
+            <p>Los keywords o palabras claves ayudarán a que los buscadores de Internet te encuetren con mayor
+              facilidad. Ecribe las palabras
+              o expresiones separadas por comas comp por ejemplo: <span style="font-weight: bold;">cosmética natural,
+                cuidado del cabello, análisis productos</span>.
+              El número de palabras clave debería ser como mucho 10.
+            </p>
+
+            <label for="description">Keywords*</label>
+            <input formControlName="keywords" class="no-round-input-bg" id="keywords" type="text" required />
+          </div>
+        </div>
+        <p>La descripción que escribas servirá como resumén del blog en la busqueda de inci.es, así como para que te
+          encuentren los motores de busqueda de Google/Yahoo/etc..<br>
+          Una buena descripción y unas palabras claves (keywords) adecuadas harán que los buscadores te posicionen mejor
+          y que en el vasto mundo de Internet te encuentren más lectores </p>
+        <div *ngIf="blog.payload.aggregateRating !== undefined" class="form-row">
+          <div style="width: 100%;position:relative;" class="form-group col-md-6">
+            <label for="description">Valoración</label>
+            <input formControlName="rating_value" class="no-round-input-bg" id="rating_value" type="number" />
+          </div>
+          <div style="width: 100%;position:relative;" class="form-group col-md-6">
+            <label for="description">Número de Reseñas*</label>
+            <input formControlName="rating_nr" class="no-round-input-bg" id="rating_nr" type="number" />
+          </div>
+
+
+        </div>
+
+
+ 
+
+    </form>
+
+</div>
+
+</section>
+
+
+<!-- #endregion METADATA  /////////////////////////////////////////////////// -->
+
+<!-- #region STATUS ANG INFO ///////////////////////////////////////////////////// -->
+
+<section style="text-align: center;">
+  <h2  style=" width: fit-content;margin: 20px auto 10px;"
+    class="sub-title green-all-underline">Quieres publicar ya?
+  </h2>
+  <div class="inci-description_text">
+    <p style="text-align: left;" >
+      Aqui puedes cambiar el estado de tu post, puedes publicarlo o archivarlo. También escribe la ciudad y el
+      Pais desde dónde escribes
+      le Post para que la comunidad sepa de dónde vienen tus Posts.
+    </p>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div style="text-align:center;">
+          <!-- <mat-form-field appearance="fill">
+            <mat-label style="font-weight: bold;">
+              Estado
+            </mat-label>
+            <mat-select (selectionChange)="chooseStatus($event)" [formControl]="blogForm.controls.status">
+
+              <mat-option *ngFor="let status of status_List" [value]="status"> {{ status['name']['es'] }}
+              </mat-option>
+            </mat-select> 
+          </mat-form-field> -->
+
+          <span class="blog_timestamp">
+            <ng-container> Actualizado</ng-container>:
+            {{ convertMstoTimeString(blog.updateTimeStamp) }}
+            {{ convertMstoNiceString(blog.updateTimeStamp) }}
+          </span>
+          <span class="blog_timestamp">
+            <ng-container > Creado</ng-container>:
+            {{ convertMstoTimeString(blog.timeStamp) }}
+            {{ convertMstoNiceString(blog.timeStamp) }}
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+<!-- #endregion STATUS ANG INFO  /////////////////////////////////////////////////// -->

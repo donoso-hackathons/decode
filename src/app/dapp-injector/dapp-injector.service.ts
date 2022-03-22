@@ -31,7 +31,7 @@ export class DappInjectorService {
 
   constructor(
     @Inject(DOCUMENT) private readonly document: any,
-    @Inject('minimalContractMetadata')
+    @Inject('lensHubMetadata')
     public contractMetadata: ICONTRACT_METADATA,
     private store: Store
   ) {
