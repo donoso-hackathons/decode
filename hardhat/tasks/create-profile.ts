@@ -18,8 +18,8 @@ task('create-profile', 'creates a profile').setAction(async ({}, hre) => {
     const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
-   await waitForTx(lensHub.whitelistProfileCreator(user.address, true,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
-     gasLimit: 2000000 }));
+  //  await waitForTx(lensHub.whitelistProfileCreator(user.address, true,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
+  //    gasLimit: 2000000 }));
 
   let handle = randomString(10)
   
