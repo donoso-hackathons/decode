@@ -9,46 +9,84 @@ import { CreateProfileDataStruct } from '../typechain-types/LensHub';
 import { waitForTx, initEnv, getAddrs, ZERO_ADDRESS, randomString } from './helpers/utils';
 
 
-task('create-profile', 'creates a profile').setAction(async ({}, hre) => {
+task('create-profile', 'creates the initial profile and paywall').setAction(async ({}, hre) => {
 
 
-    const [governance, , user] = await initEnv(hre);
-
-
+    const [governance, , user1,user2,user3] = await initEnv(hre);
     const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
-  //  await waitForTx(lensHub.whitelistProfileCreator(user.address, true,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
-  //    gasLimit: 2000000 }));
-
-  let handle = randomString(10)
-  
-    const inputStruct: CreateProfileDataStruct = {
-        to: user.address,
-        handle: 'zer1dot',
-        imageURI:
-          'https://ipfs.fleek.co/ipfs/ghostplantghostplantghostplantghostplantghostplantghostplan',
-        followModule: ZERO_ADDRESS,
-        followModuleData: [],
-        followNFTURI:
-          'https://ipfs.fleek.co/ipfs/ghostplantghostplantghostplantghostplantghostplantghostplan',
-      };
+  //// create paywal profile 
+  let user1_nonce = await hre.ethers.provider.getTransactionCount(user1.address);
+  const profile_paywall: CreateProfileDataStruct = {
+    to: user1.address,
+    handle: 'paywall',
+    imageURI:
+      'https://picsum.photos/200/300',
+    followModule: ZERO_ADDRESS,
+    followModuleData: [],
+    followNFTURI:
+      'https://picsum.photos/200/300',
+  };
 
 
-
-      await waitForTx(lensHub.connect(user).createProfile(inputStruct,{ gasPrice:  utils.parseUnits('100', 'gwei'), 
+  await waitForTx(lensHub.connect(user1).createProfile(profile_paywall,
+    { nonce:user1_nonce++,
+      gasPrice:  utils.parseUnits('100', 'gwei'), 
       gasLimit: 2000000 }));
+
+
+    //// create phacky_profile
+    let user2_nonce = await hre.ethers.provider.getTransactionCount(user2.address);
+    const profile_hacky: CreateProfileDataStruct = {
+      to: user2.address,
+      handle: 'kacky',
+      imageURI:
+        'https://picsum.photos/200/300',
+      followModule: ZERO_ADDRESS,
+      followModuleData: [],
+      followNFTURI:
+        'https://picsum.photos/200/300',
+    };
+  
+  
+    await waitForTx(lensHub.connect(user2).createProfile(profile_hacky,
+      { nonce:user2_nonce++,
+        gasPrice:  utils.parseUnits('100', 'gwei'), 
+        gasLimit: 2000000 }));
+
+
+
+   //// create lfgrow
+   let user3_nonce = await hre.ethers.provider.getTransactionCount(user3.address);
+   const profile_lf: CreateProfileDataStruct = {
+     to: user3.address,
+     handle: 'lfgrow',
+     imageURI:
+       'https://cdn.discordapp.com/attachments/951834592942358548/951835887979872336/unknown.png',
+     followModule: ZERO_ADDRESS,
+     followModuleData: [],
+     followNFTURI:
+     'https://cdn.discordapp.com/attachments/951834592942358548/951835887979872336/unknown.png',
+   };
+ 
+   await waitForTx(lensHub.connect(user3).createProfile(profile_lf,
+    { nonce:user3_nonce++,
+      gasPrice:  utils.parseUnits('100', 'gwei'), 
+      gasLimit: 2000000 }));
+  
+    
  
 
 
       console.log(`Total supply (should be 1): ${await lensHub.totalSupply()}`);
       console.log(
-        `Profile owner: ${await lensHub.ownerOf(1)}, user address (should be the same): ${user.address}`
+        `Profile owner: ${await lensHub.ownerOf(1)}, user address (should be the same): ${user1.address}`
       );
       console.log(
         `Profile ID by handle: ${await lensHub.getProfileIdByHandle(
           'zer0dot'
-        )}, user address (should be the same): ${user.address}`
+        )}, user address (should be the same): ${user1.address}`
       );
 
 
