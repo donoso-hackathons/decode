@@ -111,8 +111,12 @@ export async function initEnv(hre: HardhatRuntimeEnvironment): Promise<any[]>  {
   const accounts = await ethers.getSigners(); // This returns an array of the default signers connected to the hre's ethers instance
   const governance = accounts[1];
   const treasury = accounts[2];
-  const user = accounts[3];
-  return [governance, treasury, user];
+  const user1 = accounts[3];
+  const user2 = accounts[4];
+  const user3 = accounts[5];
+  const user4 = accounts[6];
+
+  return [governance, treasury, user1,user2,user3,user4];
   } else {
     const deployer_provider = hre.ethers.provider
     const privKeyGovernance = process.env["GOVERNANCE_KEY"] as BytesLike;
