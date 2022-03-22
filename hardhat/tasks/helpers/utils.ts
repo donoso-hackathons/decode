@@ -129,11 +129,24 @@ export async function initEnv(hre: HardhatRuntimeEnvironment): Promise<any[]>  {
     const treasury_wallet = new Wallet(privKeyTREASURY);
     const treasury  = await treasury_wallet.connect(deployer_provider);
 
-    const privKeyUSER = process.env["USER_KEY"] as BytesLike;
+    const privKeyUSER = process.env["USER1_KEY"] as BytesLike;
     const user_wallet = new Wallet(privKeyUSER);
+    const user1  = await user_wallet.connect(deployer_provider) ;
+   
 
-    const user  = await user_wallet.connect(deployer_provider) ;
-    return [governance, treasury, user];
+    const privKeyUSER2 = process.env["USER2_KEY"] as BytesLike;
+    const user2_wallet = new Wallet(privKeyUSER2);
+    const user2  = await user2_wallet.connect(deployer_provider) ;
+
+    const privKeyUSER3 = process.env["USER3_KEY"] as BytesLike;
+    const user3_wallet = new Wallet(privKeyUSER3);
+    const user3  = await user3_wallet.connect(deployer_provider) ;
+
+    const privKeyUSER4 = process.env["USER4_KEY"] as BytesLike;
+    const user4_wallet = new Wallet(privKeyUSER4);
+    const user4  = await user4_wallet.connect(deployer_provider) ;
+
+    return [governance, treasury, user1,user2,user3,user4];
 
   }
 }

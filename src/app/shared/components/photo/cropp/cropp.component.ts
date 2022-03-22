@@ -7,9 +7,10 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { CROPP_DIMENSIONS, ICROPP_DIM } from '@nx-inci/models';
+
 
 import { saveAs } from 'file-saver';
+import { ICROPP_DIM } from 'src/app/shared/models';
 
 declare const Cropper;
 

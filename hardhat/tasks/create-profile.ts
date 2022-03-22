@@ -13,6 +13,9 @@ task('create-profile', 'creates the initial profile and paywall').setAction(asyn
 
 
     const [governance, , user1,user2,user3] = await initEnv(hre);
+
+
+
     const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
@@ -40,7 +43,7 @@ task('create-profile', 'creates the initial profile and paywall').setAction(asyn
     let user2_nonce = await hre.ethers.provider.getTransactionCount(user2.address);
     const profile_hacky: CreateProfileDataStruct = {
       to: user2.address,
-      handle: 'kacky',
+      handle: 'hacky',
       imageURI:
         'https://picsum.photos/200/300',
       followModule: ZERO_ADDRESS,
@@ -79,13 +82,13 @@ task('create-profile', 'creates the initial profile and paywall').setAction(asyn
  
 
 
-      console.log(`Total supply (should be 1): ${await lensHub.totalSupply()}`);
+      console.log(`Total supply (should be 3): ${await lensHub.totalSupply()}`);
       console.log(
         `Profile owner: ${await lensHub.ownerOf(1)}, user address (should be the same): ${user1.address}`
       );
       console.log(
         `Profile ID by handle: ${await lensHub.getProfileIdByHandle(
-          'zer0dot'
+          'lfgrow'
         )}, user address (should be the same): ${user1.address}`
       );
 

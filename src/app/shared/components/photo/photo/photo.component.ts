@@ -19,7 +19,7 @@ import { ImageSnippet, PHOTO_STATUS, IPHOTO_STATE } from 'src/app/shared/models'
 
 
 @Component({
-  selector: 'inci-photo-wrapper',
+  selector: 'photo-wrapper',
   templateUrl: './photo.component.html',
   styleUrls: ['./photo.component.scss'],
 })

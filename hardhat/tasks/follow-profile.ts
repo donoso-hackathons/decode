@@ -22,10 +22,10 @@ let user1_nonce = await hre.ethers.provider.getTransactionCount(user1.address);
 let user2_nonce = await hre.ethers.provider.getTransactionCount(user2.address);
 
   
-// await waitForTx(lensHub.follow([1], [[]],{ 
-// nonce:user2_nonce++,
-// gasPrice:  utils.parseUnits('100', 'gwei'), 
-// gasLimit: 2000000 }));
+await waitForTx(lensHub.follow([1], [[]],{ 
+nonce:user2_nonce++,
+gasPrice:  utils.parseUnits('100', 'gwei'), 
+gasLimit: 2000000 }));
 
 
 
