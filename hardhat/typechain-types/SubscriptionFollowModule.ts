@@ -20,14 +20,21 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface SubscriptionFollowModuleInterface extends utils.Interface {
   functions: {
     "HUB()": FunctionFragment;
+    "cancelSubscription(uint256,address)": FunctionFragment;
     "followModuleTransferHook(uint256,address,address,uint256)": FunctionFragment;
     "getProfileData(uint256)": FunctionFragment;
+    "hasSubscription(uint256,address)": FunctionFragment;
     "initializeFollowModule(uint256,bytes)": FunctionFragment;
+    "openSubscription(uint256,address)": FunctionFragment;
     "processFollow(address,uint256,bytes)": FunctionFragment;
     "validateFollow(uint256,address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "HUB", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "cancelSubscription",
+    values: [BigNumberish, string]
+  ): string;
   encodeFunctionData(
     functionFragment: "followModuleTransferHook",
     values: [BigNumberish, string, string, BigNumberish]
@@ -37,8 +44,16 @@ export interface SubscriptionFollowModuleInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "hasSubscription",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "initializeFollowModule",
     values: [BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "openSubscription",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "processFollow",
@@ -51,6 +66,10 @@ export interface SubscriptionFollowModuleInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "HUB", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "cancelSubscription",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "followModuleTransferHook",
     data: BytesLike
   ): Result;
@@ -59,7 +78,15 @@ export interface SubscriptionFollowModuleInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "hasSubscription",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "initializeFollowModule",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "openSubscription",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -103,6 +130,12 @@ export interface SubscriptionFollowModule extends BaseContract {
   functions: {
     HUB(overrides?: CallOverrides): Promise<[string]>;
 
+    cancelSubscription(
+      profileId: BigNumberish,
+      follower: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     followModuleTransferHook(
       profileId: BigNumberish,
       from: string,
@@ -116,9 +149,21 @@ export interface SubscriptionFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    hasSubscription(
+      profileId: BigNumberish,
+      toCheck: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     initializeFollowModule(
       profileId: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    openSubscription(
+      profileId: BigNumberish,
+      follower: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -139,6 +184,12 @@ export interface SubscriptionFollowModule extends BaseContract {
 
   HUB(overrides?: CallOverrides): Promise<string>;
 
+  cancelSubscription(
+    profileId: BigNumberish,
+    follower: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   followModuleTransferHook(
     profileId: BigNumberish,
     from: string,
@@ -152,9 +203,21 @@ export interface SubscriptionFollowModule extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  hasSubscription(
+    profileId: BigNumberish,
+    toCheck: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   initializeFollowModule(
     profileId: BigNumberish,
     data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  openSubscription(
+    profileId: BigNumberish,
+    follower: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -175,6 +238,12 @@ export interface SubscriptionFollowModule extends BaseContract {
   callStatic: {
     HUB(overrides?: CallOverrides): Promise<string>;
 
+    cancelSubscription(
+      profileId: BigNumberish,
+      follower: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     followModuleTransferHook(
       profileId: BigNumberish,
       from: string,
@@ -188,11 +257,23 @@ export interface SubscriptionFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    hasSubscription(
+      profileId: BigNumberish,
+      toCheck: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     initializeFollowModule(
       profileId: BigNumberish,
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    openSubscription(
+      profileId: BigNumberish,
+      follower: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     processFollow(
       follower: string,
@@ -214,6 +295,12 @@ export interface SubscriptionFollowModule extends BaseContract {
   estimateGas: {
     HUB(overrides?: CallOverrides): Promise<BigNumber>;
 
+    cancelSubscription(
+      profileId: BigNumberish,
+      follower: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     followModuleTransferHook(
       profileId: BigNumberish,
       from: string,
@@ -227,9 +314,21 @@ export interface SubscriptionFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    hasSubscription(
+      profileId: BigNumberish,
+      toCheck: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     initializeFollowModule(
       profileId: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    openSubscription(
+      profileId: BigNumberish,
+      follower: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -251,6 +350,12 @@ export interface SubscriptionFollowModule extends BaseContract {
   populateTransaction: {
     HUB(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    cancelSubscription(
+      profileId: BigNumberish,
+      follower: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     followModuleTransferHook(
       profileId: BigNumberish,
       from: string,
@@ -264,9 +369,21 @@ export interface SubscriptionFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    hasSubscription(
+      profileId: BigNumberish,
+      toCheck: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     initializeFollowModule(
       profileId: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    openSubscription(
+      profileId: BigNumberish,
+      follower: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

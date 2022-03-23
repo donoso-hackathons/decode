@@ -29,6 +29,7 @@ export interface EventsInterface extends utils.Interface {
     "FollowNFTTransferred(uint256,uint256,address,address,uint256)": EventFragment;
     "FollowNFTURISet(uint256,string,uint256)": EventFragment;
     "FollowsApproved(address,uint256,address[],bool[],uint256)": EventFragment;
+    "FollowsSubscription(address,uint256,address,bool,uint256)": EventFragment;
     "FollowsToggled(address,uint256[],bool[],uint256)": EventFragment;
     "GovernanceSet(address,address,address,uint256)": EventFragment;
     "MirrorCreated(uint256,uint256,uint256,uint256,address,bytes,uint256)": EventFragment;
@@ -66,6 +67,7 @@ export interface EventsInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "FollowNFTTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FollowNFTURISet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FollowsApproved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FollowsSubscription"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FollowsToggled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GovernanceSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MirrorCreated"): EventFragment;
@@ -293,6 +295,20 @@ export type FollowsApprovedEvent = TypedEvent<
 >;
 
 export type FollowsApprovedEventFilter = TypedEventFilter<FollowsApprovedEvent>;
+
+export type FollowsSubscriptionEvent = TypedEvent<
+  [string, BigNumber, string, boolean, BigNumber],
+  {
+    owner: string;
+    profileId: BigNumber;
+    follower: string;
+    isActive: boolean;
+    timestamp: BigNumber;
+  }
+>;
+
+export type FollowsSubscriptionEventFilter =
+  TypedEventFilter<FollowsSubscriptionEvent>;
 
 export type FollowsToggledEvent = TypedEvent<
   [string, BigNumber[], boolean[], BigNumber],
@@ -727,6 +743,21 @@ export interface Events extends BaseContract {
       approved?: null,
       timestamp?: null
     ): FollowsApprovedEventFilter;
+
+    "FollowsSubscription(address,uint256,address,bool,uint256)"(
+      owner?: string | null,
+      profileId?: BigNumberish | null,
+      follower?: null,
+      isActive?: null,
+      timestamp?: null
+    ): FollowsSubscriptionEventFilter;
+    FollowsSubscription(
+      owner?: string | null,
+      profileId?: BigNumberish | null,
+      follower?: null,
+      isActive?: null,
+      timestamp?: null
+    ): FollowsSubscriptionEventFilter;
 
     "FollowsToggled(address,uint256[],bool[],uint256)"(
       owner?: string | null,

@@ -490,4 +490,22 @@ library Events {
         uint256 timestamp
     );
 
+     /**
+   * @notice Emitted when one or multiple addresses are approved (or disapproved) for following in
+   * the `ApprovalFollowModule`.
+   *
+   * @param owner The profile owner who executed the approval.
+   * @param profileId The profile ID that the follow approvals are granted/revoked for.
+   * @param follower The addresses that have had the follow approvals grnated/revoked.
+   * @param timestamp The current block timestamp.
+   */
+  event FollowsSubscription(
+    address indexed owner,
+    uint256 indexed profileId,
+    address follower,
+    bool isActive,
+    uint256 timestamp
+  );
+
+
 }
