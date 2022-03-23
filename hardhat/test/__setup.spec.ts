@@ -46,6 +46,8 @@ import {
   TransparentUpgradeableProxy__factory,
   LensPeripheryDataProvider,
   LensPeripheryDataProvider__factory,
+  SubscriptionFollowModule,
+  SubscriptionFollowModule__factory,
 } from '../typechain-types';
 import { LensHubLibraryAddresses } from '../typechain-types/factories/LensHub__factory';
 import { FAKE_PRIVATEKEY, ZERO_ADDRESS } from './helpers/constants';
@@ -115,7 +117,7 @@ export let limitedTimedFeeCollectModule: LimitedTimedFeeCollectModule;
 export let approvalFollowModule: ApprovalFollowModule;
 export let feeFollowModule: FeeFollowModule;
 export let mockFollowModule: MockFollowModule;
-
+export let subscriptionFollowModule: SubscriptionFollowModule; 
 // Reference
 export let followerOnlyReferenceModule: FollowerOnlyReferenceModule;
 export let mockReferenceModule: MockReferenceModule;
@@ -230,12 +232,20 @@ before(async function () {
     moduleGlobals.address
   );
   approvalFollowModule = await new ApprovalFollowModule__factory(deployer).deploy(lensHub.address);
+
+  subscriptionFollowModule = await new SubscriptionFollowModule__factory(deployer).deploy(
+    lensHub.address,
+    moduleGlobals.address);
+
   followerOnlyReferenceModule = await new FollowerOnlyReferenceModule__factory(deployer).deploy(
     lensHub.address
   );
 
   mockFollowModule = await new MockFollowModule__factory(deployer).deploy();
   mockReferenceModule = await new MockReferenceModule__factory(deployer).deploy();
+
+   
+
 
   await expect(lensHub.connect(governance).setState(ProtocolState.Unpaused)).to.not.be.reverted;
   await expect(

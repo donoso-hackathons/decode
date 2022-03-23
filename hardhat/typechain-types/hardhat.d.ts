@@ -205,10 +205,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FollowerOnlyReferenceModule__factory>;
     getContractFactory(
-      name: "FeeModuleBase",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.FeeModuleBase__factory>;
-    getContractFactory(
       name: "SubscriptionFollowModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SubscriptionFollowModule__factory>;
@@ -549,11 +545,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.FollowerOnlyReferenceModule>;
-    getContractAt(
-      name: "FeeModuleBase",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.FeeModuleBase>;
     getContractAt(
       name: "SubscriptionFollowModule",
       address: string,
