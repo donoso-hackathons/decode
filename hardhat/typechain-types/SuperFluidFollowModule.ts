@@ -17,14 +17,6 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export type FlowStruct = { sender: string; recipient: string; message: string };
-
-export type FlowStructOutput = [string, string, string] & {
-  sender: string;
-  recipient: string;
-  message: string;
-};
-
 export interface SuperFluidFollowModuleInterface extends utils.Interface {
   functions: {
     "HUB()": FunctionFragment;
@@ -37,7 +29,6 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
     "beforeAgreementUpdated(address,address,bytes32,bytes,bytes)": FunctionFragment;
     "followModuleTransferHook(uint256,address,address,uint256)": FunctionFragment;
     "getFlowDetails(address)": FunctionFragment;
-    "getUserFlows(address)": FunctionFragment;
     "initializeFollowModule(uint256,bytes)": FunctionFragment;
     "processFollow(address,uint256,bytes)": FunctionFragment;
     "validateFollow(uint256,address,uint256)": FunctionFragment;
@@ -78,10 +69,6 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getFlowDetails",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getUserFlows",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -132,10 +119,6 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getFlowDetails",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getUserFlows",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -284,11 +267,6 @@ export interface SuperFluidFollowModule extends BaseContract {
       }
     >;
 
-    getUserFlows(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<[FlowStructOutput[]] & { userFlows: FlowStructOutput[] }>;
-
     initializeFollowModule(
       profileId: BigNumberish,
       data: BytesLike,
@@ -391,11 +369,6 @@ export interface SuperFluidFollowModule extends BaseContract {
     }
   >;
 
-  getUserFlows(
-    user: string,
-    overrides?: CallOverrides
-  ): Promise<FlowStructOutput[]>;
-
   initializeFollowModule(
     profileId: BigNumberish,
     data: BytesLike,
@@ -497,11 +470,6 @@ export interface SuperFluidFollowModule extends BaseContract {
         owedDeposit: BigNumber;
       }
     >;
-
-    getUserFlows(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<FlowStructOutput[]>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -615,8 +583,6 @@ export interface SuperFluidFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getUserFlows(user: string, overrides?: CallOverrides): Promise<BigNumber>;
-
     initializeFollowModule(
       profileId: BigNumberish,
       data: BytesLike,
@@ -710,11 +676,6 @@ export interface SuperFluidFollowModule extends BaseContract {
 
     getFlowDetails(
       sender: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getUserFlows(
-      user: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

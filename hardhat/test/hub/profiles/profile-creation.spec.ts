@@ -1,7 +1,7 @@
 import '@nomiclabs/hardhat-ethers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
-import { TokenDataStructOutput } from '../../../typechain/LensHub';
+import { TokenDataStructOutput } from '../../../typechain-types/LensHub';
 import { MAX_UINT256, ZERO_ADDRESS } from '../../helpers/constants';
 import { ERRORS } from '../../helpers/errors';
 import { cancelWithPermitForAll, getTimestamp } from '../../helpers/utils';

@@ -205,6 +205,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FollowerOnlyReferenceModule__factory>;
     getContractFactory(
+      name: "FeeModuleBase",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.FeeModuleBase__factory>;
+    getContractFactory(
+      name: "SubscriptionFollowModule",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SubscriptionFollowModule__factory>;
+    getContractFactory(
+      name: "SuperFluidFollowModule",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SuperFluidFollowModule__factory>;
+    getContractFactory(
       name: "ICollectModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ICollectModule__factory>;
@@ -292,14 +304,6 @@ declare module "hardhat/types/runtime" {
       name: "MockReferenceModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockReferenceModule__factory>;
-    getContractFactory(
-      name: "SuperFluidFollowModule",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SuperFluidFollowModule__factory>;
-    getContractFactory(
-      name: "SuperFluidModule",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SuperFluidModule__factory>;
     getContractFactory(
       name: "TransparentUpgradeableProxy",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -546,6 +550,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.FollowerOnlyReferenceModule>;
     getContractAt(
+      name: "FeeModuleBase",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.FeeModuleBase>;
+    getContractAt(
+      name: "SubscriptionFollowModule",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SubscriptionFollowModule>;
+    getContractAt(
+      name: "SuperFluidFollowModule",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SuperFluidFollowModule>;
+    getContractAt(
       name: "ICollectModule",
       address: string,
       signer?: ethers.Signer
@@ -655,16 +674,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MockReferenceModule>;
-    getContractAt(
-      name: "SuperFluidFollowModule",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SuperFluidFollowModule>;
-    getContractAt(
-      name: "SuperFluidModule",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SuperFluidModule>;
     getContractAt(
       name: "TransparentUpgradeableProxy",
       address: string,

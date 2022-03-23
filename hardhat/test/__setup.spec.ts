@@ -1,4 +1,4 @@
-import { AbiCoder } from '@ethersproject/contracts/node_modules/@ethersproject/abi';
+import { AbiCoder } from '@ethersproject/abi';
 import { parseEther } from '@ethersproject/units';
 import '@nomiclabs/hardhat-ethers';
 import { expect, use } from 'chai';
@@ -47,7 +47,7 @@ import {
   LensPeripheryDataProvider,
   LensPeripheryDataProvider__factory,
 } from '../typechain-types';
-import { LensHubLibraryAddresses } from '../typechain/factories/LensHub__factory';
+import { LensHubLibraryAddresses } from '../typechain-types/factories/LensHub__factory';
 import { FAKE_PRIVATEKEY, ZERO_ADDRESS } from './helpers/constants';
 import {
   computeContractAddress,

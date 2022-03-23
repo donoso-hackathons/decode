@@ -30,7 +30,7 @@ import {
   userTwoAddress,
 } from '../__setup.spec';
 import { BigNumber } from 'ethers';
-import { TokenDataStructOutput } from '../../typechain/LensHub';
+import { TokenDataStructOutput } from '../../typechain-types/LensHub';
 import { getTimestamp } from '../helpers/utils';
 
 makeSuiteCleanRoom('Mock Profile Creation Proxy', function () {
