@@ -14,6 +14,7 @@ import { MainComponent } from './shared/components/main/main.component';
 import { ProfilePageComponent } from './shared/components/profile-page/profile-page.component';
 import { FeedComponent } from './shared/components/feed/feed.component';
 import { CodeoComponent } from './shared/components/codeo/codeo.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CodeoComponent } from './shared/components/codeo/codeo.component';
     MainComponent,
     ProfilePageComponent,
     FeedComponent,
-    CodeoComponent
+    CodeoComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
