@@ -19,6 +19,7 @@ import { ListComponent } from './shared/components/list/list.component';
 import { NewsComponent } from './shared/components/news/news.component';
 import { FollowSuggestionsComponent } from './shared/components/follow-suggestions/follow-suggestions.component';
 import { ButtonComponent } from './shared/components/button/button.component';
+import { OnboardComponent } from './shared/components/onboard/onboard.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ButtonComponent } from './shared/components/button/button.component';
     ListComponent,
     NewsComponent,
     FollowSuggestionsComponent,
-    ButtonComponent
+    ButtonComponent,
+    OnboardComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,7 @@ import { ButtonComponent } from './shared/components/button/button.component';
     StoreModule.forRoot({web3: we3ReducerFunction}),
   ],
   providers: [
-    blockchain_providers
+    ...blockchain_providers
   ],
   bootstrap: [AppComponent]
 })

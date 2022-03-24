@@ -1,0 +1,61 @@
+<div class="profilePageContainer">
+  <div *ngIf="blockchain_status == 'wallet-not-connected'">
+    <div class="Banner">
+      <h1 style="">Start Codeoin with your web3 Id</h1>
+      </div>
+    
+      <div class="ProfileData">
+        <!-- <EditButton outlined>Set up profile</EditButton> -->
+        <dececode-button (click)="connect.emit(true)"  class="EditButton" [outline]="true">SignUp</dececode-button> 
+
+  
+      </div>
+  </div>
+  <div *ngIf="blockchain_status != 'wallet-not-connected'">
+    <div class="Banner">
+      <div class="Avatar">
+        <img
+          src="https://avatars1.githubusercontent.com/u/53025782?s=400&u=f1ffa8eaccb8545222b7c642532161f11e74a03d&v=4"
+          alt="Elton Lazzarin"
+        />
+      </div>
+    </div>
+  
+    <div class="ProfileData">
+      <!-- <EditButton outlined>Set up profile</EditButton> -->
+      <dececode-button  class="EditButton" [outline]="true">Set up Profile</dececode-button> 
+  
+      <h1>Elton Lazzarin</h1>
+      <h2>@elton_lazzarin</h2>
+  
+      <p>
+        Developer at
+        <a href="https://www.linkedin.com/in/eltonlazzarin/" target="_blank">
+          @WordlLab
+        </a>
+      </p>
+  
+      <ul>
+        <li>
+          <i class="profilePageiconCSS material-icons">location</i>
+  
+          São José do Rio Preto, Brazil
+        </li>
+        <li>
+          <!-- <CakeIcon />
+            Born on May 13, 1989 -->
+        </li>
+      </ul>
+  
+      <div class="Followage">
+        <span>
+          <strong>98 </strong>
+          Following
+        </span>
+        <span> <strong>322 </strong>Followers </span>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+  
