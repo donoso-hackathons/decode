@@ -13,7 +13,7 @@ export class CodeoComponent implements OnInit {
 @Input() codeo:ICODEO
 
   ngOnInit(): void {
-    console.log(this.codeo)
+
   }
 
 }

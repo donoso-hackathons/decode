@@ -13,7 +13,7 @@ export class FeedComponent implements OnInit {
   codeos:Array<ICODEO>
   constructor() { 
     this.codeos = MockCodeos
-    console.log(this.codeos)
+
   }
 
   ngOnInit(): void {

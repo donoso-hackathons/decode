@@ -1,11 +1,18 @@
 <div class="listContainer">
-    <div class="Item" >
-      <div class="Title">{{title}}</div>
-    </div>
-    <ng-template *ngIf="listType == 'suggestion'">
-    <div *ngFor = "let element of elements" class="Item"></div>
-</ng-template>
-<ng-template *ngIf="listType == 'news'">
-    <dececode-news class="Item" [news]="element" *ngFor = "let element of elements"></dececode-news>
-</ng-template>
+  <div class="Item">
+    <div class="Title">{{ title }}</div>
+  </div>
+  <div *ngIf="listType == 'suggestion'">
+    <dececode-follow-suggestions [suggestion]="element"
+      *ngFor="let element of elements"
+      class="Item"
+    ></dececode-follow-suggestions>
+  </div>
+  <div *ngIf="listType == 'news'">
+    <dececode-news
+      class="Item"
+      [news]="element"
+      *ngFor="let element of elements"
+    ></dececode-news>
+  </div>
 </div>
