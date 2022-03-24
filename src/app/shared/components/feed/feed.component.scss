@@ -1,0 +1,30 @@
+.feedContainer{
+  display: flex;
+  flex-direction: column;
+}
+
+.Tab{
+  margin-top: 10px;
+  padding: 11px 0 15px;
+  text-align: center;
+
+  font-weight: bold;
+  font-size: 15px;
+
+  outline: 0px;
+  cursor: pointer;
+
+  color: var(--twitter);
+  border-bottom: 2px solid var(--twitter);
+
+  &:hover {
+    background: var(--twitter-dark-hover);
+  }
+}
+
+.Codeos{
+  display: flex;
+  flex-direction: column;
+
+  flex-shrink: 0;
+}

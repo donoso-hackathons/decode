@@ -9,10 +9,20 @@ import { blockchain_providers } from './blockchain_wiring';
 import { DappInjectorModule } from './dapp-injector/dapp-injector.module';
 import { StoreModule } from '@ngrx/store';
 import { we3ReducerFunction } from 'angular-web3';
+import { MenuBarComponent } from './shared/components/menu-bar/menu-bar.component';
+import { MainComponent } from './shared/components/main/main.component';
+import { ProfilePageComponent } from './shared/components/profile-page/profile-page.component';
+import { FeedComponent } from './shared/components/feed/feed.component';
+import { CodeoComponent } from './shared/components/codeo/codeo.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MenuBarComponent,
+    MainComponent,
+    ProfilePageComponent,
+    FeedComponent,
+    CodeoComponent
   ],
   imports: [
     BrowserModule,

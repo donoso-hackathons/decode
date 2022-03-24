@@ -1,0 +1,50 @@
+<div class="codeoContainer">
+  <!-- {{codeo.retweet ? (
+     <Retweeted>
+        <RocketseatIcon />
+        You retweeted
+      </Retweeted> 
+  ) : ( '' )} -->
+
+  <div class="codeoBody">
+    <div class="Avatar">
+      <img src="{{ codeo.avatar }}" alt="{{ codeo.author }}" />
+    </div>
+
+    <div class="Content">
+      <div class="Header">
+        <strong>{{ codeo.author }}</strong>
+        <span>{{ codeo.twitteruser }}</span>
+        <!-- <Dot /> -->
+        <div class="time">{{ codeo.posttime }}</div>
+      </div>
+
+      <div class="Description">{{ codeo.posttext }}</div>
+
+      <div class="ImageContent">
+        <img
+          *ngIf="codeo.postimage"
+          src="{{ codeo.postimage }}"
+          alt="Imge Post"
+        />
+      </div>
+
+      <div class="Icons">
+        <div class="Status">
+          <i class="iconCodeo material-icons">comment</i>
+
+          {{ codeo.commentscount }}
+        </div>
+        <div class="Status">
+          <i class="iconCodeo material-icons">retweet</i>
+          {{ codeo.retweetscount }}
+        </div>
+        <div class="Status">
+          <i class="iconCodeo material-icons">like</i>
+
+          {{ codeo.likecount }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

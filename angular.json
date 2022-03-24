@@ -15,7 +15,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "dececode",
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
