@@ -18,6 +18,7 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { ListComponent } from './shared/components/list/list.component';
 import { NewsComponent } from './shared/components/news/news.component';
 import { FollowSuggestionsComponent } from './shared/components/follow-suggestions/follow-suggestions.component';
+import { ButtonComponent } from './shared/components/button/button.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FollowSuggestionsComponent } from './shared/components/follow-suggestio
     SidebarComponent,
     ListComponent,
     NewsComponent,
-    FollowSuggestionsComponent
+    FollowSuggestionsComponent,
+    ButtonComponent
   ],
   imports: [
     BrowserModule,
