@@ -20,6 +20,7 @@ import { Web3Actions, web3Selectors } from './store';
 
 import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
 import { Web3ModalComponent } from './web3-modal/web3-modal.component';
+import { LensApiService } from '../shared/services/lens-api-service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,8 @@ export class DappInjectorService {
     @Inject(DOCUMENT) private readonly document: any,
     @Inject('lensProtocolMetadata')
     public contractMetadata: ICONTRACT_METADATA,
-    private store: Store
+    private store: Store,
+    public lensApiservice:LensApiService
   ) {
     //this.store
     this.initChain();
