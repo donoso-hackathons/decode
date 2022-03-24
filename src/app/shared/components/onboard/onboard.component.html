@@ -1,17 +1,27 @@
 <div class="profilePageContainer">
-  <div *ngIf="blockchain_status == 'wallet-not-connected'">
-    <div class="Banner">
-      <h1 style="">Start Codeoin with your web3 Id</h1>
+  <div *ngIf="blockchain_status == 'loading'">
+    <div style="display:flex;justify-content:space-around;  align-items:center;flex-direction: column;" class="Banner">
+      <h2 style="">Identifying your creations</h2>
+      <!-- <img style="position: absolute;top:0;width:100%;object-fit: cover;" src="https://1.bp.blogspot.com/-lg73Nw76yCc/V9_EnSSngLI/AAAAAAAAWxY/bQtB8s4wWPsvzsac3xZYbP--23d-KugzwCLcB/s1600/StarCIO%2BLess%2BCode.jpg"> -->
+      <mat-spinner [diameter]="65"  ></mat-spinner>
+      </div>
+    
+
+  </div>
+ <div *ngIf="blockchain_status == 'wallet-not-connected'">
+    <div style="display:flex;justify-content: center;align-items: center" class="Banner">
+      <h1 style="">Start with your web3 Id</h1>
+   
       </div>
     
       <div class="ProfileData">
-        <!-- <EditButton outlined>Set up profile</EditButton> -->
+     
         <dececode-button (click)="connect.emit(true)"  class="EditButton" [outline]="true">SignUp</dececode-button> 
 
   
       </div>
-  </div>
-  <div *ngIf="blockchain_status != 'wallet-not-connected'">
+  </div> 
+  <div *ngIf="blockchain_status == 'success'">
     <div class="Banner">
       <div class="Avatar">
         <img

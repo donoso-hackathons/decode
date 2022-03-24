@@ -38,3 +38,7 @@
     --twitter-dark-hover: #011017;
     --twitter-light-hover: #2c8ed6;
   }
+
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke:var(--twitter)
+}

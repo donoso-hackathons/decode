@@ -19,7 +19,8 @@ export class MainComponent implements OnInit, AfterViewInit {
 
 
   connect() {
-    this.dappInjectorService.launchWenmodal();
+    this.router.navigateByUrl('/app/create-profile')
+   // this.dappInjectorService.launchWenmodal();
   }
 
 
