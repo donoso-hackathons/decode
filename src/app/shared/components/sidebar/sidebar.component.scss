@@ -1,8 +1,5 @@
-import styled from 'styled-components';
 
-import { Search } from '../../styles/Icons';
-
-export const Container = styled.div`
+.sidebarContainer{
   display: none;
 
   @media (min-width: 1000px) {
@@ -11,9 +8,9 @@ export const Container = styled.div`
 
     width: min(399px, 100%);
   }
-`;
+}
 
-export const SearchWrapper = styled.div`
+.SearchWrapper{
   padding: 10px 24px;
   width: min(399px, 100%);
 
@@ -23,9 +20,9 @@ export const SearchWrapper = styled.div`
   background: var(--primary);
 
   max-height: 57px;
-`;
+}
 
-export const SearchInput = styled.input`
+.SearchInput {
   width: 100%;
   height: 39px;
   font-size: 14px;
@@ -55,16 +52,16 @@ export const SearchInput = styled.input`
       fill: var(--twitter);
     }
   }
-`;
+}
 
-export const SearchIcon = styled(Search)`
+.SearchIcon{
   width: 27px;
   height: 27px;
 
   fill: var(--gray);
-`;
+}
 
-export const Body = styled.div`
+.Body{
   display: flex;
   flex-direction: column;
   padding: 57px 24px 200px;
@@ -73,4 +70,4 @@ export const Body = styled.div`
   > div + div {
     margin-top: 15px;
   }
-`;
+}

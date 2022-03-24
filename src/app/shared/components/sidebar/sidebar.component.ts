@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { INEWS } from '../../models';
+import MockNews from '../../../../assets/data/news.json';
+import { ISUGGESTION } from '../../models/models-suggestions';
 
 @Component({
   selector: 'dececode-sidebar',
@@ -7,7 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  suggestionsArray:Array<ISUGGESTION> = [
+    { name:"Wuldku Kizon",nickname:"@wkizon"},
+    { name:"Oriny Figash",nickname:"@OrinyFi22"},
+    { name:"Maxe Nenial",nickname:"@maxe_nenial"},
+  ]
+  newsArray:Array<INEWS>
+  constructor() {
+    this.newsArray = MockNews;
+   }
 
   ngOnInit(): void {
   }

@@ -15,6 +15,9 @@ import { ProfilePageComponent } from './shared/components/profile-page/profile-p
 import { FeedComponent } from './shared/components/feed/feed.component';
 import { CodeoComponent } from './shared/components/codeo/codeo.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { ListComponent } from './shared/components/list/list.component';
+import { NewsComponent } from './shared/components/news/news.component';
+import { FollowSuggestionsComponent } from './shared/components/follow-suggestions/follow-suggestions.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
     ProfilePageComponent,
     FeedComponent,
     CodeoComponent,
-    SidebarComponent
+    SidebarComponent,
+    ListComponent,
+    NewsComponent,
+    FollowSuggestionsComponent
   ],
   imports: [
     BrowserModule,
