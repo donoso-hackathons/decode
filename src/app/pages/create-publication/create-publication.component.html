@@ -1,5 +1,14 @@
-<p>create-publication works!</p>
-<blog-editor #editor *ngIf="blog_state !== undefined && blog_state.blog !== undefined"
-[blog]="blog_state.blog" [action]="'new'"
-  (editorChanged)="editorChanged()">
-</blog-editor>
+<div class="mainContainer">
+  <div class="createModal">
+    <i (click)="back()" class="close material-icons">close</i>
+    <div class="Title">Create Your Profile</div>
+    <blog-editor
+      #editor
+      *ngIf="blog_state !== undefined && blog_state.blog !== undefined"
+      [blog]="blog_state.blog"
+      [action]="'new'"
+      (editorChanged)="editorChanged()"
+    >
+    </blog-editor>
+  </div>
+</div>

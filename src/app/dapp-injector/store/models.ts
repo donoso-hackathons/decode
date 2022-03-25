@@ -13,7 +13,6 @@ export interface Web3State {
   | 'wallet-not-connected'
   | 'lens-profile-not-found' 
   | 'lens-profile-not-dececode'
-  | 'lens-single-profile-found'
   | 'lens-profiles-found'
   | 'success' 
   | 'disconnected';

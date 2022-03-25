@@ -9,7 +9,9 @@
         <span>432 Tweets</span>
       </div>
     </div>
-    <dececode-profile-page *ngIf="blockchain_status == 'lens-single-profile-found'">
+    <dececode-profile-page [currentProfile]="currentProfile"  
+    [availableProfiles]="availableProfiles"
+     *ngIf="blockchain_status == 'lens-profiles-found'">
        
    </dececode-profile-page> 
 

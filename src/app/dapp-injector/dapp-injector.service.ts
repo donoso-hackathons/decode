@@ -232,9 +232,7 @@ export class DappInjectorService {
       case 0:
         this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
         break;
-      case 1:
-        this.store.dispatch(Web3Actions.chainStatus({ status: 'lens-single-profile-found' }));
-        break;
+     
       default:
         this.store.dispatch(Web3Actions.chainStatus({ status: 'lens-profiles-found' }));
         break;

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CreatePublicationRoutingModule } from './create-publication-routing.module';
 import { CreatePublicationComponent } from './create-publication.component';
 import { BlogEditorModule } from 'src/app/shared/components/blog-editor/blog-editor.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,9 @@ import { BlogEditorModule } from 'src/app/shared/components/blog-editor/blog-edi
   imports: [
     CommonModule,
     CreatePublicationRoutingModule,
-    BlogEditorModule
+    BlogEditorModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class CreatePublicationModule { }

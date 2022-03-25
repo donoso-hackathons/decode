@@ -198,6 +198,8 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
 
     const nftImage = nftImage_ipfs.path;
 
+// data:image/jpg
+
     const followNft_metadata: IMetadata_ERC721 = {
       version: MetadataVersions.one,
       metadata_id: randomString(20),

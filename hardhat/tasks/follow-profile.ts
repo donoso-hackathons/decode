@@ -23,7 +23,7 @@ let user1_nonce = await hre.ethers.provider.getTransactionCount(user1.address);
 let user3_nonce = await hre.ethers.provider.getTransactionCount(user3.address);
 // Retrieve the follow NFT for a given profile ID
 
-
+await lensHub.g
   console.log(user4.address)
 
 const balance = await lensHub.balanceOf(user2.address);
