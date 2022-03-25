@@ -8,7 +8,8 @@ import { AngularContract } from './classes';
 
 import { netWorkById, NETWORKS } from './constants/constants';
 import { startUpConfig } from './dapp-injector.module';
-import LensProtocolAddresses from '../../assets/contracts/addresses_localhost.json';
+//import LensProtocolAddresses from '../../assets/contracts/addresses_localhost.json';
+import LensProtocolAddresses from '../../assets/contracts_mumbai/addresses_mumbai.json';
 
 
 import { uniswap_abi } from './helpers/uniswap_abi';
@@ -223,9 +224,24 @@ export class DappInjectorService {
       Web3Actions.setSignerNetwork({ network: networkString })
     );
 
-    console.log('success');
+    const signerAddress= await dispatchObject.signer.getAddress()
+    console.log(signerAddress)
+    const profilesBalancebyAdress=  +((await contract.contract.balanceOf(signerAddress)).toString())
+  
+    switch (profilesBalancebyAdress) {
+      case 0:
+        this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
+        break;
+      case 1:
+        this.store.dispatch(Web3Actions.chainStatus({ status: 'lens-single-profile-found' }));
+        break;
+      default:
+        this.store.dispatch(Web3Actions.chainStatus({ status: 'lens-profiles-found' }));
+        break;
+     
+    }
 
-    this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
+
     this.store.dispatch(Web3Actions.chainBusy({ status: false }));
   }
 

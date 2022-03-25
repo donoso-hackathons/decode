@@ -221,11 +221,11 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
   
     const profile_paywall: CreateProfileDataStruct = {
       to: myaddress,
-      handle: 'paywall',
+      handle: this.profileForm.controls.handleCtrl.value,
       imageURI: result.path,
       followModule: this.dappInjectorService.ZERO_ADDRESS,
       followModuleData: [],
-      followNFTURI: followNft_metadata_ipfs.path,
+      followNFTURI: 'https://ipfs.io/ipfs/' + followNft_metadata_ipfs.path,
     };
     const result_mint = await  this.lensHubContract.contract.createProfile(profile_paywall,
       { gasPrice: utils.parseUnits('100', 'gwei'), 

@@ -8,6 +8,19 @@
     
 
   </div>
+  <div *ngIf="blockchain_status == 'success'">
+    <div style="display:flex;justify-content: center;align-items: center" class="Banner">
+      <h1 style="">Start with your web3 Id</h1>
+   
+      </div>
+    
+      <div class="ProfileData">
+      
+        <dececode-button  style="position: relative"(click)="signUp.emit(true)"  class="EditButton" [outline]="true">SignUp</dececode-button> 
+
+  
+      </div>
+  </div>
  <div *ngIf="blockchain_status == 'wallet-not-connected'">
     <div style="display:flex;justify-content: center;align-items: center" class="Banner">
       <h1 style="">Start with your web3 Id</h1>
@@ -15,13 +28,13 @@
       </div>
     
       <div class="ProfileData">
-     
-        <dececode-button (click)="connect.emit(true)"  class="EditButton" [outline]="true">SignUp</dececode-button> 
+        <dececode-button style="position: relative" (click)="connect.emit(true)"  class="EditButton" [outline]="true">Connect</dececode-button> 
+        <dececode-button  style="position: relative"(click)="signUp.emit(true)"  class="EditButton" [outline]="true">SignUp</dececode-button> 
 
   
       </div>
   </div> 
-  <div *ngIf="blockchain_status == 'success'">
+  <div *ngIf="blockchain_status == 'fail'">
     <div class="Banner">
       <div class="Avatar">
         <img

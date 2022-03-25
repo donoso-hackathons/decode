@@ -9,12 +9,12 @@
         <span>432 Tweets</span>
       </div>
     </div>
-   <dececode-profile-page *ngIf="blockchain_status == 'success'">
+    <dececode-profile-page *ngIf="blockchain_status == 'lens-single-profile-found'">
        
-   </dececode-profile-page>
+   </dececode-profile-page> 
 
-   <dececode-onboard (connect)="connect()"
-   [blockchain_status]="blockchain_status" *ngIf="blockchain_status !== 'success'"></dececode-onboard>
+   <dececode-onboard  (connect)="connect()" (signUp)="signUp()"
+   [blockchain_status]="blockchain_status" ></dececode-onboard>
 
    <dececode-feed></dececode-feed>
 

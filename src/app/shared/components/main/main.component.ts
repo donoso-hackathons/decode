@@ -12,6 +12,8 @@ import { Location } from '@angular/common';
 export class MainComponent implements OnInit, AfterViewInit {
   blockchain_status: string;
   blockchain_is_busy: boolean;
+  lenshub: import("c:/Users/javie/Documents/WEB/BLOCKCHAIN/desource/src/app/dapp-injector/index").AngularContract;
+  lensHub: import("c:/Users/javie/Documents/WEB/BLOCKCHAIN/desource/src/app/dapp-injector/index").AngularContract;
 
   constructor(private location: Location, private dappInjectorService: DappInjectorService,
     private store: Store,
@@ -19,15 +21,33 @@ export class MainComponent implements OnInit, AfterViewInit {
 
 
   connect() {
+   // this.router.navigateByUrl('/app/create-profile')
+    this.dappInjectorService.launchWenmodal();
+  }
+
+
+  signUp() {
     this.router.navigateByUrl('/app/create-profile')
    // this.dappInjectorService.launchWenmodal();
   }
-
 
   ngAfterViewInit(): void {
     this.store.select(web3Selectors.chainStatus).subscribe(async (value) => {
       this.blockchain_status = value;
       console.log(value)
+
+      this.lensHub = this.dappInjectorService.config.defaultContract;
+      const address = await this.dappInjectorService.config.signer.getAddress()
+      const p = await this.lensHub.contract.tokenOfOwnerByIndex(address,0)
+
+      const myProfile = await this.lensHub.contract.getProfile(+p.toString())
+
+      console.log(myProfile)
+
+     
+
+      //await this.dappInjectorService.config.defaultContract.contract.
+
       // if (this.location.path().indexOf('/inbox-gratitude') !==  -1){
 
       // } else if (value == 'success'){

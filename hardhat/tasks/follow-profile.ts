@@ -12,24 +12,50 @@ import { waitForTx, initEnv, getAddrs, ZERO_ADDRESS, randomString } from './help
 task('follow-profile', 'follow paywall').setAction(async ({}, hre) => {
 
 
-    const [governance, , user1,user2,user3] = await initEnv(hre);
+    const [governance, , user1,user2,user3,user4] = await initEnv(hre);
     const addrs = getAddrs();
+   
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], user2);
 
   //// create paywal profile 
 let user1_nonce = await hre.ethers.provider.getTransactionCount(user1.address);
 
-let user2_nonce = await hre.ethers.provider.getTransactionCount(user2.address);
+let user3_nonce = await hre.ethers.provider.getTransactionCount(user3.address);
+// Retrieve the follow NFT for a given profile ID
 
-  
-await waitForTx(lensHub.follow([1], [[]],{ 
-nonce:user2_nonce++,
+
+  console.log(user4.address)
+
+const balance = await lensHub.balanceOf(user2.address);
+console.log(balance.toString())
+const p = await lensHub.tokenOfOwnerByIndex(user2.address,3)
+
+ const myProfile = await lensHub.getProfile(+p.toString())
+
+console.log(myProfile)
+  // ,{ 
+  // nonce:user3_nonce++,
+  // gasPrice:  utils.parseUnits('100', 'gwei'), 
+  // gasLimit: 2000000 })
+
+
+
+return;
+
+
+
+
+
+
+await waitForTx(lensHub.follow([4], [[]],{ 
+nonce:user3_nonce++,
 gasPrice:  utils.parseUnits('100', 'gwei'), 
 gasLimit: 2000000 }));
 
+const followNFTAddr = await lensHub.getFollowNFT(4);
+  console.log(followNFTAddr)
 
-
-const followNFTAddr = await lensHub.getFollowNFT(1); // Retrieve the follow NFT for a given profile ID
+//const followNFTAddr = await lensHub.getFollowNFT(1); // Retrieve the follow NFT for a given profile ID
 const followNFT = FollowNFT__factory.connect(followNFTAddr, user1); // Connect our typechain bindings
 
 const totalSupply = await followNFT.totalSupply(); // Fetch the total supply

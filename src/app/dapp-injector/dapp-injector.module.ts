@@ -4,10 +4,10 @@ import { DappInjectorService } from './dapp-injector.service';
 import { ISTARTUP_CONFIG } from './models';
 
 export const startUpConfig:ISTARTUP_CONFIG = {
-  defaultNetwork: 'localhost',
+  defaultNetwork: 'mumbai',
   defaultProvider:null,
   connectedNetwork:'',
-  wallet: 'burner',
+  wallet: 'wallet',
   defaultContract:null,
   blockSubscription: false,
   providers:{},

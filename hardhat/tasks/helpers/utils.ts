@@ -24,6 +24,13 @@ export function getHardhatNetwork(hre: HardhatRuntimeEnvironment){
 }
 
 export function getAddrs(hre?:HardhatRuntimeEnvironment): any {
+  const json = fs.readFileSync(`addresses_mumbai.json`, 'utf8');
+  const addrs = JSON.parse(json);
+  return addrs
+
+
+  let network = getHardhatNetwork(hre)
+ 
   if (hre == undefined) {
     const json = fs.readFileSync('addresses.json', 'utf8');
     const addrs = JSON.parse(json);

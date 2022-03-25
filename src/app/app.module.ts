@@ -9,6 +9,7 @@ import { DappInjectorModule } from './dapp-injector/dapp-injector.module';
 import { StoreModule } from '@ngrx/store';
 import { we3ReducerFunction } from 'angular-web3';
 import { IpfsService } from './shared/services/ipfs-service';
+import { LensApiService } from './shared/services/lens-api-service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { IpfsService } from './shared/services/ipfs-service';
 
   ],
   providers: [
-    ...blockchain_providers, IpfsService
+    ...blockchain_providers, IpfsService,LensApiService 
   ],
   bootstrap: [AppComponent]
 })

@@ -12,6 +12,7 @@ export class OnboardComponent implements OnChanges {
 
   @Input() blockchain_status: NETWORK_STATUS 
   @Output() public connect = new EventEmitter<boolean>();
+  @Output() public signUp = new EventEmitter<boolean>();
 
   ngOnChanges(): void {
     console.log(this.blockchain_status)
