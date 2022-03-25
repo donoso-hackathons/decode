@@ -1,12 +1,104 @@
 <div class="mainContainer">
-    <div class="createModal">
+  <div class="createModal">
+    <i  (click)="back()" class="close material-icons">close</i>
     <div class="Title">Create Your Profile</div>
-    <div class="InputWrapper">
-        <div class="Input" placeholder="Search plase">
-     
-        </div>
-    
-    
+    <div class="ImageWrapper">
+      <div class="ImageGroup">
+        <img class="Avatar" src="{{ image_src }}" />
+
+        <input
+          hidden
+          type="file"
+          (change)="uploadProfile($event)"
+          #fileupload
+        />
+        <p class="ImageAction" (click)="fileupload.click()">click for change</p>
+        <p class="ImageAction" (click)="resetProfile()">(freset)</p>
       </div>
-</div>
+      <div class="SamePicture">
+        <mat-checkbox
+          class="check"
+          [formControl]="samePictureCtrl"
+        ></mat-checkbox>
+        <p class="text">Same Image</p>
+      </div>
+      <div class="ImageGroup">
+        <img class="NftImage" src="{{ nft_src }}" />
+        <input hidden type="file" (change)="uploadNft($event)" #fileuploadNFT />
+        <p class="ImageAction" (click)="fileuploadNFT.click()">
+          click for change
+        </p>
+        <p class="ImageAction" (click)="resetNft()">(reset)</p>
+      </div>
+    </div>
+
+    <div class="GlobalInput">
+      <form class="Form" [formGroup]="profileForm">
+        <div class="InputWrapper">
+          <input
+            type="text"
+            matInput
+            formControlName="handleCtrl"
+            placeholder="Your Web3 Handle*"
+            class="InputWrapper Input"
+          />
+        </div>
+        <div class="InputWrapper">
+          <textarea
+            class="TextArea"
+            formControlName="descriptionCtrl"
+            rows="4"
+            placeholder="Your Description*"
+            matInput
+          ></textarea>
+        </div>
+        <div class="InputWrapper">
+          <input
+            type="text"
+            matInput
+            formControlName="twitterCtrl"
+            placeholder="Your TwitterHandle"
+            class="Input"
+          />
+        </div>
+        <div class="InputWrapper">
+          <input
+            type="text"
+            matInput
+            formControlName="webCtrl"
+            placeholder="Your webpage"
+            class="Input"
+          />
+        </div>
+      </form>
+      <div class="FollowModule">
+        <div style="flex-basis: 100%">
+          <div class="Title">Choose How should follow you</div>
+          <mat-form-field appearance="fill">
+            <!-- <mat-label>Choose Your Follow</mat-label> -->
+            <mat-select [formControl]="profileForm.controls.followModuleCtrl">
+              <mat-option
+                [value]="option.id"
+                *ngFor="let option of followModuleOptions"
+                >{{ option.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="followModuleDescription">
+          <div *ngIf="profileForm.controls.followModuleCtrl.value == 0">
+            <div class="SubTitle">Every One</div>
+          </div>
+
+          <div *ngIf="profileForm.controls.followModuleCtrl.value == 1">
+            <div class="SubTitle">supporting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <dececode-button style="margin-top:30px" (onClick)="createProfile()" [outline]="true"
+      >create Profile</dececode-button
+    >
+  </div>
 </div>

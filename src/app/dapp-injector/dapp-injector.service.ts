@@ -8,6 +8,8 @@ import { AngularContract } from './classes';
 
 import { netWorkById, NETWORKS } from './constants/constants';
 import { startUpConfig } from './dapp-injector.module';
+import LensProtocolAddresses from '../../assets/contracts/addresses_localhost.json';
+
 
 import { uniswap_abi } from './helpers/uniswap_abi';
 import {
@@ -29,7 +31,8 @@ export class DappInjectorService {
   private _dollarExchange!: number;
   config!: ISTARTUP_CONFIG;
   webModal!: Web3ModalComponent;
-
+  lensProtocolAddresses:{[key:string]:string} = LensProtocolAddresses;
+   ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   constructor(
     @Inject(DOCUMENT) private readonly document: any,
     @Inject('lensProtocolMetadata')
@@ -244,26 +247,28 @@ export class DappInjectorService {
       let wallet: Wallet;
 
       switch (this.config.wallet) {
-        case 'burner':
-          const currentPrivateKey =
-            window.localStorage.getItem('metaPrivateKey');
-          if (currentPrivateKey) {
-            wallet = new Wallet(currentPrivateKey);
-          } else {
-            wallet = Wallet.createRandom();
-            const privateKey = wallet._signingKey().privateKey;
-            window.localStorage.setItem('metaPrivateKey', privateKey);
-          }
-          break;
+        // case 'burner':
+        //   const currentPrivateKey =
+        //     window.localStorage.getItem('metaPrivateKey');
+        //   if (currentPrivateKey) {
+        //     wallet = new Wallet(currentPrivateKey);
+        //   } else {
+        //     wallet = Wallet.createRandom();
+        //     const privateKey = wallet._signingKey().privateKey;
+        //     window.localStorage.setItem('metaPrivateKey', privateKey);
+        //   }
+        //   break;
 
         default: //environment.privKey
-          let privKey = '';
+          let privKey = '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a';
           wallet = new Wallet(privKey);
           break;
       }
 
       ////// local wallet
       const hardhatSigner = await wallet.connect(hardhatProvider);
+
+      console.log(hardhatSigner.address)
 
       this.dispatchInit({ signer: hardhatSigner, provider: hardhatProvider });
     } catch (error: any) {

@@ -14,6 +14,7 @@ import { NewsComponent } from 'src/app/shared/components/news/news.component';
 import { OnboardComponent } from 'src/app/shared/components/onboard/onboard.component';
 import { ProfilePageComponent } from 'src/app/shared/components/profile-page/profile-page.component';
 import { SidebarComponent } from 'src/app/shared/components/sidebar/sidebar.component';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
 
 
@@ -29,13 +30,13 @@ import { SidebarComponent } from 'src/app/shared/components/sidebar/sidebar.comp
     ListComponent,
     NewsComponent,
     FollowSuggestionsComponent,
-    ButtonComponent,
     OnboardComponent
   ],
   imports: [
     CommonModule,
     LandingRoutingModule,
     MatProgressSpinnerModule,
+    ButtonModule
   ]
 })
 export class LandingModule { }

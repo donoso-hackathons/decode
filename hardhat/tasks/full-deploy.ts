@@ -356,4 +356,5 @@ let treasuryAddress
   };
 
   writeFileSync('addresses.json', JSON.stringify(addrs), 'utf-8');
+  writeFileSync(`${contract_path}/addresses_${network}.json`, JSON.stringify(addrs), 'utf-8');
 });

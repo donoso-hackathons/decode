@@ -93,7 +93,7 @@ export class AngularContract implements OnDestroy {
     try {
       const result_tx = await this._contract.functions[functionName].apply(
         this,
-        args
+        args,
       );
       const result = await result_tx.wait();
       transaction_details.txhash = result.transactionHash;

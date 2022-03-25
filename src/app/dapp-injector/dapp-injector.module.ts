@@ -7,7 +7,7 @@ export const startUpConfig:ISTARTUP_CONFIG = {
   defaultNetwork: 'localhost',
   defaultProvider:null,
   connectedNetwork:'',
-  wallet: 'wallet',
+  wallet: 'burner',
   defaultContract:null,
   blockSubscription: false,
   providers:{},
