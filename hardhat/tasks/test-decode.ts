@@ -17,12 +17,28 @@ task('test-decode', 'follow paywall').setAction(async ({}, hre) => {
 
     const [governance, , user1,user2,user3,user4] = await initEnv(hre);
     const addrs = getAddrs();
-   
+   console.log(addrs['lensHub proxy'])
 
-  const superfluidContractAdress = "0xC843F0E3E275BCfF687fC560b4d215d410B9608d"
-  const recipient = "0xFE664Eae83E1bA755CA1046A6B44247033940b4E";
+  const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], user3);
+  const b = await lensHub.ownerOf(4)
+
+  console.log(b);
+
+
+  const superfluidContractAdress = "0xe2915de0e034f279F75D26DD63eaE02a1bb5D3da"
+  const recipient = superfluidContractAdress ;
   const decode = SuperFluidFollowModule__factory.connect(superfluidContractAdress,user3)
 
+
+  decode.on('FlowUpdated', (args) => {
+    let payload;
+      console.log(args)
+  })
+
+  decode.on('ProfileAddress', (args) => {
+    let payload;
+      console.log(args)
+  })
 
 let user3_nonce = await hre.ethers.provider.getTransactionCount(user3.address);
 // Retrieve the follow NFT for a given profile ID

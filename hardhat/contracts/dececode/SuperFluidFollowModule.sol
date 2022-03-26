@@ -21,9 +21,9 @@ contract SuperFluidFollowModule is
 
   ISuperToken public _acceptedToken; // accepted token
 
-  event RegistrationTimedOutEvent(bytes32 indexed phoneNumberHash);
-  event RegistrationSuccessEvent(bytes32 indexed phoneNumberHash);
-
+  event FlowUpdated(uint256 profileId);
+  event ProfileAddress(address profileOwner);
+  address profileOwner = 0xe09E488A6E1B8237b63e028218CCf72a2a398CB1;
 
   constructor(
     ISuperfluid host,
@@ -105,11 +105,12 @@ contract SuperFluidFollowModule is
     newCtx = ctx; //update the context with the same logic...
     ISuperfluid.Context memory decodedContext = _host.decodeCtx(ctx);
     (uint256 profileId) = parseFollowerStream(decodedContext.userData);
-
+    emit FlowUpdated(profileId);
     (address follower, ) = abi.decode(_agreementData, (address, address));
-     address profileOwner = IERC721(HUB).ownerOf(profileId);
-
-    // address treasury = "";
+    //  address profileOwner = IERC721(HUB).ownerOf(profileId);
+    
+    // emit  ProfileAddress(profileOwner);
+      // address treasury = "";
 
     require(address(profileOwner) != address(0), "Recipient is not registered");
     require(!_host.isApp(ISuperApp(profileOwner)), "Recipient is an app!");

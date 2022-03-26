@@ -171,29 +171,27 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "RegistrationSuccessEvent(bytes32)": EventFragment;
-    "RegistrationTimedOutEvent(bytes32)": EventFragment;
+    "FlowUpdated(uint256)": EventFragment;
+    "ProfileAddress(address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "RegistrationSuccessEvent"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RegistrationTimedOutEvent"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FlowUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ProfileAddress"): EventFragment;
 }
 
-export type RegistrationSuccessEventEvent = TypedEvent<
-  [string],
-  { phoneNumberHash: string }
+export type FlowUpdatedEvent = TypedEvent<
+  [BigNumber],
+  { profileId: BigNumber }
 >;
 
-export type RegistrationSuccessEventEventFilter =
-  TypedEventFilter<RegistrationSuccessEventEvent>;
+export type FlowUpdatedEventFilter = TypedEventFilter<FlowUpdatedEvent>;
 
-export type RegistrationTimedOutEventEvent = TypedEvent<
+export type ProfileAddressEvent = TypedEvent<
   [string],
-  { phoneNumberHash: string }
+  { profileOwner: string }
 >;
 
-export type RegistrationTimedOutEventEventFilter =
-  TypedEventFilter<RegistrationTimedOutEventEvent>;
+export type ProfileAddressEventFilter = TypedEventFilter<ProfileAddressEvent>;
 
 export interface SuperFluidFollowModule extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -598,19 +596,11 @@ export interface SuperFluidFollowModule extends BaseContract {
   };
 
   filters: {
-    "RegistrationSuccessEvent(bytes32)"(
-      phoneNumberHash?: BytesLike | null
-    ): RegistrationSuccessEventEventFilter;
-    RegistrationSuccessEvent(
-      phoneNumberHash?: BytesLike | null
-    ): RegistrationSuccessEventEventFilter;
+    "FlowUpdated(uint256)"(profileId?: null): FlowUpdatedEventFilter;
+    FlowUpdated(profileId?: null): FlowUpdatedEventFilter;
 
-    "RegistrationTimedOutEvent(bytes32)"(
-      phoneNumberHash?: BytesLike | null
-    ): RegistrationTimedOutEventEventFilter;
-    RegistrationTimedOutEvent(
-      phoneNumberHash?: BytesLike | null
-    ): RegistrationTimedOutEventEventFilter;
+    "ProfileAddress(address)"(profileOwner?: null): ProfileAddressEventFilter;
+    ProfileAddress(profileOwner?: null): ProfileAddressEventFilter;
   };
 
   estimateGas: {
