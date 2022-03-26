@@ -1,6 +1,7 @@
 
 import { Inject, Injectable } from '@angular/core';
 import { ApolloClient, gql, HttpLink, InMemoryCache } from '@apollo/client'
+import { DappInjectorService } from 'angular-web3';
 import fetch from 'cross-fetch';
 const APIURL = 'https://api-mumbai.lens.dev/';
 
@@ -18,7 +19,6 @@ export class LensApiService {
         cache: new InMemoryCache(),
       })
       this.getProfiles();
-      this.challengeQuery("0xdd2fd4581271e230360230f9337d5c0430bf44c0")
   }
 
 async getProfiles (){
@@ -106,8 +106,38 @@ async getProfiles (){
       console.log('Lens example data: ', apiQuery.data)
 }
 
+async getAuth(){
+  
+}
 
-async challengeQuery(address:string){
+
+async authentticate(authObj:{address:string,signature:string}){
+  const AUTHENTICATION = `
+  mutation($request: SignedAuthChallenge!) { 
+    authenticate(request: $request) {
+      accessToken
+      refreshToken
+    }
+ }
+`
+  const apiQuery = await this.apolloClient.mutate({
+    mutation: gql(AUTHENTICATION),
+    variables: {
+      request: {
+        address:authObj.address,
+        signature:authObj.signature,
+      },
+    },
+  })
+
+return  apiQuery.data.authenticate
+}
+
+
+async challengeQuery(address){
+
+
+
     const GET_CHALLENGE = `
     query($request: ChallengeRequest!) {
       challenge(request: $request) { text }
@@ -121,7 +151,11 @@ async challengeQuery(address:string){
         },
       },
     });
+
     console.log('Lens example data: ', apiQuery.data.challenge.text)
+    
+
+
     return apiQuery.data.challenge.text
 
   }

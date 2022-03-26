@@ -16,7 +16,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   blockchain_is_busy: boolean;
   lensHub: AngularContract;
   currentProfile: ProfileStructStruct;
-  availableProfiles:Array<ProfileStructStruct>
+  availableProfiles:Array<ProfileStructStruct> = [];
 
   constructor(private location: Location, private dappInjectorService: DappInjectorService,
     private store: Store,

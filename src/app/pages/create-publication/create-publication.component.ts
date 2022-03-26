@@ -78,7 +78,7 @@ export class CreatePublicationComponent implements AfterViewInit {
 
     console.log('now is time');
     await this.ipfsService.init();
-    const result = await this.ipfsService.add(this.image_src);
+    const result = await this.ipfsService.add(this.nft_src);
 
     if (!result || !result.path) {
       alert('error profileimagublicatione');

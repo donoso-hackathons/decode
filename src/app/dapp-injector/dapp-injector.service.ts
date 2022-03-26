@@ -34,6 +34,7 @@ export class DappInjectorService {
   webModal!: Web3ModalComponent;
   lensProtocolAddresses:{[key:string]:string} = LensProtocolAddresses;
    ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+  tokens: any;
   constructor(
     @Inject(DOCUMENT) private readonly document: any,
     @Inject('lensProtocolMetadata')
@@ -225,7 +226,11 @@ export class DappInjectorService {
     );
 
     const signerAddress= await dispatchObject.signer.getAddress()
-    console.log(signerAddress)
+      
+    // const text = await this.lensApiservice.challengeQuery(signerAddress)
+    // const signature = await  dispatchObject.signer.signMessage(text)
+    // this.tokens = await this.lensApiservice.authentticate({address:signerAddress,signature})
+    // console.log(this.tokens)
     const profilesBalancebyAdress=  +((await contract.contract.balanceOf(signerAddress)).toString())
   
     switch (profilesBalancebyAdress) {

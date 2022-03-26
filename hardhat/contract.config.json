@@ -1,4 +1,10 @@
 {
+  "decodeContract": {
+    "artifactsPath": "dececode/DeceCode.sol/dececode.json",
+    "name": "DeceCode",
+    "ctor": [],
+    "jsonName": "dececode"
+  },
   "lensProtocol": {
     "artifactsPath": "4-LensHub.sol/LensHub.json",
     "name": "LensHub",

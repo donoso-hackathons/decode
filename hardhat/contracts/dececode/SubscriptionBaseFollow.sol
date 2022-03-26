@@ -8,6 +8,7 @@ import {IFollowModule} from "../interfaces/IFollowModule.sol";
 import {ILensNFTBase} from "../interfaces/ILensNFTBase.sol";
 import {ModuleBase} from "../core/modules/ModuleBase.sol";
 import {FollowValidatorFollowModuleBase} from "../core/modules/follow/FollowValidatorFollowModuleBase.sol";
+
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {ILensHub} from '../interfaces/ILensHub.sol';
 import "hardhat/console.sol";

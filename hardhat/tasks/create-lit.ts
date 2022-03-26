@@ -30,6 +30,7 @@ let text = 'I am creating an account to use Lit Protocol at 2022-01-10T20:47:35.
 
 const signature = await governance.signMessage(text);
 console.log(signature)
+
   const authSig = {
     sig: signature,
     derivedVia: 'web3.eth.personal.sign',
@@ -51,7 +52,6 @@ console.log(encryptedString)
 
 const arrayBuffer = await encryptedString.arrayBuffer();
 const buffer = Buffer.from(arrayBuffer);
-console.log(buffer)
 
  const   p = new Blob([buffer])
 
@@ -96,18 +96,16 @@ const accessControlConditions = [
       responseBufferChunks.push(file);
     }
     const responseBuffer = Buffer.concat(responseBufferChunks);
-   const result =  JSON.parse(responseBuffer.toString());
-    const k = Buffer.from(result.key)
-    console.log(k)
-
-  const ipen = new Blob([result.key])
+    const result =  JSON.parse(responseBuffer.toString());
+    const de_buffer = Buffer.from(result.key)
 
 
   const arrayBuffer2 = await encryptedString.arrayBuffer();
   const buffer2 = Buffer.from(arrayBuffer);
+  const   p2 = new Blob([de_buffer])
   console.log(buffer2)
   
-   const   p2 = new Blob([k])
+ 
   
 
   const decryptedString = await LitJsSdk.decryptString(

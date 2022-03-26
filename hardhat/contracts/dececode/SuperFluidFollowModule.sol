@@ -10,11 +10,10 @@ import {Events} from "../libraries/Events.sol";
 import {ModuleBase} from "../core/modules/ModuleBase.sol";
 import {FollowValidatorFollowModuleBase} from "../core/modules/follow/FollowValidatorFollowModuleBase.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-
+import { SubscriptionFollowModule} from "./SubscriptionBaseFollow.sol";
 contract SuperFluidFollowModule is
   SuperAppBase,
-  IFollowModule,
-  FollowValidatorFollowModuleBase
+  SubscriptionFollowModule
 {
   mapping(address => mapping(uint256 => bool)) internal _streamsProfileByOwner;
 
@@ -36,8 +35,9 @@ contract SuperFluidFollowModule is
     ISuperfluid host,
     IConstantFlowAgreementV1 cfa,
     ISuperToken acceptedToken,
-    address hub
-  ) ModuleBase(hub) {
+    address hub,
+    address moduleGlobals
+  )  SubscriptionFollowModule(hub,moduleGlobals) {
     require(address(host) != address(0), "host is zero address");
     require(address(cfa) != address(0), "cfa is zero address");
     require(
@@ -56,52 +56,6 @@ contract SuperFluidFollowModule is
     _host.registerApp(configWord);
   }
 
-  /**
-   * @notice This follow module works on custom profile owner approvals.
-   *
-   * @param data The arbitrary data parameter, decoded into:
-   *      address[] addresses: The array of addresses to approve initially.
-   *
-   * @return An abi encoded bytes parameter, which is the same as the passed data parameter.
-   */
-  function initializeFollowModule(uint256 profileId, bytes calldata data)
-    external
-    override
-    onlyHub
-    returns (bytes memory)
-  {
-    address owner = IERC721(HUB).ownerOf(profileId);
-    /// get folower from calldata
-    // _streamsProfileByOwner[follower][profileId] = false;
-    return data;
-  }
-
-  /**
-   * @dev Processes a follow by:
-   *  1. Validating that the follower has been approved for that profile by the profile owner
-   */
-  function processFollow(
-    address follower,
-    uint256 profileId,
-    bytes calldata data
-  ) external override onlyHub {
-    //_streamsProfileByOwner[follower][profileId] = false;
-
-    address owner = IERC721(HUB).ownerOf(profileId);
-    if (_streamsProfileByOwner[follower][profileId] == false)
-      revert Errors.FollowNotApproved();
-    // prevents repeat follows
-  }
-
-  /**
-   * @dev We don't need to execute any additional logic on transfers in this follow module.
-   */
-  function followModuleTransferHook(
-    uint256 profileId,
-    address from,
-    address to,
-    uint256 followNFTTokenId
-  ) external override {}
 
   /**************************************************************************
    * SuperApp callbacks

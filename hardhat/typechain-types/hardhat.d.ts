@@ -13,6 +13,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
       name: "IERC1822Proxiable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1822Proxiable__factory>;
@@ -205,6 +209,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FollowerOnlyReferenceModule__factory>;
     getContractFactory(
+      name: "DeceCode",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DeceCode__factory>;
+    getContractFactory(
       name: "SubscriptionFollowModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SubscriptionFollowModule__factory>;
@@ -305,6 +313,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TransparentUpgradeableProxy__factory>;
 
+    getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
     getContractAt(
       name: "IERC1822Proxiable",
       address: string,
@@ -545,6 +558,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.FollowerOnlyReferenceModule>;
+    getContractAt(
+      name: "DeceCode",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DeceCode>;
     getContractAt(
       name: "SubscriptionFollowModule",
       address: string,

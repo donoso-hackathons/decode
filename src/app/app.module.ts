@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { we3ReducerFunction } from 'angular-web3';
 import { IpfsService } from './shared/services/ipfs-service';
 import { LensApiService } from './shared/services/lens-api-service';
+import { LitProtocolService } from './shared/services/lit-protocol-service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { LensApiService } from './shared/services/lens-api-service';
 
   ],
   providers: [
-    ...blockchain_providers, IpfsService,LensApiService 
+    ...blockchain_providers, IpfsService,LensApiService, LitProtocolService
   ],
   bootstrap: [AppComponent]
 })
