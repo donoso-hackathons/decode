@@ -39,14 +39,15 @@ html {
   --outline: #2f3336;
   --retweet: #00c06b;
   --like: #e8265e;
-  --twitter: #abfe2c; //#33a1f2;
+  --twitter:  #33a1f2;
+  --lens: #abfe2c;
   --twitter-dark-hover: #011017;
   --twitter-light-hover: #2c8ed6;
 }
 
 .mat-progress-spinner circle,
 .mat-spinner circle {
-  stroke: var(--twitter);
+  stroke: var(--lens)
 }
 
 .mat-checkbox-label {

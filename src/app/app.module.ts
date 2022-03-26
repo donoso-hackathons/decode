@@ -11,6 +11,7 @@ import { we3ReducerFunction } from 'angular-web3';
 import { IpfsService } from './shared/services/ipfs-service';
 import { LensApiService } from './shared/services/lens-api-service';
 import { LitProtocolService } from './shared/services/lit-protocol-service';
+import { DappLoadingModule } from './dapp-components';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LitProtocolService } from './shared/services/lit-protocol-service';
     BrowserAnimationsModule,
     DappInjectorModule,
     StoreModule.forRoot({web3: we3ReducerFunction}),
+    DappLoadingModule
 
 
 

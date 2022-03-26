@@ -19,7 +19,7 @@ task('create-publication', 'creates the initial profile and paywall').setAction(
     const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
     const emptyCollectModuleAddr = addrs['empty collect module'];
-    console.log(emptyCollectModuleAddr)
+  
 
   //// create paywal profile 
   let user1_nonce = await hre.ethers.provider.getTransactionCount(user1.address);

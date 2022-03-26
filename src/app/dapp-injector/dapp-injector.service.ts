@@ -11,7 +11,6 @@ import { startUpConfig } from './dapp-injector.module';
 //import LensProtocolAddresses from '../../assets/contracts/addresses_localhost.json';
 import LensProtocolAddresses from '../../assets/contracts_mumbai/addresses_mumbai.json';
 
-
 import { uniswap_abi } from './helpers/uniswap_abi';
 import {
   ICONTRACT_METADATA,
@@ -24,6 +23,7 @@ import { Web3Actions, web3Selectors } from './store';
 import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
 import { Web3ModalComponent } from './web3-modal/web3-modal.component';
 import { LensApiService } from '../shared/services/lens-api-service';
+import { ProfileStructStruct } from 'src/assets/types/ILensHub';
 
 @Injectable({
   providedIn: 'root',
@@ -32,16 +32,19 @@ export class DappInjectorService {
   private _dollarExchange!: number;
   config!: ISTARTUP_CONFIG;
   webModal!: Web3ModalComponent;
-  lensProtocolAddresses:{[key:string]:string} = LensProtocolAddresses;
-   ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-   MATIC_ADDRESS = '0x0000000000000000000000000000000000001010';
+  lensProtocolAddresses: { [key: string]: string } = LensProtocolAddresses;
+  ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+  MATIC_ADDRESS = '0x0000000000000000000000000000000000001010';
   tokens: any;
+  currentProfile: ProfileStructStruct;
+  availableProfiles: Array<ProfileStructStruct> = [];
+
   constructor(
     @Inject(DOCUMENT) private readonly document: any,
     @Inject('lensProtocolMetadata')
     public contractMetadata: ICONTRACT_METADATA,
     private store: Store,
-    public lensApiservice:LensApiService
+    public lensApiservice: LensApiService
   ) {
     //this.store
     this.initChain();
@@ -62,32 +65,7 @@ export class DappInjectorService {
     return provider;
   }
 
-  async getDollarEther() {
-    if (this._dollarExchange == undefined) {
-      const uniswapUsdcAddress = '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc';
-      const uniswapAbi = uniswap_abi;
-
-      const uniswapService = await this.createProvider([
-        'https://eth-mainnet.gateway.pokt.network/v1/lb/611156b4a585a20035148406',
-        `https://eth-mainnet.alchemyapi.io/v2/oKxs-03sij-U_N0iOlrSsZFr29-IqbuF`,
-        'https://rpc.scaffoldeth.io:48544',
-      ]);
-
-      const getUniswapContract = async (address: string) =>
-        await new Contract(address, uniswapAbi, uniswapService);
-      const contract = await getUniswapContract(uniswapUsdcAddress);
-      const reserves = await contract['getReserves']();
-
-      this._dollarExchange =
-        (Number(reserves._reserve0) / Number(reserves._reserve1)) * 1e12;
-    }
-    return this._dollarExchange;
-  }
-
-
-  async goScan() {}
-
-  async doTransaction(tx: any, signer?:any) {
+  async doTransaction(tx: any, signer?: any) {
     let notification_message: ITRANSACTION_RESULT = {
       success: false,
     };
@@ -101,17 +79,13 @@ export class DappInjectorService {
       value: '',
     };
     try {
-
-    let tx_obj;
+      let tx_obj;
 
       if (!signer) {
         tx_obj = await this.config.signer!.sendTransaction(tx);
       } else {
         tx_obj = await signer.sendTransaction(tx);
       }
-
-     
-    
 
       let tx_result = await tx_obj.wait();
       const balance: any = await this.config.signer?.getBalance();
@@ -164,8 +138,6 @@ export class DappInjectorService {
     return notification_message;
   }
 
-
-
   async handleContractError(e: any) {
     // console.log(e);
     // Accounts for Metamask and default signer on all networks
@@ -197,60 +169,11 @@ export class DappInjectorService {
   }
 
 
-  async dispatchInit(dispatchObject: {
-    signer: Signer;
-    provider: JsonRpcProvider | Web3Provider;
-  }) {
-    this.config.signer = dispatchObject.signer;
-    this.config.defaultProvider = dispatchObject.provider;
-
-    const contract = new AngularContract({
-      metadata: this.contractMetadata,
-      provider: dispatchObject.provider,
-      signer: dispatchObject.signer,
-    });
-
-    this.config.defaultContract = contract;
-
-    await this.getDollarEther();
-    this.store.dispatch(
-      Web3Actions.setDollarExhange({ exchange: this._dollarExchange })
-    );
-
-    const providerNetwork = await dispatchObject.provider.getNetwork();
-
-    const networkString = netWorkById(providerNetwork.chainId)?.name as string;
-    console.log(networkString);
-    this.config.connectedNetwork = networkString;
-    this.store.dispatch(
-      Web3Actions.setSignerNetwork({ network: networkString })
-    );
-
-    const signerAddress= await dispatchObject.signer.getAddress()
-      
-    // const text = await this.lensApiservice.challengeQuery(signerAddress)
-    // const signature = await  dispatchObject.signer.signMessage(text)
-    // this.tokens = await this.lensApiservice.authentticate({address:signerAddress,signature})
-    // console.log(this.tokens)
-    const profilesBalancebyAdress=  +((await contract.contract.balanceOf(signerAddress)).toString())
-  
-    switch (profilesBalancebyAdress) {
-      case 0:
-        this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
-        break;
-     
-      default:
-        this.store.dispatch(Web3Actions.chainStatus({ status: 'lens-profiles-found' }));
-        break;
-     
-    }
-
-
-    this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-  }
-
   async launchWenmodal() {
-    if (this.config.defaultNetwork == 'localhost' && this.config.wallet !== 'wallet') {
+    if (
+      this.config.defaultNetwork == 'localhost' &&
+      this.config.wallet !== 'wallet'
+    ) {
       this.connectLocalWallet();
     } else {
       await this.webModal.connectWallet();
@@ -280,7 +203,8 @@ export class DappInjectorService {
         //   break;
 
         default: //environment.privKey
-          let privKey = '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a';
+          let privKey =
+            '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a';
           wallet = new Wallet(privKey);
           break;
       }
@@ -288,7 +212,7 @@ export class DappInjectorService {
       ////// local wallet
       const hardhatSigner = await wallet.connect(hardhatProvider);
 
-      console.log(hardhatSigner.address)
+      console.log(hardhatSigner.address);
 
       this.dispatchInit({ signer: hardhatSigner, provider: hardhatProvider });
     } catch (error: any) {
@@ -301,6 +225,77 @@ export class DappInjectorService {
       this.store.dispatch(Web3Actions.chainStatus({ status: 'fail' }));
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     }
+  }
+
+async getLensProfilebyAddress(){
+
+  const signerAddress = await this.config.signer.getAddress();
+  const profilesBalancebyAdress = +(
+    await this.config.defaultContract.contract.balanceOf(signerAddress)).toString();
+  let pub = 0;
+  let maxpubIndex = 0;
+  for (let i = 0; i < profilesBalancebyAdress; i++) {
+    const token =
+      await this.config.defaultContract.contract.tokenOfOwnerByIndex(
+        signerAddress,
+        i
+      );
+    const profile = (await this.config.defaultContract.contract.getProfile(
+      +token.toString()
+    )) as ProfileStructStruct;
+    this.availableProfiles.push(profile);
+    if (profile.pubCount > pub) {
+      maxpubIndex = i;
+    }
+  }
+  this.currentProfile = this.availableProfiles[0];
+  switch (profilesBalancebyAdress) {
+    case 0:
+      this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
+      break;
+
+    default:
+      this.store.dispatch(
+        Web3Actions.chainStatus({ status: 'lens-profiles-found' })
+      );
+      break;
+  }
+  
+  this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+}
+
+
+  async dispatchInit(dispatchObject: {
+    signer: Signer;
+    provider: JsonRpcProvider | Web3Provider;
+  }) {
+    this.config.signer = dispatchObject.signer;
+    this.config.defaultProvider = dispatchObject.provider;
+
+    const contract = new AngularContract({
+      metadata: this.contractMetadata,
+      provider: dispatchObject.provider,
+      signer: dispatchObject.signer,
+    });
+
+    this.config.defaultContract = contract;
+
+    this.store.dispatch(
+      Web3Actions.setDollarExhange({ exchange: this._dollarExchange })
+    );
+
+    const providerNetwork = await dispatchObject.provider.getNetwork();
+
+    const networkString = netWorkById(providerNetwork.chainId)?.name as string;
+ 
+    this.config.connectedNetwork = networkString;
+    this.store.dispatch(
+      Web3Actions.setSignerNetwork({ network: networkString })
+    );
+
+   
+    this.getLensProfilebyAddress()
+
   }
 
   async initChain() {
@@ -383,6 +378,8 @@ export class DappInjectorService {
 
       this.webModal.onDisConnect.subscribe(() => {
         console.log('i am disconnecting');
+        this.availableProfiles = [];
+        this.currentProfile = undefined;
         this.store.dispatch(Web3Actions.chainStatus({ status: 'fail' }));
         this.store.dispatch(Web3Actions.chainBusy({ status: false }));
       });

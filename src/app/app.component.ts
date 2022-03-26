@@ -1,4 +1,6 @@
 import { AfterContentInit, Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { web3Selectors } from 'angular-web3';
 import { IpfsService } from './shared/services/ipfs-service';
 import { LitProtocolService } from './shared/services/lit-protocol-service';
 
@@ -9,8 +11,12 @@ import { LitProtocolService } from './shared/services/lit-protocol-service';
 })
 export class AppComponent implements AfterContentInit {
   title = 'desource';
+  blockchain_is_busy: boolean;
 
-  constructor(private ipfsService:IpfsService,private litProtocolService:LitProtocolService){
+  constructor(
+    private store: Store,
+    private ipfsService:IpfsService,
+    private litProtocolService:LitProtocolService){
 
     
 
@@ -19,7 +25,7 @@ export class AppComponent implements AfterContentInit {
   async asyncStuff(){
     await   this.ipfsService.init()
     await  this.litProtocolService.init()
-    const result = await this.litProtocolService.encrypt({profile:4, description:'ahora que clarooooooi'})
+   // const result = await this.litProtocolService.encrypt({profile:4, description:'ahora que clarooooooi'})
 
     // const { cid } = await this.ipfsService.add(JSON.stringify(result));
     // const result2 =  await this.ipfsService.getFile(cid)
@@ -31,6 +37,14 @@ export class AppComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
    this.asyncStuff()
+   this.store
+   .select(web3Selectors.isNetworkBusy)
+   .subscribe((isBusy: boolean) => {
+     console.log(isBusy);
+     this.blockchain_is_busy = isBusy;
+   });
+
+
     
   }
 
