@@ -32,7 +32,7 @@ if (network == undefined) {
 
   const contract_config = JSON.parse(readFileSync( join(processDir,'contract.config.json'),'utf-8')) as {[key:string]: ICONTRACT_DEPLOY}
   
-  const deployContracts=["decodeContract"]
+  const deployContracts=["superFluidFollowModule"]
  
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.

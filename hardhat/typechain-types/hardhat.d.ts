@@ -213,9 +213,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DeceCode__factory>;
     getContractFactory(
-      name: "SubscriptionFollowModule",
+      name: "SubscriptionBaseFollowModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SubscriptionFollowModule__factory>;
+    ): Promise<Contracts.SubscriptionBaseFollowModule__factory>;
     getContractFactory(
       name: "SuperFluidFollowModule",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -564,10 +564,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.DeceCode>;
     getContractAt(
-      name: "SubscriptionFollowModule",
+      name: "SubscriptionBaseFollowModule",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.SubscriptionFollowModule>;
+    ): Promise<Contracts.SubscriptionBaseFollowModule>;
     getContractAt(
       name: "SuperFluidFollowModule",
       address: string,

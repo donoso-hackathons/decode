@@ -20,7 +20,7 @@ import "hardhat/console.sol";
  * @notice This is an abstract contract to be inherited from by modules that require basic fee functionality. It
  * contains getters for module globals parameters as well as a validation function to check expected data.
  */
-contract SubscriptionFollowModule is
+contract SubscriptionBaseFollowModule is
     IFollowModule,
     FollowValidatorFollowModuleBase
 {
@@ -69,7 +69,7 @@ contract SubscriptionFollowModule is
   
     }
 
-    function openSubscription(uint256 profileId, address follower) public {
+    function _openSubscription(uint256 profileId, address follower) public {
         address owner = IERC721(HUB).ownerOf(profileId);
            _approvedByProfilebySubscription[owner][profileId][follower] = true;
         emit Events.FollowsSubscription(
@@ -83,7 +83,7 @@ contract SubscriptionFollowModule is
 
     }
 
-    function cancelSubscription(uint256 profileId, address follower) public {
+    function _cancelSubscription(uint256 profileId, address follower) public {
         address owner = IERC721(HUB).ownerOf(profileId);
         _approvedByProfilebySubscription[owner][profileId][follower] = false;
         emit Events.FollowsSubscription(
@@ -93,11 +93,11 @@ contract SubscriptionFollowModule is
             false,
             block.timestamp
         );
-        address nftAddress =  ILensHub(HUB).getFollowNFT(profileId);
-        console.log(address(this));
-        uint256 balance =  IERC721(nftAddress).balanceOf(follower);
-        IERC721(nftAddress).approve(address(this),1);
-        ILensNFTBase(nftAddress).burn(1);
+        // address nftAddress =  ILensHub(HUB).getFollowNFT(profileId);
+        // console.log(address(this));
+        // uint256 balance =  IERC721(nftAddress).balanceOf(follower);
+        // IERC721(nftAddress).approve(address(this),1);
+        // ILensNFTBase(nftAddress).burn(1);
 
     }
 

@@ -10,12 +10,11 @@ import {Events} from "../libraries/Events.sol";
 import {ModuleBase} from "../core/modules/ModuleBase.sol";
 import {FollowValidatorFollowModuleBase} from "../core/modules/follow/FollowValidatorFollowModuleBase.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import { SubscriptionFollowModule} from "./SubscriptionBaseFollow.sol";
+import { SubscriptionBaseFollowModule} from "./SubscriptionBaseFollow.sol";
 contract SuperFluidFollowModule is
   SuperAppBase,
-  SubscriptionFollowModule
+  SubscriptionBaseFollowModule
 {
-  mapping(address => mapping(uint256 => bool)) internal _streamsProfileByOwner;
 
   ISuperfluid private _host; // host
   IConstantFlowAgreementV1 private _cfa; // the stored constant flow agreement class address
@@ -25,11 +24,6 @@ contract SuperFluidFollowModule is
   event RegistrationTimedOutEvent(bytes32 indexed phoneNumberHash);
   event RegistrationSuccessEvent(bytes32 indexed phoneNumberHash);
 
-  struct PendingRegistration {
-    address newUserAddress;
-    bytes32 codeHash;
-    uint256 timestamp;
-  }
 
   constructor(
     ISuperfluid host,
@@ -37,7 +31,7 @@ contract SuperFluidFollowModule is
     ISuperToken acceptedToken,
     address hub,
     address moduleGlobals
-  )  SubscriptionFollowModule(hub,moduleGlobals) {
+  )  SubscriptionBaseFollowModule(hub,moduleGlobals) {
     require(address(host) != address(0), "host is zero address");
     require(address(cfa) != address(0), "cfa is zero address");
     require(
@@ -147,7 +141,8 @@ contract SuperFluidFollowModule is
         "0x",
         newCtx
       );
-      _streamsProfileByOwner[follower][profileId] = false;
+      _cancelSubscription(profileId,follower);
+  
     } else if (outFlowRate != int96(0)) {
       (newCtx, ) = _host.callAgreementWithContext(
         _cfa,
@@ -161,7 +156,7 @@ contract SuperFluidFollowModule is
         "0x",
         newCtx
       );
-         _streamsProfileByOwner[follower][profileId] = true;
+         _openSubscription(profileId,follower);
     } else {
       // @dev If there is no existing outflow, then create new flow to equal inflow
       (newCtx, ) = _host.callAgreementWithContext(
@@ -176,7 +171,7 @@ contract SuperFluidFollowModule is
         "0x",
         newCtx
       );
-         _streamsProfileByOwner[follower][profileId] = true;
+         _openSubscription(profileId,follower);
     }
   }
 

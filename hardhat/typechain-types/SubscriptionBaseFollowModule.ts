@@ -17,7 +17,7 @@ import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface SubscriptionFollowModuleInterface extends utils.Interface {
+export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
   functions: {
     "HUB()": FunctionFragment;
     "_cancelSubscription(uint256,address)": FunctionFragment;
@@ -101,12 +101,12 @@ export interface SubscriptionFollowModuleInterface extends utils.Interface {
   events: {};
 }
 
-export interface SubscriptionFollowModule extends BaseContract {
+export interface SubscriptionBaseFollowModule extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SubscriptionFollowModuleInterface;
+  interface: SubscriptionBaseFollowModuleInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
