@@ -21,6 +21,8 @@
     "follow-profile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json follow-profile",
     "test-decode": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json test-decode",
     "hey":"npm run deploy:mumbai && npm run test-decode",
+    "matic":"cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json  whitelist-matic",  
+    "aave":"cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json  aave", 
     "compile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json compile",
     "generate": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json generate",
     "deploy": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json run ./scripts/deploy.ts",

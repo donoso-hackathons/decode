@@ -3,8 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { CreatePublicationRoutingModule } from './create-publication-routing.module';
 import { CreatePublicationComponent } from './create-publication.component';
-import { BlogEditorModule } from 'src/app/shared/components/blog-editor/blog-editor.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
 
 @NgModule({
@@ -14,9 +18,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     CreatePublicationRoutingModule,
-    BlogEditorModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonModule,
+
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCheckboxModule,
   ]
 })
 export class CreatePublicationModule { }

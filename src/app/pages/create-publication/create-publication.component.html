@@ -1,14 +1,64 @@
 <div class="mainContainer">
   <div class="createModal">
     <i (click)="back()" class="close material-icons">close</i>
-    <div class="Title">Create Your Profile</div>
-    <blog-editor
-      #editor
-      *ngIf="blog_state !== undefined && blog_state.blog !== undefined"
-      [blog]="blog_state.blog"
-      [action]="'new'"
-      (editorChanged)="editorChanged()"
-    >
-    </blog-editor>
+    <div class="Title">Create Your Publication</div>
+    <div class="ImageGroup">
+      <img class="NftImage" src="{{ nft_src }}" />
+      <input hidden type="file" (change)="uploadNft($event)" #fileuploadNFT />
+      <p class="ImageAction" (click)="fileuploadNFT.click()">
+        click for change
+      </p>
+      <p class="ImageAction" (click)="resetNft()">(reset)</p>
+    </div>
+    <div class="GlobalInput">
+      <form class="Form" [formGroup]="publicationForm">
+        <div class="InputWrapper">
+          <input
+            type="text"
+            matInput
+            formControlName="titleCtrl"
+            placeholder="Your Title*"
+            class="InputWrapper Input"
+          />
+        </div>
+        <div class="InputWrapper">
+          <textarea
+            class="TextArea"
+            formControlName="descriptionCtrl"
+            rows="4"
+            placeholder="Your wesome Publication"
+            matInput
+          ></textarea>
+        </div>
+
+      </form>
+      <div class="FollowModule">
+        <div style="flex-basis: 100%">
+          <div class="Title">Choose How The Community Can Mint You!!</div>
+          <mat-form-field  style="width: 100%;" appearance="fill">
+            <!-- <mat-label>Choose Your Follow</mat-label> -->
+            <mat-select [formControl]="publicationForm.controls.collectModuleCtrl">
+              <mat-option
+                [value]="option.id"
+                *ngFor="let option of collectModuleOptions"
+                >{{ option.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="followModuleDescription">
+          <div *ngIf="publicationForm.controls.collectModuleCtrl.value == 0">
+            <div class="SubTitle">Every One</div>
+          </div>
+
+          <div *ngIf="publicationForm.controls.collectModuleCtrl.value == 1">
+            <div class="SubTitle">supporting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dececode-button style="margin-top:30px" (onClick)="createPublication()" [outline]="true"
+    >Create Publication</dececode-button
+  >
   </div>
 </div>

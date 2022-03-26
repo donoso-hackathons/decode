@@ -34,6 +34,7 @@ export class DappInjectorService {
   webModal!: Web3ModalComponent;
   lensProtocolAddresses:{[key:string]:string} = LensProtocolAddresses;
    ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+   MATIC_ADDRESS = '0x0000000000000000000000000000000000001010';
   tokens: any;
   constructor(
     @Inject(DOCUMENT) private readonly document: any,

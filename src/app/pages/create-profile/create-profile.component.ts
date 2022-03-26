@@ -149,7 +149,7 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
     console.log(file, 'fileeeee');
     const reader = new FileReader();
     reader.addEventListener('load', async (event: any) => {
-      this.image_src = event.target.result;
+      this.nft_src = event.target.result;
       const buf = Buffer.from(reader.result as ArrayBuffer);
       //  try {
       //   const result = await this.ipfsService.add(buf);

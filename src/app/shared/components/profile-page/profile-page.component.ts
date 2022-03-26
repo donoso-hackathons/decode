@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
 
 @Component({
@@ -8,12 +9,15 @@ import { ProfileStructStruct } from 'src/assets/types/ILensHub';
 })
 export class ProfilePageComponent implements OnChanges {
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   @Input() currentProfile: ProfileStructStruct;
   @Input() availableProfiles:Array<ProfileStructStruct>
 
   ngOnChanges(): void {
+  }
+  gotoPub(){
+    this.router.navigateByUrl('/app/create-publication')
   }
 
 }

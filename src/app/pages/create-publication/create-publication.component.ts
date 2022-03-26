@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AngularContract, DappInjectorService, randomString, web3Selectors } from 'angular-web3';
@@ -11,7 +11,17 @@ import { Subject } from 'rxjs';
 import { IUSER_POST_BLOG } from 'src/app/shared/models';
 import { IMetadata_ERC721, MetadataVersions } from 'src/app/shared/models/metadata';
 import { IpfsService } from 'src/app/shared/services/ipfs-service';
-import { CreateProfileDataStruct } from 'src/assets/types/ILensHub';
+import { PostDataStruct} from 'src/assets/types/ILensHub';
+import { nftBase64 } from '../create-profile/avatar.base64';
+
+function positiveVal(control:AbstractControl):{ [key: string]: any; } {
+  if (Number(control.value) <= 0) {
+    return {nonZero: true};
+  } else {
+    return null;
+  }
+}
+
 
 @Component({
   selector: 'app-create-publication',
@@ -53,22 +63,53 @@ export class CreatePublicationComponent implements AfterViewInit {
 
 
       this.publicationForm = this.formBuilder.group({
-        handleCtrl: ['', [Validators.required, Validators.maxLength(20)]],
+        titleCtrl: ['My awesome pu', [Validators.required, Validators.maxLength(100)]],
         descriptionCtrl: [
-          'my Description',
-          [Validators.required, Validators.maxLength(200)],
+          'my Gloroious eblblblblb blblbllb',
+          [Validators.required, Validators.maxLength(500)],
         ],
-        twitterCtrl: [],
-        webCtrl: [''],
-        followModuleCtrl: [0],
+        collectModuleCtrl: [0],
+        value:[0,Validators.compose([Validators.required, positiveVal ])]
       });
 
-
+      this.nft_src = nftBase64;
   }
 
 
-  editorChanged() {}
-  async createProfile() {
+  resetNft() {
+    this.nft_src = nftBase64;
+   
+  }
+
+  uploadNft(event) {
+    const file: File = event.target.files[0];
+    console.log(file, 'fileeeee');
+    const reader = new FileReader();
+    reader.addEventListener('load', async (event: any) => {
+      this.nft_src = event.target.result;
+      const buf = Buffer.from(reader.result as ArrayBuffer);
+      //  try {
+      //   const result = await this.ipfsService.add(buf);
+      //   console.log(result)
+      //   console.log(`https://ipfs.io/ipfs/${result.path}`)
+      //   this.imageUrl = `https://ipfs.io/ipfs/${result.path}`;
+      //   this.image=this.imageUrl;
+      //   console.log(this.imageUrl,"imageeeeeeee");
+      //  } catch (error) {
+      //    console.log(error,"errorrr");
+      //    alert("Error Uploadig file");
+      //  }
+    });
+    reader.readAsDataURL(file);
+
+    // const reader2 = new FileReader();
+    // reader2.addEventListener('load', async (event: any) => {
+
+    //  this.buf = Buffer.from(reader2.result as ArrayBuffer)
+    // });
+    // reader2.readAsArrayBuffer(file);
+  }
+  async createPublication() {
     this.clicked = true;
 
     if (this.publicationForm.invalid) {
@@ -99,7 +140,7 @@ export class CreatePublicationComponent implements AfterViewInit {
       version: MetadataVersions.one,
       metadata_id: randomString(20),
       description: this.publicationForm.controls.descriptionCtrl.value,
-      name: this.publicationForm.controls.handleCtrl.value,
+      name: this.publicationForm.controls.titleCtrl.value,
       attributes: [],
       image: nftImage,
       media: [
@@ -116,17 +157,18 @@ export class CreatePublicationComponent implements AfterViewInit {
       alert('error nfturi');
     }
   
-    const profile_paywall: CreateProfileDataStruct = {
-      to: myaddress,
-      handle: this.publicationForm.controls.handleCtrl.value,
-      imageURI: result.path,
-      followModule: this.dappInjectorService.ZERO_ADDRESS,
-      followModuleData: [],
-      followNFTURI: 'https://ipfs.io/ipfs/' + followNft_metadata_ipfs.path,
+    const profile_paywall: PostDataStruct = {
+      profileId:1,
+      contentURI: 'result.path',
+      collectModule: this.collectModuleOptions[0].address,
+      collectModuleData: [],
+      referenceModule: this.dappInjectorService.ZERO_ADDRESS,
+      referenceModuleData: []
     };
-    const result_mint = await  this.lensHubContract.contract.createProfile(profile_paywall,
+    const result_mint = await  this.lensHubContract.contract.post(profile_paywall,
       { gasPrice: utils.parseUnits('100', 'gwei'), 
       gasLimit: 2000000 })
+      console.log(result_mint)
    const tx =  await result_mint.wait();
       console.log(tx)
   }
