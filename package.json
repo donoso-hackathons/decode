@@ -20,6 +20,7 @@
     "collect-publication": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json collect-publication",
     "follow-profile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json follow-profile",
     "test-decode": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json test-decode",
+    "hey":"npm run deploy:mumbai && npm run test-decode",
     "compile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json compile",
     "generate": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json generate",
     "deploy": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json run ./scripts/deploy.ts",

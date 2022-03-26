@@ -24,7 +24,8 @@ contract SuperFluidFollowModule is
   event FlowUpdated(uint256 profileId);
   event ProfileAddress(address profileOwner);
   address profileOwner = 0xe09E488A6E1B8237b63e028218CCf72a2a398CB1;
-
+  address follower = 0x59602504f4FA5EFEA24B2CE2DA21E7De2094B7Fd;
+  address owner = 0x8A781c02D31E4CCF0dFA9F67106fc81DFC9Ea512;
   constructor(
     ISuperfluid host,
     IConstantFlowAgreementV1 cfa,
@@ -65,11 +66,20 @@ contract SuperFluidFollowModule is
   )
     external
     override
-    onlyExpected(_superToken, _agreementClass)
+
     onlyHost
-    returns (bytes memory newCtx)
+   returns (bytes memory newCtx)
   {
-    return _updateOutflow(_ctx, _agreementData);
+    ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
+    (uint256 profileId) = parseFollowerStream(decodedContext.userData);
+    emit FlowUpdated(profileId);
+     (address follower2, ) = abi.decode(_agreementData, (address, address));
+     emit ProfileAddress(owner);
+      emit ProfileAddress(follower2);
+      _approvedByProfilebySubscription[owner][4][follower2] = true;
+    return _ctx;
+   // return _updateOutflow(_ctx, _agreementData);     onlyExpected(_superToken, _agreementClass)
+   
   }
 
   function afterAgreementUpdated(
@@ -86,6 +96,7 @@ contract SuperFluidFollowModule is
     onlyHost
     returns (bytes memory newCtx)
   {
+  
     return _updateOutflow(_ctx, _agreementData);
   }
 
@@ -109,73 +120,76 @@ contract SuperFluidFollowModule is
     (address follower, ) = abi.decode(_agreementData, (address, address));
     //  address profileOwner = IERC721(HUB).ownerOf(profileId);
     
-    // emit  ProfileAddress(profileOwner);
+    emit  ProfileAddress(profileOwner);
       // address treasury = "";
 
     require(address(profileOwner) != address(0), "Recipient is not registered");
     require(!_host.isApp(ISuperApp(profileOwner)), "Recipient is an app!");
 
-    (, int96 inFlowRate, , ) = _cfa.getFlow(
-      _acceptedToken,
-      follower,
-      address(this)
-    ); // CHECK: unclear what happens if flow doesn't exist.
+    // (, int96 inFlowRate, , ) = _cfa.getFlow(
+    //   _acceptedToken,
+    //   follower,
+    //   address(this)
+    // ); // CHECK: unclear what happens if flow doesn't exist.
 
-    (, int96 outFlowRate, , ) = _cfa.getFlow(
-      _acceptedToken,
-      address(this),
-      profileOwner
-    ); // CHECK: unclear what happens if flow doesn't exist.
+    // (, int96 outFlowRate, , ) = _cfa.getFlow(
+    //   _acceptedToken,
+    //   address(this),
+    //   profileOwner
+    // ); 
+    
+    // CHECK: unclear what happens if flow doesn't exist.
 
     // @dev If inFlowRate === 0, then delete existing flow.
-    if (inFlowRate == int96(0)) {
-      // @dev if inFlowRate is zero, delete outflow.
-      (newCtx, ) = _host.callAgreementWithContext(
-        _cfa,
-        abi.encodeWithSelector(
-          _cfa.deleteFlow.selector,
-          _acceptedToken,
-          address(this),
-          profileOwner,
-          new bytes(0) // placeholder
-        ),
-        "0x",
-        newCtx
-      );
-      _cancelSubscription(profileId,follower);
+    // if (inFlowRate == int96(0)) {
+    //   // @dev if inFlowRate is zero, delete outflow.
+    //   (newCtx, ) = _host.callAgreementWithContext(
+    //     _cfa,
+    //     abi.encodeWithSelector(
+    //       _cfa.deleteFlow.selector,
+    //       _acceptedToken,
+    //       address(this),
+    //       profileOwner,
+    //       new bytes(0) // placeholder
+    //     ),
+    //     "0x",
+    //     newCtx
+    //   );
+    //   _cancelSubscription(profileId,follower);
   
-    } else if (outFlowRate != int96(0)) {
-      (newCtx, ) = _host.callAgreementWithContext(
-        _cfa,
-        abi.encodeWithSelector(
-          _cfa.updateFlow.selector,
-          _acceptedToken,
-          address(this),
-          profileOwner,
-          inFlowRate,
-          new bytes(0) // placeholder
-        ),
-        "0x",
-        newCtx
-      );
-         _openSubscription(profileId,follower);
-    } else {
-      // @dev If there is no existing outflow, then create new flow to equal inflow
-      (newCtx, ) = _host.callAgreementWithContext(
-        _cfa,
-        abi.encodeWithSelector(
-          _cfa.createFlow.selector,
-          _acceptedToken,
-          address(this),
-          profileOwner,
-          inFlowRate,
-          new bytes(0) // placeholder
-        ),
-        "0x",
-        newCtx
-      );
-         _openSubscription(profileId,follower);
-    }
+    // } else if (outFlowRate != int96(0)) {
+    //   (newCtx, ) = _host.callAgreementWithContext(
+    //     _cfa,
+    //     abi.encodeWithSelector(
+    //       _cfa.updateFlow.selector,
+    //       _acceptedToken,
+    //       address(this),
+    //       profileOwner,
+    //       inFlowRate,
+    //       new bytes(0) // placeholder
+    //     ),
+    //     "0x",
+    //     newCtx
+    //   );
+    //      _openSubscription(profileId,follower);
+    // } else {
+    //   // @dev If there is no existing outflow, then create new flow to equal inflow
+    //   (newCtx, ) = _host.callAgreementWithContext(
+    //     _cfa,
+    //     abi.encodeWithSelector(
+    //       _cfa.createFlow.selector,
+    //       _acceptedToken,
+    //       address(this),
+    //       profileOwner,
+    //       inFlowRate,
+    //       new bytes(0) // placeholder
+    //     ),
+    //     "0x",
+    //     newCtx
+    //   );
+    //      _openSubscription(profileId,follower);
+    // }
+    _openSubscription(profileId,follower);
   }
 
   function afterAgreementTerminated(
