@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { ParticlesModule } from 'src/app/shared/components/particles/particles.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -21,8 +23,10 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
     FormsModule,
     ReactiveFormsModule,
 
+    ParticlesModule,
     ButtonModule,
-
+    
+    MatIconModule,
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,

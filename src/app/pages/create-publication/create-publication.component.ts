@@ -7,11 +7,12 @@ import { utils } from 'ethers';
 
 
 import { Subject } from 'rxjs';
+import { ContractShowModule } from 'src/app/dapp-components';
 
 import { IUSER_POST_BLOG } from 'src/app/shared/models';
 import { IMetadata_ERC721, MetadataVersions } from 'src/app/shared/models/metadata';
 import { IpfsService } from 'src/app/shared/services/ipfs-service';
-import { PostDataStruct} from 'src/assets/types/ILensHub';
+import { PostDataStruct, ProfileStructStruct} from 'src/assets/types/ILensHub';
 import { nftBase64 } from '../create-profile/avatar.base64';
 
 function positiveVal(control:AbstractControl):{ [key: string]: any; } {
@@ -50,7 +51,7 @@ export class CreatePublicationComponent implements AfterViewInit {
   blockchain_is_busy: boolean;
   show_create_success = false;
   nft_src: any;
-  profile: import("c:/Users/javie/Documents/WEB/BLOCKCHAIN/desource/src/assets/types/ILensHub").ProfileStructStruct;
+  profile: ProfileStructStruct;
   profileId: any;
   constructor(
     public formBuilder: FormBuilder,
@@ -114,7 +115,7 @@ export class CreatePublicationComponent implements AfterViewInit {
   }
   async createPublication() {
     this.clicked = true;
-
+ 
     if (this.publicationForm.invalid) {
       alert('please fill');
       return;
@@ -160,8 +161,9 @@ export class CreatePublicationComponent implements AfterViewInit {
       alert('error nfturi');
     }
   
+   
     const profile_paywall: PostDataStruct = {
-      profileId:1,
+      profileId: this.profileId.toString(),
       contentURI: 'result.path',
       collectModule: this.collectModuleOptions[0].address,
       collectModuleData: [],
@@ -182,8 +184,8 @@ export class CreatePublicationComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.store.select(web3Selectors.chainStatus).subscribe(async (value) => {
-      this.blockchain_status = value;
-      console.log(value);
+      this.blockchain_status = value; 
+   
       if (
         ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value) !== -1
       ) {
@@ -191,15 +193,15 @@ export class CreatePublicationComponent implements AfterViewInit {
       } else {
         this.lensHubContract = this.dappInjectorService.config.defaultContract;
         this.profile = this.dappInjectorService.currentProfile;
-        this.profileId = await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)
-        console.log(this.profileId)
+        this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
+       console.log(this.profileId)
       }
     });
 
     this.store
       .select(web3Selectors.isNetworkBusy)
       .subscribe((isBusy: boolean) => {
-        console.log(isBusy);
+
         this.blockchain_is_busy = isBusy;
       });
 

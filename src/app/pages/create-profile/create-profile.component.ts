@@ -17,17 +17,19 @@ import {
   AngularContract,
   DappInjectorService,
   randomString,
+  Web3Actions,
   web3Selectors,
 } from 'angular-web3';
 import { Subject, takeUntil } from 'rxjs';
 import { avatarBase64, nftBase64 } from './avatar.base64';
-import { CreateProfileDataStruct } from '../../../assets/types/ILensHub';
+import { CreateProfileDataStruct, ProfileStructStruct } from '../../../assets/types/ILensHub';
 import { IpfsService } from 'src/app/shared/services/ipfs-service';
 import {
   IMetadata_ERC721,
   MetadataVersions,
 } from 'src/app/shared/models/metadata';
 import { utils } from 'ethers';
+import { AlertService } from 'src/app/shared/components/alerts/alert.service';
 
 @Component({
   selector: 'app-create-profile',
@@ -37,6 +39,7 @@ import { utils } from 'ethers';
 export class CreateProfileComponent implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject();
   profileForm: FormGroup;
+  show_create_success = false;
   followModuleOptions = [
     {
       id: 0,
@@ -66,7 +69,8 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
     private store: Store,
     private cd: ChangeDetectorRef,
     private ipfsService: IpfsService,
-    public router: Router
+    public router: Router,
+    public alertService: AlertService
   ) {
     this.followModuleOptions[0].address = this.dappInjectorService.ZERO_ADDRESS;
     this.followModuleOptions[1].address =
@@ -117,26 +121,9 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
     reader.addEventListener('load', async (event: any) => {
       this.image_src = event.target.result;
       const buf = Buffer.from(reader.result as ArrayBuffer);
-      //  try {
-      //   const result = await this.ipfsService.add(buf);
-      //   console.log(result)
-      //   console.log(`https://ipfs.io/ipfs/${result.path}`)
-      //   this.imageUrl = `https://ipfs.io/ipfs/${result.path}`;
-      //   this.image=this.imageUrl;
-      //   console.log(this.imageUrl,"imageeeeeeee");
-      //  } catch (error) {
-      //    console.log(error,"errorrr");
-      //    alert("Error Uploadig file");
-      //  }
     });
     reader.readAsDataURL(file);
 
-    // const reader2 = new FileReader();
-    // reader2.addEventListener('load', async (event: any) => {
-
-    //  this.buf = Buffer.from(reader2.result as ArrayBuffer)
-    // });
-    // reader2.readAsArrayBuffer(file);
   }
 
   resetNft() {
@@ -150,27 +137,14 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
     const reader = new FileReader();
     reader.addEventListener('load', async (event: any) => {
       this.nft_src = event.target.result;
-      const buf = Buffer.from(reader.result as ArrayBuffer);
-      //  try {
-      //   const result = await this.ipfsService.add(buf);
-      //   console.log(result)
-      //   console.log(`https://ipfs.io/ipfs/${result.path}`)
-      //   this.imageUrl = `https://ipfs.io/ipfs/${result.path}`;
-      //   this.image=this.imageUrl;
-      //   console.log(this.imageUrl,"imageeeeeeee");
-      //  } catch (error) {
-      //    console.log(error,"errorrr");
-      //    alert("Error Uploadig file");
-      //  }
+
     });
     reader.readAsDataURL(file);
+    ;
+  }
 
-    // const reader2 = new FileReader();
-    // reader2.addEventListener('load', async (event: any) => {
-
-    //  this.buf = Buffer.from(reader2.result as ArrayBuffer)
-    // });
-    // reader2.readAsArrayBuffer(file);
+  async close() {
+    this.router.navigateByUrl('/')
   }
 
   async createProfile() {
@@ -181,59 +155,75 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    console.log('now is time');
-    await this.ipfsService.init();
-    const result = await this.ipfsService.add(this.image_src);
+    this.store.dispatch(Web3Actions.chainBusy({ status: true }));
+    try {
 
-    if (!result || !result.path) {
-      alert('error profileimage');
-    }
+      await this.ipfsService.init();
+      const result = await this.ipfsService.add(this.image_src);
 
-    const myaddress = await this.dappInjectorService.config.signer.getAddress();
+      const myaddress = await this.dappInjectorService.config.signer.getAddress();
 
-    const nftImage_ipfs = await this.ipfsService.add(this.nft_src);
-    if (!nftImage_ipfs || !nftImage_ipfs.path) {
-      alert('error nft image');
-    }
+      const nftImage_ipfs = await this.ipfsService.add(this.nft_src);
 
-    const nftImage = nftImage_ipfs.path;
+      const nftImage = nftImage_ipfs.path;
 
-// data:image/jpg
+      // data:image/jpg
 
-    const followNft_metadata: IMetadata_ERC721 = {
-      version: MetadataVersions.one,
-      metadata_id: randomString(20),
-      description: this.profileForm.controls.descriptionCtrl.value,
-      name: this.profileForm.controls.handleCtrl.value,
-      attributes: [],
-      image: nftImage,
-      media: [
+      const followNft_metadata: IMetadata_ERC721 = {
+        version: MetadataVersions.one,
+        metadata_id: randomString(20),
+        description: this.profileForm.controls.descriptionCtrl.value,
+        name: this.profileForm.controls.handleCtrl.value,
+        attributes: [],
+        image: nftImage,
+        media: [
+          {
+            item: nftImage,
+            type: 'image/png',
+          },
+        ],
+        appId: 'dececode',
+      };
+
+      const followNft_metadata_ipfs = await this.ipfsService.add(JSON.stringify(followNft_metadata));
+      if (!followNft_metadata_ipfs || !followNft_metadata_ipfs.path) {
+        alert('error nfturi');
+      }
+
+      const profile_paywall: CreateProfileDataStruct = {
+        to: myaddress,
+        handle: this.profileForm.controls.handleCtrl.value,
+        imageURI: 'https://ipfs.io/ipfs/' + result.path,
+        followModule: this.dappInjectorService.ZERO_ADDRESS,
+        followModuleData: [],
+        followNFTURI: 'https://ipfs.io/ipfs/' + followNft_metadata_ipfs.path,
+      };
+      const result_mint = await this.lensHubContract.contract.createProfile(profile_paywall,
         {
-          item: nftImage,
-          type: 'image/png',
-        },
-      ],
-      appId: 'dececode',
-    };
+          gasPrice: utils.parseUnits('100', 'gwei'),
+          gasLimit: 2000000
+        })
+      const tx = await result_mint.wait();
+    
+      const myProfile: ProfileStructStruct = {
+        handle: this.profileForm.controls.handleCtrl.value,
+        imageURI: 'https://ipfs.io/ipfs/' + result.path,
+        followModule: this.dappInjectorService.ZERO_ADDRESS,
+        followNFT:'',
+        followNFTURI: 'https://ipfs.io/ipfs/' + followNft_metadata_ipfs.path,
+        pubCount:0
+      }
 
-    const followNft_metadata_ipfs = await this.ipfsService.add(JSON.stringify(followNft_metadata));
-    if (!followNft_metadata_ipfs || !followNft_metadata_ipfs.path) {
-      alert('error nfturi');
+      this.dappInjectorService.currentProfile = myProfile;
+      this.dappInjectorService.availableProfiles.push(myProfile)
+      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+      this.show_create_success = true;
+    } catch (error) {
+      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+       await  this.alertService.showAlertERROR('OOPS', 'An Error has happened')
+
     }
-  
-    const profile_paywall: CreateProfileDataStruct = {
-      to: myaddress,
-      handle: this.profileForm.controls.handleCtrl.value,
-      imageURI: result.path,
-      followModule: this.dappInjectorService.ZERO_ADDRESS,
-      followModuleData: [],
-      followNFTURI: 'https://ipfs.io/ipfs/' + followNft_metadata_ipfs.path,
-    };
-    const result_mint = await  this.lensHubContract.contract.createProfile(profile_paywall,
-      { gasPrice: utils.parseUnits('100', 'gwei'), 
-      gasLimit: 2000000 })
-   const tx =  await result_mint.wait();
-      console.log(tx)
+
   }
 
   back() {

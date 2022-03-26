@@ -1,10 +1,16 @@
 <div class="profilePageContainer">
   <div class="Banner">
-    <div class="Avatar">
-      <img
-        src="{{currentProfile.imageURI}}"
+    <div >
+      <mat-spinner  *ngIf="loading_image == true" style="position:absolute;bottom: -10px;
+      left: 59px;
+      z-index: 1;" [diameter]="45"  ></mat-spinner>
+    </div>
+    <div   class="Avatar">
+      <img 
+        src="{{image_src}}"
         alt="{{currentProfile.handle}}"
       />
+ 
     </div>
   </div>
 
@@ -47,7 +53,7 @@
   <dececode-button  (onClick)="goProfile()" style="position:relative;width: fit-content;margin:auto;" class="EditButton" [outline]="true">Add Profile</dececode-button> 
   <mat-form-field style="position:relative;top:21px" appearance="fill">
     <mat-label>Change Profile</mat-label> 
-    <mat-select [(ngModel)]="currentProfile">
+    <mat-select [formControl]="currentProfileCtrl">
       <mat-option
         [value]="profile"
         *ngFor="let profile of availableProfiles"

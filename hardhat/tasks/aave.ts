@@ -8,7 +8,7 @@ task('aave', 'unpauses the protocol').setAction(async ({}, hre) => {
     const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
-    lensHub.getProfileIdByHandle()
+    //lensHub.getProfileIdByHandle()
 
     let governanceNonce = await hre.ethers.provider.getTransactionCount(governance.address);
 

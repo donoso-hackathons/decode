@@ -25,6 +25,18 @@ export class IpfsService {
   //   )
   // }
 
+  async getImage(hash: string): Promise<any> {
+    const responseBufferChunks = []
+    for await (const file of this.ipfs.cat(hash)) {
+      if (!file) continue;
+      responseBufferChunks.push(file);
+    }
+    const responseBuffer = Buffer.concat(responseBufferChunks)
+    return responseBuffer
+
+  }
+
+
   async getFile(hash: string): Promise<any> {
     const responseBufferChunks = []
     for await (const file of this.ipfs.cat(hash)) {
