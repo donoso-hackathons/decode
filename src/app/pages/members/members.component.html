@@ -5,7 +5,12 @@
 
 
 
-    <div  *ngIf="hasubscription" class="FollowModule">
+    <div  *ngIf="hasSubscription== false" class="FollowModule">
+
+      <h3 class="thirdTitle">
+       You have not yet subscribed, please start the stream subscription in order to support the amazing creators so 
+       they continue producing amazing content
+      </h3>
 
       <dececode-button style="margin-top:30px" (onClick)="startStream()" [outline]="true">Start Stream</dececode-button>
 
@@ -13,7 +18,7 @@
  
     </div>
 
-    <div  *ngIf="!hasubscription" class="FollowModule">
+    <div  *ngIf="hasSubscription == true" class="FollowModule">
 
  
 

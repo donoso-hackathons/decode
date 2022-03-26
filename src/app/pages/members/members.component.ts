@@ -19,7 +19,7 @@ export class MembersComponent implements AfterViewInit {
   lensHubContract: AngularContract;
   profileId: string;
   profile: ProfileStructStruct;
-  hasSubscription:boolean;
+  hasSubscription:boolean = false;
   constructor(
     private dappInjectorService: DappInjectorService,
     private store: Store,
