@@ -10,12 +10,9 @@ import {Events} from "../libraries/Events.sol";
 import {ModuleBase} from "../core/modules/ModuleBase.sol";
 import {FollowValidatorFollowModuleBase} from "../core/modules/follow/FollowValidatorFollowModuleBase.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import { SubscriptionBaseFollowModule} from "./SubscriptionBaseFollow.sol";
-contract SuperFluidFollowModule is
-  SuperAppBase,
-  SubscriptionBaseFollowModule
-{
+import {SubscriptionBaseFollowModule} from "./SubscriptionBaseFollow.sol";
 
+contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
   ISuperfluid private _host; // host
   IConstantFlowAgreementV1 private _cfa; // the stored constant flow agreement class address
 
@@ -24,15 +21,15 @@ contract SuperFluidFollowModule is
   event FlowUpdated(uint256 profileId);
   event ProfileAddress(address profileOwner);
   address profileOwner = 0xe09E488A6E1B8237b63e028218CCf72a2a398CB1;
-  address follower = 0x59602504f4FA5EFEA24B2CE2DA21E7De2094B7Fd;
-  address owner = 0x8A781c02D31E4CCF0dFA9F67106fc81DFC9Ea512;
+  address ownerMock = 0x8A781c02D31E4CCF0dFA9F67106fc81DFC9Ea512;
+
   constructor(
     ISuperfluid host,
     IConstantFlowAgreementV1 cfa,
     ISuperToken acceptedToken,
     address hub,
     address moduleGlobals
-  )  SubscriptionBaseFollowModule(hub,moduleGlobals) {
+  ) SubscriptionBaseFollowModule(hub, moduleGlobals) {
     require(address(host) != address(0), "host is zero address");
     require(address(cfa) != address(0), "cfa is zero address");
     require(
@@ -51,7 +48,6 @@ contract SuperFluidFollowModule is
     _host.registerApp(configWord);
   }
 
-
   /**************************************************************************
    * SuperApp callbacks
    *************************************************************************/
@@ -63,25 +59,41 @@ contract SuperFluidFollowModule is
     bytes calldata _agreementData,
     bytes calldata, // _cbdata,
     bytes calldata _ctx
-  )
-    external
-    override
-
-    onlyHost
-   returns (bytes memory newCtx)
-  {
+  ) external override onlyHost returns (bytes memory newCtx) {
     ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
-    (uint256 profileId) = abi.decode(decodedContext.userData, (uint256));
-   // (uint256 profileId) = parseFollowerStream(decodedContext.userData);
+    uint256 profileId = abi.decode(decodedContext.userData, (uint256));
+    // (uint256 profileId) = parseFollowerStream(decodedContext.userData);
     emit FlowUpdated(profileId);
-     (address follower2, ) = abi.decode(_agreementData, (address, address));
-     emit ProfileAddress(owner);
-      emit ProfileAddress(follower2);
-      _approvedByProfilebySubscription[owner][4][follower2] = true;
+    (address follower, ) = abi.decode(_agreementData, (address, address));
+    emit ProfileAddress(ownerMock);
+    emit ProfileAddress(follower);
+    _approvedByProfilebySubscription[ownerMock][4][follower] = true;
     return _ctx;
-   // return _updateOutflow(_ctx, _agreementData);     onlyExpected(_superToken, _agreementClass)
-   
+    // return _updateOutflow(_ctx, _agreementData);     onlyExpected(_superToken, _agreementClass)
   }
+
+    function afterAgreementTerminated(
+    ISuperToken, /*superToken*/
+    address, /*agreementClass*/
+    bytes32, // _agreementId,
+    bytes calldata _agreementData,
+    bytes calldata, /*cbdata*/
+    bytes calldata _ctx
+  ) external virtual override returns (bytes memory newCtx) {
+    
+     ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
+    uint256 profileId = abi.decode(decodedContext.userData, (uint256));
+    emit FlowUpdated(profileId);
+     address owner = IERC721(HUB).ownerOf(profileId);
+    (address follower, ) = abi.decode(_agreementData, (address, address));
+    emit ProfileAddress(owner);
+    emit ProfileAddress(ownerMock);
+    emit ProfileAddress(follower);
+    _approvedByProfilebySubscription[ownerMock][4][follower] = false;
+    return _ctx;
+ 
+  }
+
 
   function afterAgreementUpdated(
     ISuperToken _superToken,
@@ -97,7 +109,6 @@ contract SuperFluidFollowModule is
     onlyHost
     returns (bytes memory newCtx)
   {
-  
     return _updateOutflow(_ctx, _agreementData);
   }
 
@@ -106,7 +117,7 @@ contract SuperFluidFollowModule is
     pure
     returns (uint256)
   {
-    (uint256 profileId) = abi.decode(data, (uint256));
+    uint256 profileId = abi.decode(data, (uint256));
   }
 
   /// @dev If a new stream is opened, or an existing one is opened
@@ -116,13 +127,14 @@ contract SuperFluidFollowModule is
   {
     newCtx = ctx; //update the context with the same logic...
     ISuperfluid.Context memory decodedContext = _host.decodeCtx(ctx);
-    (uint256 profileId) = parseFollowerStream(decodedContext.userData);
+    uint256 profileId = parseFollowerStream(decodedContext.userData);
+
     emit FlowUpdated(profileId);
     (address follower, ) = abi.decode(_agreementData, (address, address));
     //  address profileOwner = IERC721(HUB).ownerOf(profileId);
-    
-    emit  ProfileAddress(profileOwner);
-      // address treasury = "";
+
+    emit ProfileAddress(profileOwner);
+    // address treasury = "";
 
     require(address(profileOwner) != address(0), "Recipient is not registered");
     require(!_host.isApp(ISuperApp(profileOwner)), "Recipient is an app!");
@@ -137,8 +149,8 @@ contract SuperFluidFollowModule is
     //   _acceptedToken,
     //   address(this),
     //   profileOwner
-    // ); 
-    
+    // );
+
     // CHECK: unclear what happens if flow doesn't exist.
 
     // @dev If inFlowRate === 0, then delete existing flow.
@@ -157,7 +169,7 @@ contract SuperFluidFollowModule is
     //     newCtx
     //   );
     //   _cancelSubscription(profileId,follower);
-  
+
     // } else if (outFlowRate != int96(0)) {
     //   (newCtx, ) = _host.callAgreementWithContext(
     //     _cfa,
@@ -190,18 +202,7 @@ contract SuperFluidFollowModule is
     //   );
     //      _openSubscription(profileId,follower);
     // }
-    _openSubscription(profileId,follower);
-  }
-
-  function afterAgreementTerminated(
-    ISuperToken, /*superToken*/
-    address, /*agreementClass*/
-    bytes32, // _agreementId,
-    bytes calldata _agreementData,
-    bytes calldata, /*cbdata*/
-    bytes calldata _ctx
-  ) external virtual override returns (bytes memory newCtx) {
-    return _updateOutflow(_ctx, _agreementData);
+    _openSubscription(profileId, follower);
   }
 
 
