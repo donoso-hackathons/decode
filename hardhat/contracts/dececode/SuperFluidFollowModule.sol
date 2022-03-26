@@ -150,6 +150,7 @@ contract SuperFluidFollowModule is
         abi.encodeWithSelector(
           _cfa.updateFlow.selector,
           _acceptedToken,
+          address(this),
           profileOwner,
           inFlowRate,
           new bytes(0) // placeholder
@@ -165,6 +166,7 @@ contract SuperFluidFollowModule is
         abi.encodeWithSelector(
           _cfa.createFlow.selector,
           _acceptedToken,
+          address(this),
           profileOwner,
           inFlowRate,
           new bytes(0) // placeholder

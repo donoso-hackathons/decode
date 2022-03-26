@@ -25,7 +25,7 @@ task('test-decode', 'follow paywall').setAction(async ({}, hre) => {
   console.log(b);
 
 
-  const superfluidContractAdress = "0xe2915de0e034f279F75D26DD63eaE02a1bb5D3da"
+  const superfluidContractAdress = "0xD98f4fD2e380Ee679f1187b72c8EC33007b18743"
   const recipient = superfluidContractAdress ;
   const decode = SuperFluidFollowModule__factory.connect(superfluidContractAdress,user3)
 
