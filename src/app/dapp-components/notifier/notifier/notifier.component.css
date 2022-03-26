@@ -1,5 +1,5 @@
 :host {
-    background: green;
+   height:50px;
 }
 
 .content-style{
@@ -10,4 +10,8 @@
     font-size:20px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+p {
+    color: var(--lens);
 }

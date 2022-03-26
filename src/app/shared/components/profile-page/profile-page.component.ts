@@ -16,6 +16,9 @@ export class ProfilePageComponent implements OnChanges {
 
   ngOnChanges(): void {
   }
+  goProfile(){
+  this.router.navigateByUrl(`/app/create-profile`)
+  }
   gotoPub(){
     this.router.navigateByUrl('/app/create-publication')
   }

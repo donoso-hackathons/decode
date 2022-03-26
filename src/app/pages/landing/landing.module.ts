@@ -15,6 +15,11 @@ import { OnboardComponent } from 'src/app/shared/components/onboard/onboard.comp
 import { ProfilePageComponent } from 'src/app/shared/components/profile-page/profile-page.component';
 import { SidebarComponent } from 'src/app/shared/components/sidebar/sidebar.component';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { NotifierModule } from 'src/app/dapp-components/notifier';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 
@@ -35,8 +40,14 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
   imports: [
     CommonModule,
     LandingRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatProgressSpinnerModule,
-    ButtonModule
-  ]
+    MatFormFieldModule,
+    MatSelectModule,
+    ButtonModule,
+    NotifierModule
+  ],
+  providers:[]
 })
 export class LandingModule { }

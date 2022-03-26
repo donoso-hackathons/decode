@@ -12,6 +12,9 @@ import { IpfsService } from './shared/services/ipfs-service';
 import { LensApiService } from './shared/services/lens-api-service';
 import { LitProtocolService } from './shared/services/lit-protocol-service';
 import { DappLoadingModule } from './dapp-components';
+import { NotifierService } from './dapp-components/notifier';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AlertsModule } from './shared/components/alerts/alerts.module';
 
 @NgModule({
   declarations: [
@@ -24,13 +27,14 @@ import { DappLoadingModule } from './dapp-components';
     BrowserAnimationsModule,
     DappInjectorModule,
     StoreModule.forRoot({web3: we3ReducerFunction}),
-    DappLoadingModule
-
+    DappLoadingModule,
+    MatSnackBarModule,
+    AlertsModule
 
 
   ],
   providers: [
-    ...blockchain_providers, IpfsService,LensApiService, LitProtocolService
+    ...blockchain_providers, IpfsService,LensApiService, LitProtocolService, NotifierService
   ],
   bootstrap: [AppComponent]
 })

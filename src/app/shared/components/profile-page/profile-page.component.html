@@ -42,8 +42,20 @@
     </div>
   </div>
 
-  <dececode-button  (onClick)="gotoPub()" style="position:relative;width: fit-content;margin:auto;" class="EditButton" [outline]="true">Create Publication</dececode-button> 
-
+  <div style="display:flex;flex-wrap: wrap;justify-content: space-evenly;padding:0 20px;">
+  <dececode-button  (onClick)="gotoPub()" style="position:relative;width: fit-content;margin:auto;" class="EditButton">I codeo</dececode-button> 
+  <dececode-button  (onClick)="goProfile()" style="position:relative;width: fit-content;margin:auto;" class="EditButton" [outline]="true">Add Profile</dececode-button> 
+  <mat-form-field style="position:relative;top:21px" appearance="fill">
+    <mat-label>Change Profile</mat-label> 
+    <mat-select [(ngModel)]="currentProfile">
+      <mat-option
+        [value]="profile"
+        *ngFor="let profile of availableProfiles"
+        >{{ profile.handle }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+</div>
   
 
 </div>

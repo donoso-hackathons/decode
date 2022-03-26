@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AngularContract, DappInjectorService, web3Selectors } from 'angular-web3';
 import { Location } from '@angular/common';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
+import { NotifierService } from '../../../dapp-components/notifier';
 
 @Component({
   selector: 'dececode-main',
@@ -17,7 +18,10 @@ export class MainComponent implements OnInit, AfterViewInit {
   currentProfile: ProfileStructStruct;
   availableProfiles:Array<ProfileStructStruct> = [];
 
-  constructor(private location: Location, private dappInjectorService: DappInjectorService,
+  constructor(
+    private notifierService:NotifierService,
+    private location: Location, 
+    private dappInjectorService: DappInjectorService,
     private store: Store,
     private router: Router) { }
 
@@ -45,6 +49,8 @@ export class MainComponent implements OnInit, AfterViewInit {
 
       this.blockchain_status = value;
 
+
+     
     });
 
     this.store
@@ -53,6 +59,8 @@ export class MainComponent implements OnInit, AfterViewInit {
         console.log(isBusy);
         this.blockchain_is_busy = isBusy;
       });
+
+  
   }
 
 

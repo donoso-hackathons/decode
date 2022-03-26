@@ -6,23 +6,29 @@ import {
 } from '@angular/material/snack-bar';
 
 const styles_snack = `.green-snackbar {
-  background:rgb(150 241 184);
+  background:white;
   color: white;
 }
-.green-snackbar button {
-  background-color: rgb(65, 252, 134);
-  color: white;
-  border: none;
+
+.green-snackbar  .head {
+  color:var(--twitter)
 }
+
+mat-icon {
+  color:var(--primary)
+}
+.ng-star-inserted {
+  color:var(--primary)
+}
+.red-snackbar  .head {
+  color:var(--like)
+}
+
 .red-snackbar {
-  background: #f5948d;
+  background:white;
   color: white;
 }
-.red-snackbar button {
-  background-color: #F44336;
-  color: white !important;
-  border: none;
-}`;
+`;
 
 @Component({
   selector: 'transactor-notifier',

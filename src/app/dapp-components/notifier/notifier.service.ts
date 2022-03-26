@@ -18,7 +18,7 @@ export class NotifierService {
 
 
   async showNotificationTransaction(notification_message:ITRANSACTION_RESULT){
- 
+    console.log(notification_message)
     this._snackBar.openFromComponent(NotifierComponent, {
       data: notification_message,
       horizontalPosition: 'right',
