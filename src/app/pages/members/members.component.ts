@@ -19,6 +19,7 @@ export class MembersComponent implements AfterViewInit {
   lensHubContract: AngularContract;
   profileId: string;
   profile: ProfileStructStruct;
+  hasSubscription:boolean;
   constructor(
     private dappInjectorService: DappInjectorService,
     private store: Store,
@@ -29,31 +30,51 @@ export class MembersComponent implements AfterViewInit {
 
 
   async startStream() {
-    const contractAddress = this.dappInjectorService.config.contracts['superfluid'].address;
-    const flowRate = '3858024691358'
-    const sf = await Framework.create({
-      networkName: 'mumbai',
-      provider: this.dappInjectorService.config.defaultProvider,
-    });
+    try {
 
+      console.log('again')
+      const contractAddress = this.dappInjectorService.config.contracts['superfluid'].address;
+      const flowRate = '3858024691358'
+      console.log('again')
+      const sf = await Framework.create({
+        networkName: 'mumbai',
+        provider: this.dappInjectorService.config.defaultProvider,
+      });
 
-    const encodedData = utils.defaultAbiCoder.encode(['uint256'], [this.profileId]);
-    const createFlowOperation = sf.cfaV1.createFlow({
-      flowRate: flowRate,
-      receiver: contractAddress,
-      superToken: '0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f', //environment.mumbaiDAIx,
-      userData: encodedData,
-      overrides: {
-        gasPrice: utils.parseUnits('100', 'gwei'),
-        gasLimit: 2000000,
-      },
-    });
+      console.log('again')
+      const encodedData = utils.defaultAbiCoder.encode(['uint256'], ['4']);
+      console.log(encodedData)
+      const createFlowOperation = sf.cfaV1.createFlow({
+        flowRate: flowRate,
+        receiver: contractAddress,
+        superToken: '0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f', //environment.mumbaiDAIx,
+        userData: encodedData,
+        overrides: {
+          gasPrice: utils.parseUnits('100', 'gwei'),
+          gasLimit: 2000000,
+        },
+      });
+      console.log('Creating your stream...');
+
+      const result = await createFlowOperation.exec(this.dappInjectorService.config.signer);
+      const result2 = await result.wait();
+      console.log(result2);
+
+      console.log(
+        `Congrats - you've just created a money stream!
+View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+    
   }
 
 
   async stopStream() {
     const contractAddress = this.dappInjectorService.config.contracts['superfluid'].address;
-    const flowRate = '3858024691358'
+    const flowRate = '0'
     const sf = await Framework.create({
       networkName: 'mumbai',
       provider: this.dappInjectorService.config.defaultProvider,
@@ -86,10 +107,21 @@ export class MembersComponent implements AfterViewInit {
         this.router.navigateByUrl('');
       } else {
         this.lensHubContract = this.dappInjectorService.config.defaultContract;
-        this.profile = this.dappInjectorService.currentProfile;
-  
-        this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
-     
+        // this.profile = this.dappInjectorService.currentProfile;
+
+        //   this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
+
+        this.dappInjectorService.config.contracts['superfluid'].contract.on('FlowUpdated', (args) => {
+          let payload;
+          console.log(args);
+        });
+
+        this.dappInjectorService.config.contracts['superfluid'].contract.on('ProfileAddress', (args) => {
+          let payload;
+          console.log(args);
+        });
+
+
       }
     });
 

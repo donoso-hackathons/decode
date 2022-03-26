@@ -19,6 +19,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface DeceCodeInterface extends utils.Interface {
   functions: {
     "allowed(address)": FunctionFragment;
+    "decode(bytes)": FunctionFragment;
     "isAllowed(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -28,6 +29,7 @@ export interface DeceCodeInterface extends utils.Interface {
   };
 
   encodeFunctionData(functionFragment: "allowed", values: [string]): string;
+  encodeFunctionData(functionFragment: "decode", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "isAllowed", values: [string]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -48,6 +50,7 @@ export interface DeceCodeInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "allowed", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "decode", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isAllowed", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -108,6 +111,8 @@ export interface DeceCode extends BaseContract {
   functions: {
     allowed(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
+    decode(data: BytesLike, overrides?: CallOverrides): Promise<[BigNumber]>;
+
     isAllowed(who: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
@@ -132,6 +137,8 @@ export interface DeceCode extends BaseContract {
 
   allowed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
+  decode(data: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
   isAllowed(who: string, overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
@@ -155,6 +162,8 @@ export interface DeceCode extends BaseContract {
 
   callStatic: {
     allowed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+    decode(data: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     isAllowed(who: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -186,6 +195,8 @@ export interface DeceCode extends BaseContract {
   estimateGas: {
     allowed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    decode(data: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
+
     isAllowed(who: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
@@ -211,6 +222,11 @@ export interface DeceCode extends BaseContract {
   populateTransaction: {
     allowed(
       arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    decode(
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

@@ -21,13 +21,44 @@ import {
     TransparentUpgradeableProxy__factory,
     ProfileTokenURILogic__factory,
     LensPeripheryDataProvider__factory,
+    DeceCode__factory,
   } from '../typechain-types';
 import { utils } from 'ethers/lib/ethers';
+import { readFileSync } from 'fs-extra';
+import { join } from 'path';
 
 task('play', 'play test the protocol').setAction(async ({}, hre) => {
+  const [governance,,user,user2,user3] = await initEnv(hre);
+  const contract_path_relative =
+    '../src/assets/contracts/dececode_metadata.json';
+  const processDir = process.cwd();
+  
+  const contract_path = join(processDir, contract_path_relative);
+
+  const contratMetadata = JSON.parse(readFileSync(contract_path, 'utf-8'));
+  const contractAdress = contratMetadata.address;
+  const recipient = contractAdress;
+  const decode = DeceCode__factory.connect(
+    contractAdress,
+    user3
+  );
+
+
+
+  const abicoder = new hre.ethers.utils.AbiCoder()
+
+  const p =  abicoder.encode(['uint256'],[4]);
+
+  const h = abicoder.decode(['uint'],p)
+
+  const k = await decode.decode(p)
+  console.log(k)
+  console.log(h)
+    return
+
     const accounts = await hre.ethers.getSigners();
     let deployer = accounts[0];
-    const [governance,,user] = await initEnv(hre);
+  
     const addrs = getAddrs(hre);
     let deployerNonce = await hre.ethers.provider.getTransactionCount(deployer.address);
     let userNonce = await hre.ethers.provider.getTransactionCount(user.address);

@@ -1,8 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
+
+pragma solidity 0.8.10;
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import {ILensHub} from '../interfaces/ILensHub.sol';
 import {IERC721Time} from '../core/base/IERC721Time.sol';
-pragma solidity 0.8.10;
+import "hardhat/console.sol";
+
 
 contract DeceCode is Ownable  {
 
@@ -38,6 +42,13 @@ allowed[msg.sender] = false;
 function setAllowed() public {
   allowed[msg.sender] = true;
 }
+
+function decode(bytes memory data) public view returns(uint256) {
+   (uint256 profileId) = abi.decode(data, (uint256));
+   console.log(profileId);
+   return profileId;
+}
+
 
 // function setProfile(uint256 _dececodeId, uint256 _lensId, string memory profileUri) public onlyOwnerOfProfile({
 

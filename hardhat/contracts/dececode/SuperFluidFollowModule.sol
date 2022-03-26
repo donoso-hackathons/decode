@@ -71,7 +71,8 @@ contract SuperFluidFollowModule is
    returns (bytes memory newCtx)
   {
     ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
-    (uint256 profileId) = parseFollowerStream(decodedContext.userData);
+    (uint256 profileId) = abi.decode(decodedContext.userData, (uint256));
+   // (uint256 profileId) = parseFollowerStream(decodedContext.userData);
     emit FlowUpdated(profileId);
      (address follower2, ) = abi.decode(_agreementData, (address, address));
      emit ProfileAddress(owner);
