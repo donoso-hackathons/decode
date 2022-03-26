@@ -10,8 +10,9 @@ import { netWorkById, NETWORKS } from './constants/constants';
 import { startUpConfig } from './dapp-injector.module';
 //import LensProtocolAddresses from '../../assets/contracts/addresses_localhost.json';
 import LensProtocolAddresses from '../../assets/contracts_mumbai/addresses_mumbai.json';
+import SuperFluidMetadata from '../../assets/contracts/superFluidFollowModule_metadata.json';
 
-import { uniswap_abi } from './helpers/uniswap_abi';
+
 import {
   ICONTRACT_METADATA,
   ISTARTUP_CONFIG,
@@ -279,10 +280,14 @@ async getLensProfilebyAddress(){
     });
 
     this.config.defaultContract = contract;
+    console.log(SuperFluidMetadata)
+    const fluidumContract = new AngularContract({
+      metadata:SuperFluidMetadata,
+      provider: dispatchObject.provider,
+      signer: dispatchObject.signer,
+    })
 
-    this.store.dispatch(
-      Web3Actions.setDollarExhange({ exchange: this._dollarExchange })
-    );
+    this.config.contracts['superfluid'] = fluidumContract;
 
     const providerNetwork = await dispatchObject.provider.getNetwork();
 

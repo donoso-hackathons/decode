@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dececode-menu-bar',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router:Router) { }
+  goMembers(){
+    this.router.navigateByUrl('/members')
+  }
 
   ngOnInit(): void {
   }

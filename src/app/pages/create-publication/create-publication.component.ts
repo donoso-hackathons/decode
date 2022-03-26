@@ -7,7 +7,6 @@ import { utils } from 'ethers';
 
 
 import { Subject } from 'rxjs';
-import { ContractShowModule } from 'src/app/dapp-components';
 
 import { IUSER_POST_BLOG } from 'src/app/shared/models';
 import { IMetadata_ERC721, MetadataVersions } from 'src/app/shared/models/metadata';
@@ -194,7 +193,7 @@ export class CreatePublicationComponent implements AfterViewInit {
         this.lensHubContract = this.dappInjectorService.config.defaultContract;
         this.profile = this.dappInjectorService.currentProfile;
         this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
-       console.log(this.profileId)
+     
       }
     });
 

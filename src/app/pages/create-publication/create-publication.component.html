@@ -4,7 +4,7 @@
     <div class="Title">Your are creating a Publication</div>
     <div style="margin-top:10px;color: var(--twitter);" class="SubTitle">Your handle {{profile?.handle}}</div>
     <div  style="text-align: center;margin-bottom:20px;" class="ImageGroup">
-      <img (click)="fileuploadNFT.click()" class="NftImage" src="{{ nft_src }}" />
+      <img (click)="fileuploadNFT.click()" style="cursor:pointer;" class="NftImage" src="{{ nft_src }}" />
       <input hidden type="file" (change)="uploadNft($event)" #fileuploadNFT />
       <p class="ImageAction" (click)="fileuploadNFT.click()">
         click for change
@@ -50,11 +50,11 @@
         </div>
         <div class="followModuleDescription">
           <div *ngIf="publicationForm.controls.collectModuleCtrl.value == 0">
-            <div class="SubTitle">Every One</div>
+            <div style="color:var(--twitter)" class="ThirdTitle">Only your followers can collect/mint your publication</div>
           </div>
 
           <div *ngIf="publicationForm.controls.collectModuleCtrl.value == 1">
-            <div class="SubTitle">supporting</div>
+            <div style="color:var(--twitter)" class="ThirdTitle">Only people who spend some amount of Matic supporting you are able to convert you publication to Nft</div>
           </div>
         </div>
       </div>

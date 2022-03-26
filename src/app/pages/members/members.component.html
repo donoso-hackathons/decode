@@ -1,0 +1,15 @@
+<div class="mainContainer">
+    <div class="createModal">
+      <i  (click)="back()" class="close material-icons">close</i>
+      <div class="Title">Your stream</div>
+
+  
+   
+        <div class="FollowModule">
+          <dececode-button style="margin-top:30px" (onClick)="startStream()" [outline]="true"
+          >Start Stream</dececode-button>
+
+
+          <dececode-button style="margin-top:30px" (onClick)="stopStream()" [outline]="true"
+          >Stop Stream</dececode-button>
+      </div>
