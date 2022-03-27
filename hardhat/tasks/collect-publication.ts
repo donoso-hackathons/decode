@@ -17,6 +17,7 @@ task('collect-publication', 'collect publication').setAction(async ({}, hre) => 
     const addrs = getAddrs();
     const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
+   // const cllectmo = 
 
   //// create paywal profile 
   let user2_nonce = await hre.ethers.provider.getTransactionCount(user2.address);
@@ -29,6 +30,7 @@ task('collect-publication', 'collect publication').setAction(async ({}, hre) => 
       const collectNFTAddr = await lensHub.getCollectNFT(1, 1);
       const collectNFT = CollectNFT__factory.connect(collectNFTAddr, user2);
     
+
       const publicationContentURI = await lensHub.getContentURI(1, 1);
       const totalSupply = await collectNFT.totalSupply();
       const ownerOf = await collectNFT.ownerOf(1);

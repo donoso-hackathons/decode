@@ -90,11 +90,11 @@ export class CreatePublicationComponent implements AfterViewInit {
 
     this.publicationForm = this.formBuilder.group({
       titleCtrl: [
-        'My awesome publication',
+        '',
         [Validators.required, Validators.maxLength(100)],
       ],
       descriptionCtrl: [
-        'my Gloroious eblblblblb blblbllb',
+        '',
         [Validators.required, Validators.maxLength(500)],
       ],
       collectModuleCtrl: [0],
@@ -121,16 +121,18 @@ export class CreatePublicationComponent implements AfterViewInit {
     this.clicked = true;
     let colletOption = this.publicationForm.controls.collectModuleCtrl.value;
     let collectData;
+    let collectAddress;
     const myaddress =
     await this.dappInjectorService.config.signer.getAddress();
-    if (colletOption.value == 1){
+    if (colletOption  == 1){
       this.publicationForm.controls.valueCtrl.setValidators(Validators.compose([Validators.required, Validators.min(10000)]));
       const currencyAddress = this.dappInjectorService.lensProtocolAddresses['currency']
       console.log(currencyAddress)
       collectData = utils.defaultAbiCoder.encode([ "uint", "address","address","uint16" ], [ 10005, currencyAddress,myaddress,0 ]);
-        
+      collectAddress = this.collectModuleOptions[1].address
     } else {
       collectData = [];
+      collectAddress = this.collectModuleOptions[0].address
       this.publicationForm.controls.valueCtrl.clearValidators()
     }
 
@@ -197,8 +199,8 @@ export class CreatePublicationComponent implements AfterViewInit {
       let publication: PostDataStruct | any= {
         profileId: this.profileId.toString(),
         contentURI: pubNft_metadata_ipfs.path,
-        collectModule: this.collectModuleOptions[0].address,
-        collectModuleData: [],
+        collectModule: collectAddress,
+        collectModuleData:  collectData ,
         referenceModule: this.dappInjectorService.ZERO_ADDRESS,
         referenceModuleData: [],
       };

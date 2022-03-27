@@ -18,6 +18,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   currentProfile: ProfileStructStruct;
   availableProfiles:Array<ProfileStructStruct> = [];
   value: string;
+  profileAdress: string;
 
   constructor(
     private notifierService:NotifierService,
@@ -53,7 +54,7 @@ export class MainComponent implements OnInit, AfterViewInit {
       if (value == 'lens-profiles-found' ) {
         this.availableProfiles = this.dappInjectorService.availableProfiles;
         this.currentProfile = this.dappInjectorService.currentProfile;
-
+        this.profileAdress  = await this.dappInjectorService.config.signer.getAddress();
       }
 
       this.blockchain_status = value;

@@ -19,8 +19,10 @@ import { NotifierModule } from 'src/app/dapp-components/notifier';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ParticlesModule } from 'src/app/shared/components/particles/particles.module';
+import { MatIconModule } from '@angular/material/icon';
 
-
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ListComponent,
     NewsComponent,
     FollowSuggestionsComponent,
-    OnboardComponent
+    OnboardComponent,
+   
   ],
   imports: [
     CommonModule,
@@ -46,7 +49,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatSelectModule,
     ButtonModule,
-    NotifierModule
+    NotifierModule,
+    ParticlesModule,
+    MatIconModule,
+    ClipboardModule
   ],
   providers:[]
 })

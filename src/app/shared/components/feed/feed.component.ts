@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import {
   AngularContract,
   DappInjectorService,
+  Web3Actions,
   web3Selectors,
 } from 'angular-web3';
 import { IpfsService } from '../../services/ipfs-service';
@@ -18,6 +19,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
 import { LitProtocolService } from '../../services/lit-protocol-service';
 import { AlertService } from '../alerts/alert.service';
+import { utils } from 'ethers';
 
 @Component({
   selector: 'dececode-feed',
@@ -34,6 +36,8 @@ export class FeedComponent implements AfterViewInit {
   loading = true;
   publications: any = [];
   encrypted: any[];
+  show_success: boolean;
+  collectAddress: any;
   constructor(
     public formBuilder: FormBuilder,
     private dappInjectorService: DappInjectorService,
@@ -42,6 +46,34 @@ export class FeedComponent implements AfterViewInit {
     private litProtocolService: LitProtocolService,
     public alertService: AlertService
   ) {}
+
+
+
+    async collect(pub) {
+      console.log(pub)
+     if (pub.collectModule == this.dappInjectorService.lensProtocolAddresses['empty collect module']) {
+      this.collectAddress = pub.collectModule
+      this.store.dispatch(Web3Actions.chainBusy({ status: true }));
+     await  this.dappInjectorService.config.defaultContract.contract.collect(pub.profileId, pub.pubId, [] , { 
+        gasPrice:  utils.parseUnits('100', 'gwei'), 
+        gasLimit: 2000000 })
+        this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+        this.show_success = true;
+
+     } else if(pub.collectModule ==   this.dappInjectorService.lensProtocolAddresses['fee collect module']){
+      console.log('collect')
+      const currency = this.dappInjectorService.lensProtocolAddresses["currency"]
+      console.log(currency)
+      const encodedData = utils.defaultAbiCoder.encode(['string','uint256'], [currency,10000]);
+     }
+    
+
+    }
+
+    async close() {
+   
+      this.show_success = false
+    }
 
   async decrypt(id) {
 
@@ -55,7 +87,8 @@ export class FeedComponent implements AfterViewInit {
     ].contract.hasSubscription()
      let message = `You have to be subscribed to decode this publication`
      if (amIallowed == true){
-
+        message = `Althought you are subscribed we have temprary problems with the network`
+        this.alertService.showAlertOK('OK', message)
      } else {
        this.alertService.showAlertERROR('OOPS',message)
      }
@@ -122,7 +155,7 @@ export class FeedComponent implements AfterViewInit {
               const image = await this.ipfs.getImage(pubjson.media[0].item);
 
               this.pubs.push({ profileId: k, pubId: i });
-              this.publications.push({ ...pubjson, ...pub, ...{ src: image },...{profile:json_Profile},...{profile_src:image_Profile} });
+              this.publications.push({...{profileId:k, pubId:i},  ...pubjson, ...pub, ...{ src: image },...{profile:json_Profile},...{profile_src:image_Profile} });
             }
         
         

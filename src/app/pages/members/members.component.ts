@@ -84,9 +84,7 @@ export class MembersComponent implements AfterViewInit {
         `Congrats - you've just created a money stream!
 View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );
-      this.hasSubscription = await this.dappInjectorService.config.contracts[
-        'superfluid'
-      ].contract.hasSubscription();
+      this.hasSubscription = true;
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     } catch (error) {
       console.log(error);
@@ -139,9 +137,7 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
 
       console.log( `Congrats - you've just created a money stream  View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );
-      this.hasSubscription = await this.dappInjectorService.config.contracts[
-        'superfluid'
-      ].contract.hasSubscription();
+     this.hasSubscription = false;
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     } catch (error) {
       console.log(error);
@@ -165,11 +161,11 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
         // this.profile = this.dappInjectorService.currentProfile;
         const myaddress =
           await this.dappInjectorService.config.signer.getAddress();
-        console.log(myaddress);
+     
         this.hasSubscription = await this.dappInjectorService.config.contracts[
           'superfluid'
         ].contract.hasSubscription();
-        console.log(this.hasSubscription);
+     
         //   this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
 
         this.dappInjectorService.config.contracts['superfluid'].contract.on(

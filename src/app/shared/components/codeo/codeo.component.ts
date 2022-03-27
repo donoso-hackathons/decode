@@ -12,9 +12,13 @@ export class CodeoComponent implements OnInit {
 
 @Input() codeo:any
 @Output() onDecrypt =  new EventEmitter();
-
+@Output() onCollect =  new EventEmitter();
   ngOnInit(): void {
     console.log(this.codeo.id)
+  }
+
+  collect() {
+    this.onCollect.emit(this.codeo)
   }
 
   decrypt(){

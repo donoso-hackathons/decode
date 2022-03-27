@@ -28,6 +28,11 @@
           alt="Imge Post"
         />
       </div>
+      <dececode-button  (click)="collect()" *ngIf="!codeo.encrypted"
+      style="margin-top: 30px"
+      
+      [outline]="true"
+      >Collect</dececode-button>
       <dececode-button  (click)="decrypt()" *ngIf="codeo.encrypted == true"
       style="margin-top: 30px"
       
