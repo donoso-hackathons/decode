@@ -8,28 +8,33 @@
 
   <div class="codeoBody">
     <div class="Avatar">
-      <img src="{{ codeo.avatar }}" alt="{{ codeo.author }}" />
+      <img src="{{ codeo.profile_src }}" alt="{{ codeo.handle }}" />
     </div>
 
     <div class="Content">
       <div class="Header">
-        <strong>{{ codeo.author }}</strong>
+        <strong>{{ codeo.profile.name }}</strong>
         <span>{{ codeo.twitteruser }}</span>
         <!-- <Dot /> -->
         <div class="time">{{ codeo.posttime }}</div>
       </div>
 
-      <div class="Description">{{ codeo.posttext }}</div>
+      <div class="Description">{{ codeo.description }}</div>
 
-      <div class="ImageContent">
-        <img
-          *ngIf="codeo.postimage"
-          src="{{ codeo.postimage }}"
+      <div   class="ImageContent">
+        <img style="object-fit: cover;"
+          *ngIf="codeo.src !== undefined"
+          src="{{ codeo.src }}"
           alt="Imge Post"
         />
       </div>
-
-      <div class="Icons">
+      <dececode-button  (click)="decrypt()" *ngIf="codeo.encrypted == true"
+      style="margin-top: 30px"
+      
+      [outline]="true"
+      >Decript</dececode-button
+    >
+      <!-- <div class="Icons">
         <div class="Status">
           <i class="iconCodeo material-icons">comment</i>
 
@@ -44,7 +49,8 @@
 
           {{ codeo.likecount }}
         </div>
-      </div>
+      </div> -->
+      
     </div>
   </div>
 </div>

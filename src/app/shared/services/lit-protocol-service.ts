@@ -30,12 +30,13 @@ export class LitProtocolService {ipfs: any;
   // }
 
   async decrypt(objtoDecrypt): Promise<any> {
+    console.log('422222')
     const de_buffer = Buffer.from(objtoDecrypt.buffer)
 
-
+    console.log('422222')
     const encryptBuffer = Object.keys(objtoDecrypt.encryptedSymmetricKey).map(key=>objtoDecrypt.encryptedSymmetricKey[key]);
     const encrypted8 =  Uint8Array.from(encryptBuffer);
-
+    console.log('422222')
 
     const blob = new Blob([de_buffer])
     const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: 'mumbai'})
@@ -72,33 +73,16 @@ export class LitProtocolService {ipfs: any;
  
     const arrayBuffer = await encryptedString.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const accessControlConditionsx = [
-      {
-        contractAddress: '',
-        standardContractType: '',
-        chain: 'mumbai',
-        method: 'eth_getBalance',
-        parameters: [
-          ':userAddress',
-          'latest'
-        ],
-        returnValueTest: {
-          comparator: '>=',
-          value: '10000000000000'
-        }
-      }
-    ]
+ 
 
     const evmContractConditions = [
       {
-        contractAddress: "0x5bA66C95ce1555b5C289E61E6C1F1a6CEeeFAff5",
-        functionName: "isAllowed",
+        contractAddress: "0xe47dF19FE218653264a5766408aF0bc7EAC74572",
+        functionName: "hasSubscription",
         functionParams: [":userAddress"],
-        functionAbi:{
-          "inputs": [
-            { "internalType": "address", "name": "who", "type": "address" }
-          ],
-          "name": "isAllowed",
+        functionAbi:     {
+          "inputs": [],
+          "name": "hasSubscription",
           "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
           "stateMutability": "view",
           "type": "function"

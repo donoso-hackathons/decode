@@ -24,9 +24,11 @@ export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
     "_openSubscription(uint256,address)": FunctionFragment;
     "followModuleTransferHook(uint256,address,address,uint256)": FunctionFragment;
     "getProfileData(uint256)": FunctionFragment;
-    "hasSubscription(uint256,address)": FunctionFragment;
+    "hasSubscription()": FunctionFragment;
     "initializeFollowModule(uint256,bytes)": FunctionFragment;
     "processFollow(address,uint256,bytes)": FunctionFragment;
+    "revokeSubscription()": FunctionFragment;
+    "setSubscription()": FunctionFragment;
     "validateFollow(uint256,address,uint256)": FunctionFragment;
   };
 
@@ -49,7 +51,7 @@ export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "hasSubscription",
-    values: [BigNumberish, string]
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "initializeFollowModule",
@@ -58,6 +60,14 @@ export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "processFollow",
     values: [string, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeSubscription",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setSubscription",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "validateFollow",
@@ -91,6 +101,14 @@ export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "processFollow",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeSubscription",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setSubscription",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -155,11 +173,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    hasSubscription(
-      profileId: BigNumberish,
-      toCheck: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    hasSubscription(overrides?: CallOverrides): Promise<[boolean]>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -171,6 +185,14 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       follower: string,
       profileId: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    revokeSubscription(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setSubscription(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -209,11 +231,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  hasSubscription(
-    profileId: BigNumberish,
-    toCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  hasSubscription(overrides?: CallOverrides): Promise<boolean>;
 
   initializeFollowModule(
     profileId: BigNumberish,
@@ -225,6 +243,14 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
     follower: string,
     profileId: BigNumberish,
     data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  revokeSubscription(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setSubscription(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -263,11 +289,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    hasSubscription(
-      profileId: BigNumberish,
-      toCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    hasSubscription(overrides?: CallOverrides): Promise<boolean>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -281,6 +303,10 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    revokeSubscription(overrides?: CallOverrides): Promise<void>;
+
+    setSubscription(overrides?: CallOverrides): Promise<void>;
 
     validateFollow(
       profileId: BigNumberish,
@@ -320,11 +346,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    hasSubscription(
-      profileId: BigNumberish,
-      toCheck: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    hasSubscription(overrides?: CallOverrides): Promise<BigNumber>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -336,6 +358,14 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       follower: string,
       profileId: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    revokeSubscription(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setSubscription(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -375,11 +405,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    hasSubscription(
-      profileId: BigNumberish,
-      toCheck: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    hasSubscription(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -391,6 +417,14 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
       follower: string,
       profileId: BigNumberish,
       data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revokeSubscription(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setSubscription(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

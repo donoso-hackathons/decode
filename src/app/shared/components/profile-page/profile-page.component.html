@@ -6,7 +6,7 @@
       z-index: 1;" [diameter]="45"  ></mat-spinner>
     </div>
     <div   class="Avatar">
-      <img 
+      <img  style="object-fit:cover"
         src="{{image_src}}"
         alt="{{currentProfile.handle}}"
       />
@@ -17,27 +17,12 @@
   <div class="ProfileData">
     <!-- <EditButton outlined>Set up profile</EditButton> -->
 
-    <h1>Elton Lazzarin</h1>
+
     <h2>{{currentProfile.handle}}</h2>
 
-    <p>
-      Developer at
-      <a href="https://www.linkedin.com/in/eltonlazzarin/" target="_blank">
-        @WordlLab
-      </a>
-    </p>
 
-    <ul>
-      <li>
-        <i class="profilePageiconCSS material-icons">location</i>
 
-        São José do Rio Preto, Brazil
-      </li>
-      <li>
-        <!-- <CakeIcon />
-          Born on May 13, 1989 -->
-      </li>
-    </ul>
+
 
     <div class="Followage">
       <span>

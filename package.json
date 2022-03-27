@@ -12,7 +12,7 @@
     "clean": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json clean",
     "play": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json play",
     "full-deploy": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json full-deploy",
-    "white-list": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json white-list",
+    "white-list": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json white-list-superFluid",
     "unpause": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json unpause",
     "create-profile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json create-profile",
     "create-lit": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json create-lit",

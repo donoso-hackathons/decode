@@ -9,15 +9,15 @@ export enum Web3ActionTypes {
   DisconnectChain = '[Disconnect] Chain',
   setSignerNetwork = '[Set] SignerNetwork',
   SetDollarExhange = '[Set] Dollar',
-  UpdateWalletBalance = '[Update] WalletBalance'
-
+  UpdateWalletBalance = '[Update] WalletBalance',
+  ViewContractReady = '[View] ContractReady',
 }
 // const chainMount = createAction('[Chain] Mount')();
 // const chainReady = createAction('[Chain] Ready')();
 
 const chainStatus = createAction('[Chain] Status', props<{status:NETWORK_STATUS }>());
 const chainBusy = createAction('[Chain] Busy', props<{status:boolean}>());
-
+const viewContract = createAction('[View] ContractReady', props<{status:boolean}>());
 
 const setSignerNetwork = createAction( '[Set] SignerNetwork', props<{network:string}>());
 
@@ -33,7 +33,7 @@ export const Web3Actions = {
   chainStatus,
   chainBusy,
 
-
+  viewContract,
 
   setSignerNetwork,
 

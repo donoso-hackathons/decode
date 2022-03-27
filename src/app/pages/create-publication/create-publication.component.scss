@@ -44,6 +44,10 @@
     font-weight: bold;
     font-size: 14px;
   }
+.ThirdTitle {
+  line-height: 27px;
+}
+
   .ImageWrapper {
     display: flex;
     flex-wrap: wrap;
@@ -159,8 +163,9 @@
   
     max-height: 300px;
     height: 300px;
-    font-size: 14px;
-    padding: 0 10px 0 0px;
+    font-size: 16px;
+    line-height: 18px;;
+   // padding: 0 10px 0 0px;
     border-radius: 29.5px;
     background: var(--white);
   

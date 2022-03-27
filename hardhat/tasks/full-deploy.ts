@@ -279,33 +279,37 @@ let treasuryAddress
   // Whitelist the collect modules
   console.log('\n\t-- Whitelisting Collect Modules --');
   let governanceNonce = await hre.ethers.provider.getTransactionCount(governance.address);
+  console.log(1)
   await waitForTx(
     lensHub.whitelistCollectModule(feeCollectModule.address, true, { nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
+  console.log(2)
   await waitForTx(
     lensHub.whitelistCollectModule(limitedFeeCollectModule.address, true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
+  console.log(3)
   await waitForTx(
     lensHub.whitelistCollectModule(timedFeeCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-
+  console.log(4)
   await waitForTx(
     lensHub.whitelistCollectModule(limitedTimedFeeCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-
+  console.log(5)
   await waitForTx(
     lensHub.whitelistCollectModule(revertCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
-
+  console.log(6)
   await waitForTx(
     lensHub.whitelistCollectModule(emptyCollectModule.address,  true,{ nonce: governanceNonce++,gasPrice:  utils.parseUnits('100', 'gwei'), 
     gasLimit: 2000000 })
   );
+  console.log(7)
   // Whitelist the follow modules
   console.log('\n\t-- Whitelisting Follow Modules --');
   await waitForTx(

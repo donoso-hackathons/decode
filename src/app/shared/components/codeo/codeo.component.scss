@@ -1,4 +1,10 @@
 
+.codeoContainer {
+  padding: 15px 15px 30px 15px;
+  margin: 15px 0 20px;
+  border-bottom: 1px solid var(--twitter);
+}
+
 .Container{
 display: flex;
 flex-direction: column;
@@ -100,6 +106,7 @@ margin: 0 10px;
 .Description {
 font-size: 14px;
 margin-top: 4px;
+padding: 22px;
 }
 
 .ImageContent{

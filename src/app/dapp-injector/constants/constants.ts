@@ -4,7 +4,7 @@ export const INFURA_ID = "460f40a260564ac4a4f4b3fffb032dad";
 // MY ETHERSCAN_ID, SWAP IN YOURS FROM https://etherscan.io/myapikey
 export const ETHERSCAN_KEY = "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
 
-export const GRAPH_APIURL = "https://api.thegraph.com/subgraphs/name/jdonosocoding/gratitude-nft"
+export const GRAPH_APIURL = "";
 
 export const ALCHEMY_KEY = "oKxs-03sij-U_N0iOlrSsZFr29-IqbuF";
 
@@ -102,7 +102,7 @@ export const NETWORKS:{[key:string]: INETWORK} = {
     chainId: 80001,
     price: 1,
     gasPrice: 1000000000,
-    rpcUrl: "https://rpc-mumbai.maticvigil.com",
+    rpcUrl: `https://polygon-mumbai.g.alchemy.com/v2/P2lEQkjFdNjdN0M_mpZKB8r3fAa2M0vT`,
     faucet: "https://faucet.polygon.technology/",
     blockExplorer: "https://mumbai.polygonscan.com/",
   },

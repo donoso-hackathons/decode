@@ -8,10 +8,12 @@ import {
   ITRANSACTION_DETAILS,
   ITRANSACTION_RESULT,
 } from '../models/models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Injectable()
 export class AngularContract implements OnDestroy {
   private _contract!: Contract;
+  public contractReady: Subject<void> = new Subject();
   private _provider!: providers.JsonRpcProvider;
   private _balance: any;
   private _network!: string;
@@ -27,7 +29,7 @@ export class AngularContract implements OnDestroy {
       signer: Signer;
     }
   ) {
-    this.init();
+    
   }
 
   async init() {
@@ -39,7 +41,7 @@ export class AngularContract implements OnDestroy {
       this.contract_init.signer
     );
 
-
+    
     return this._contract;
   }
 

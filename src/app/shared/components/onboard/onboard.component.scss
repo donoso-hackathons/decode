@@ -18,7 +18,7 @@
     width: 100%;
     height: min(33vw, 199px);
   
-    
+  
     position: relative;
     }
     
@@ -55,6 +55,8 @@
     flex-direction: column;
   margin-bottom:20px;
     position: relative;
+    border-bottom:1px solid var(--twitter);
+    padding-bottom:20px;
     
     > h1 {
       font-weight: bold;

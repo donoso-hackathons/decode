@@ -189,13 +189,17 @@
     }
   }
   
+  .thirdTitle {
+      margin: 0 30px 30px;
+      font-weight: 400;
+  }
   .FollowModule{
     width: 300px;
     padding: 10px;
-    border: 1px solid var(--white);
+    // border: 1px solid var(--white);
     width: 300px;
     padding: 16px;
-    border: 1px solid var(--white);
+    // border: 1px solid var(--white);
     border-radius: 20px;
     text-align: center;
   }

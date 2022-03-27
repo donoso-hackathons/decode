@@ -20,8 +20,7 @@ contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
 
   event FlowUpdated(uint256 profileId);
   event ProfileAddress(address profileOwner);
-  address profileOwner = 0xe09E488A6E1B8237b63e028218CCf72a2a398CB1;
-  address ownerMock = 0x8A781c02D31E4CCF0dFA9F67106fc81DFC9Ea512;
+
 
   constructor(
     ISuperfluid host,
@@ -65,9 +64,11 @@ contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
     // (uint256 profileId) = parseFollowerStream(decodedContext.userData);
     emit FlowUpdated(profileId);
     (address follower, ) = abi.decode(_agreementData, (address, address));
-    emit ProfileAddress(ownerMock);
+    emit ProfileAddress(profileOwner);
     emit ProfileAddress(follower);
-    _approvedByProfilebySubscription[ownerMock][4][follower] = true;
+
+    // _approvedByProfilebySubscription[profileOwner][1][follower] = true;
+    setSubscription();
     return _ctx;
     // return _updateOutflow(_ctx, _agreementData);     onlyExpected(_superToken, _agreementClass)
   }
@@ -84,12 +85,12 @@ contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
      ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
     uint256 profileId = abi.decode(decodedContext.userData, (uint256));
     emit FlowUpdated(profileId);
-     address owner = IERC721(HUB).ownerOf(profileId);
+  
     (address follower, ) = abi.decode(_agreementData, (address, address));
-    emit ProfileAddress(owner);
-    emit ProfileAddress(ownerMock);
+    emit ProfileAddress(profileOwner);
     emit ProfileAddress(follower);
-    _approvedByProfilebySubscription[ownerMock][4][follower] = false;
+    // _approvedByProfilebySubscription[profileOwner][1][follower] = false;
+     revokeSubscription();
     return _ctx;
  
   }

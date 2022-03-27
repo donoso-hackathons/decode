@@ -9,6 +9,7 @@ export const startUpConfig:ISTARTUP_CONFIG = {
   connectedNetwork:'',
   wallet: 'wallet',
   defaultContract:null,
+  defaultViewContract:null,
   blockSubscription: false,
   providers:{},
   contracts:{},

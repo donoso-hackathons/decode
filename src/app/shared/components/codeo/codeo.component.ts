@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ICODEO } from '../../models/models-codeo';
 
 @Component({
@@ -10,10 +10,17 @@ export class CodeoComponent implements OnInit {
 
   constructor() { }
 
-@Input() codeo:ICODEO
+@Input() codeo:any
+@Output() onDecrypt =  new EventEmitter();
 
   ngOnInit(): void {
+    console.log(this.codeo.id)
+  }
 
+  decrypt(){
+    console.log('decrp')
+    console.log(this.codeo)
+    this.onDecrypt.emit(this.codeo.id)
   }
 
 }

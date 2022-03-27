@@ -12,6 +12,7 @@ export interface ISTARTUP_CONFIG {
   providers: {[key:string]: any},
   signer?: Signer 
   defaultContract:AngularContract | null,
+  defaultViewContract:AngularContract | null,
   contracts:{[key:string]: AngularContract}
 }
 

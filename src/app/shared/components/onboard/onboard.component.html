@@ -28,10 +28,7 @@
       </div>
     
       <div class="ProfileData">
-        <dececode-button style="position: relative" (click)="connect.emit(true)"  class="EditButton" [outline]="true">Connect</dececode-button> 
-        <dececode-button  style="position: relative"(click)="signUp.emit(true)"  class="EditButton" [outline]="true">SignUp</dececode-button> 
-
-  
+        <dececode-button style="position: relative;width: fit-content;margin: auto;" (click)="connect.emit(true)"  class="EditButton" [outline]="true">Connect</dececode-button> 
       </div>
   </div> 
   <div *ngIf="blockchain_status == 'fail'">

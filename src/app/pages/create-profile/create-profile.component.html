@@ -4,7 +4,7 @@
     <div class="Title">Create Your Profile</div>
     <div class="ImageWrapper">
       <div class="ImageGroup">
-        <img class="Avatar" src="{{ image_src }}" />
+        <img  (click)="fileupload.click()" style="object-fit: cover;" class="Avatar" src="{{ image_src }}" />
 
         <input
           hidden
@@ -12,8 +12,8 @@
           (change)="uploadProfile($event)"
           #fileupload
         />
-        <p class="ImageAction" (click)="fileupload.click()">click for change</p>
-        <p class="ImageAction" (click)="resetProfile()">(freset)</p>
+        <p class="ImageAction" (click)="fileupload.click()"  >click for change</p>
+        <p class="ImageAction" (click)="resetProfile()">(reset)</p>
       </div>
       <div class="SamePicture">
         <mat-checkbox
@@ -23,7 +23,7 @@
         <p class="text">Same Image</p>
       </div>
       <div class="ImageGroup">
-        <img class="NftImage" src="{{ nft_src }}" />
+        <img (click)="fileuploadNFT.click()" style="object-fit: cover;" class="NftImage" src="{{ nft_src }}" />
         <input hidden type="file" (change)="uploadNft($event)" #fileuploadNFT />
         <p class="ImageAction" (click)="fileuploadNFT.click()">
           click for change

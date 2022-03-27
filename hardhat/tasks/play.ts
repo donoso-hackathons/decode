@@ -54,7 +54,7 @@ task('play', 'play test the protocol').setAction(async ({}, hre) => {
   const k = await decode.decode(p)
   console.log(k)
   console.log(h)
-    return
+ 
 
     const accounts = await hre.ethers.getSigners();
     let deployer = accounts[0];

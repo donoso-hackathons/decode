@@ -37,6 +37,13 @@ const isNetworkBusy = createSelector(
   (state: Web3State) => state.isNetworkBusy
 );
 
+const isviewReady = pipe(
+  select(selectWeb3State),
+  map(map=> map.readingContract),
+  filter((val) => val == true)
+);
+
+
 
 const selectSignerNetwork = createSelector(
   selectWeb3State,
@@ -60,6 +67,7 @@ export const web3Selectors = {
   selectChainReady,
   pleaseDisconnect,
   isNetworkBusy,
+  isviewReady,
   selectSignerNetwork,
   selectWalletBalance,
   selectDollarExchange

@@ -5,8 +5,8 @@
       </div>button> -->
 
       <div class="ProfileInfo">
-        <strong>Elton Lazzarin</strong>
-        <span>432 Tweets</span>
+         <strong *ngIf="currentProfile!== undefined">{{currentProfile.handle}}</strong> 
+     
       </div>
     </div>
     <dececode-profile-page [currentProfile]="currentProfile"  

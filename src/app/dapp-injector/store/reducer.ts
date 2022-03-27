@@ -11,6 +11,7 @@ import { Web3State } from './models';
 export const initialState: Web3State = {
   chainStatus:'loading',
   isNetworkBusy:true,
+  readingContract:false,
   signerNetwork:'',
   etherToDollar:0,
   walletBalance:0
@@ -23,7 +24,7 @@ const web3dReducer = createReducer(
   initialState,
   on(web3Actions.Web3Actions.chainStatus, (state,{status}) => ({ ...state,chainStatus:status})),
   on(web3Actions.Web3Actions.chainBusy, (state,{status}) => ({ ...state, isNetworkBusy:status})),
-
+  on(web3Actions.Web3Actions.viewContract, (state,{status}) => ({ ...state, readingContract:status})),
   on(web3Actions.Web3Actions.setSignerNetwork, (state,{network}) => ({ ...state, signerNetwork:network})),
 
   on(web3Actions.Web3Actions.updateWalletBalance, (state,{walletBalance}) => ({ ...state, walletBalance})),

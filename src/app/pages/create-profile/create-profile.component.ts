@@ -144,6 +144,7 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
   }
 
   async close() {
+   
     this.router.navigateByUrl('/')
   }
 
@@ -168,6 +169,17 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
       const nftImage = nftImage_ipfs.path;
 
       // data:image/jpg
+      // image/gif
+      // image/jpeg
+      // image/png
+      // image/tiff
+      // image/x-ms-bmp
+      // image/svg+xml
+      // image/webp
+      let imageType = 'image/png';
+      if (nftImage.indexOf('image/jpg')!== -1){
+        imageType = 'image/jpeg'
+      }
 
       const followNft_metadata: IMetadata_ERC721 = {
         version: MetadataVersions.one,
@@ -178,8 +190,8 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
         image: nftImage,
         media: [
           {
-            item: nftImage,
-            type: 'image/png',
+            item: 'https://ipfs.io/ipfs/'+ nftImage,
+            type: imageType,
           },
         ],
         appId: 'dececode',
@@ -219,6 +231,7 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
       this.store.dispatch(Web3Actions.chainBusy({ status: false}));
       this.show_create_success = true;
     } catch (error) {
+      console.log(error)
       this.store.dispatch(Web3Actions.chainBusy({ status: false}));
        await  this.alertService.showAlertERROR('OOPS', 'An Error has happened')
 

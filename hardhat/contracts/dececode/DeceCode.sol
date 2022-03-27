@@ -31,6 +31,8 @@ constructor() { //address _lensHub, address _decodeHub){
     //     _;
     // }
 
+
+
 function isAllowed(address who) public view returns(bool){
   return allowed[who];
 }

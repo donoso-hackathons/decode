@@ -1,8 +1,14 @@
 <div class="feedContainer">
-    <div class="Tab">Tweets
-
+    <div class="Tab">Some Codeos!!
+        <div style="margin-top:10px" *ngIf="loading==true ">
+        <mat-spinner   style="    z-index: 1;margin-top:20px;
+        width: 45px;
+        height: 45px;
+        margin: auto;" [diameter]="45"  ></mat-spinner>
+          <h3 style="margin-top:10px;">Downlaoding your feed of codeos..</h3>
+        </div>
     <div class="Codeos">
-    <dececode-codeo  [codeo]="codeo"  *ngFor="let codeo of codeos"></dececode-codeo>
+    <dececode-codeo (onDecrypt)="decrypt($event)"  [codeo]="codeo"  *ngFor="let codeo of publications"></dececode-codeo>
     </div>
 </div>
 </div>

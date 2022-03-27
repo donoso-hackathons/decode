@@ -1,6 +1,6 @@
 .menu-container {
     display: none;
-
+    width:200px;
     @media (min-width: 500px) {
       display: flex;
       flex-direction: column;

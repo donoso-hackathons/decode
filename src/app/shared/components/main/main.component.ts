@@ -17,6 +17,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   lensHub: AngularContract;
   currentProfile: ProfileStructStruct;
   availableProfiles:Array<ProfileStructStruct> = [];
+  value: string;
 
   constructor(
     private notifierService:NotifierService,
@@ -38,9 +39,17 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
+    console.log(' i am intering')
+    if (this.value  == 'lens-profiles-found'){
+      this.availableProfiles = this.dappInjectorService.availableProfiles;
+      this.currentProfile = this.dappInjectorService.currentProfile;
+    }
+
     this.store.select(web3Selectors.chainStatus).subscribe(async (value) => {
     
       console.log(value)
+      this.value = value;
       if (value == 'lens-profiles-found' ) {
         this.availableProfiles = this.dappInjectorService.availableProfiles;
         this.currentProfile = this.dappInjectorService.currentProfile;

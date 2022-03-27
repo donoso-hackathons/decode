@@ -12,7 +12,6 @@ import { startUpConfig } from './dapp-injector.module';
 import LensProtocolAddresses from '../../assets/contracts_mumbai/addresses_mumbai.json';
 import SuperFluidMetadata from '../../assets/contracts/superFluidFollowModule_metadata.json';
 
-
 import {
   ICONTRACT_METADATA,
   ISTARTUP_CONFIG,
@@ -25,6 +24,7 @@ import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
 import { Web3ModalComponent } from './web3-modal/web3-modal.component';
 import { LensApiService } from '../shared/services/lens-api-service';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
+import { take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -169,7 +169,6 @@ export class DappInjectorService {
     return myMessage;
   }
 
-
   async launchWenmodal() {
     if (
       this.config.defaultNetwork == 'localhost' &&
@@ -228,43 +227,43 @@ export class DappInjectorService {
     }
   }
 
-async getLensProfilebyAddress(){
+  async getLensProfilebyAddress() {
+    const signerAddress = await this.config.signer.getAddress();
 
-  const signerAddress = await this.config.signer.getAddress();
-  const profilesBalancebyAdress = +(
-    await this.config.defaultContract.contract.balanceOf(signerAddress)).toString();
-  let pub = 0;
-  let maxpubIndex = 0;
-  for (let i = 0; i < profilesBalancebyAdress; i++) {
-    const token =
-      await this.config.defaultContract.contract.tokenOfOwnerByIndex(
-        signerAddress,
-        i
-      );
-    const profile = (await this.config.defaultContract.contract.getProfile(
-      +token.toString()
-    )) as ProfileStructStruct;
-    this.availableProfiles.push(profile);
-    if (profile.pubCount > pub) {
-      maxpubIndex = i;
+    const profilesBalancebyAdress = +(
+      await this.config.defaultContract.contract.balanceOf(signerAddress)
+    ).toString();
+    let pub = 0;
+    let maxpubIndex = 0;
+    for (let i = 0; i < profilesBalancebyAdress; i++) {
+      const token =
+        await this.config.defaultContract.contract.tokenOfOwnerByIndex(
+          signerAddress,
+          i
+        );
+      const profile = (await this.config.defaultContract.contract.getProfile(
+        +token.toString()
+      )) as ProfileStructStruct;
+      this.availableProfiles.push(profile);
+      if (profile.pubCount > pub) {
+        maxpubIndex = i;
+      }
     }
-  }
-  this.currentProfile = this.availableProfiles[0];
-  switch (profilesBalancebyAdress) {
-    case 0:
-      this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
-      break;
+    this.currentProfile = this.availableProfiles[0];
+    switch (profilesBalancebyAdress) {
+      case 0:
+        this.store.dispatch(Web3Actions.chainStatus({ status: 'success' }));
+        break;
 
-    default:
-      this.store.dispatch(
-        Web3Actions.chainStatus({ status: 'lens-profiles-found' })
-      );
-      break;
-  }
-  
-  this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-}
+      default:
+        this.store.dispatch(
+          Web3Actions.chainStatus({ status: 'lens-profiles-found' })
+        );
+        break;
+    }
 
+    this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+  }
 
   async dispatchInit(dispatchObject: {
     signer: Signer;
@@ -279,28 +278,28 @@ async getLensProfilebyAddress(){
       signer: dispatchObject.signer,
     });
 
+    await contract.init();
+
     this.config.defaultContract = contract;
-    console.log(SuperFluidMetadata)
+
     const fluidumContract = new AngularContract({
-      metadata:SuperFluidMetadata,
+      metadata: SuperFluidMetadata,
       provider: dispatchObject.provider,
       signer: dispatchObject.signer,
-    })
-
+    });
+    await fluidumContract.init();
     this.config.contracts['superfluid'] = fluidumContract;
 
     const providerNetwork = await dispatchObject.provider.getNetwork();
 
     const networkString = netWorkById(providerNetwork.chainId)?.name as string;
- 
+
     this.config.connectedNetwork = networkString;
     this.store.dispatch(
       Web3Actions.setSignerNetwork({ network: networkString })
     );
 
-   
-    this.getLensProfilebyAddress()
-
+    this.getLensProfilebyAddress();
   }
 
   async initChain() {
@@ -309,8 +308,19 @@ async getLensProfilebyAddress(){
     const hardhatProvider = await this.createProvider([
       NETWORKS[this.config.defaultNetwork].rpcUrl,
     ]);
+    const contract = new AngularContract({
+      metadata: this.contractMetadata,
+      provider: hardhatProvider,
+      signer: hardhatProvider,
+    });
 
-    this.config.defaultProvider = hardhatProvider;
+    await contract.init();
+
+    this.config.defaultViewContract = contract;
+    this.store.dispatch(
+      Web3Actions.viewContract({ status:true })
+    );
+
     try {
       await hardhatProvider.getNetwork();
     } catch (error) {

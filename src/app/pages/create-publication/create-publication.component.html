@@ -4,12 +4,19 @@
     <div class="Title">Your are creating a Publication</div>
     <div style="margin-top:10px;color: var(--twitter);" class="SubTitle">Your handle {{profile?.handle}}</div>
     <div  style="text-align: center;margin-bottom:20px;" class="ImageGroup">
-      <img (click)="fileuploadNFT.click()" style="cursor:pointer;" class="NftImage" src="{{ nft_src }}" />
+      <img (click)="fileuploadNFT.click()" style="cursor:pointer;object-fit: cover;" class="NftImage" src="{{ nft_src }}" />
       <input hidden type="file" (change)="uploadNft($event)" #fileuploadNFT />
       <p class="ImageAction" (click)="fileuploadNFT.click()">
         click for change
       </p>
       <p class="ImageAction" (click)="resetNft()">(reset)</p>
+    </div>
+    <div class="SamePicture">
+      <mat-checkbox
+        class="check"
+        [formControl]="encryptCtrl"
+      ></mat-checkbox>
+      <p style="margin:10px"class="text">Vivible only for subscripters</p>
     </div>
     <div class="GlobalInput">
       <form class="Form" [formGroup]="publicationForm">
@@ -55,6 +62,15 @@
 
           <div *ngIf="publicationForm.controls.collectModuleCtrl.value == 1">
             <div style="color:var(--twitter)" class="ThirdTitle">Only people who spend some amount of Matic supporting you are able to convert you publication to Nft</div>
+            <div class="InputWrapper">
+              <input
+                type="number"
+                matInput
+                [formControl]="publication.form.controls.valueCtrl"
+                placeholder="Input amount (min 100000)*"
+                class="InputWrapper Input"
+              />
+            </div>
           </div>
         </div>
       </div>

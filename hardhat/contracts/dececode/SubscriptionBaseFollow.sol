@@ -27,7 +27,7 @@ contract SubscriptionBaseFollowModule is
     mapping(uint256 => bool) internal _dataByProfile;
     mapping(address => mapping(uint256 => mapping(address => bool)))
         internal _approvedByProfilebySubscription;
-
+      address profileOwner = 0x59602504f4FA5EFEA24B2CE2DA21E7De2094B7Fd;
     constructor(address hub, address moduleGlobals) ModuleBase(hub) {}
 
     /**
@@ -100,22 +100,26 @@ contract SubscriptionBaseFollowModule is
         // ILensNFTBase(nftAddress).burn(1);
 
     }
+       function setSubscription() public {
+        _approvedByProfilebySubscription[profileOwner][1][msg.sender] = true;
+       }
+
+         function revokeSubscription() public {
+        _approvedByProfilebySubscription[profileOwner][1][msg.sender] = false;
+       }
 
     /**
      * @notice Returns whether the given address is approved for the profile owned by a given address.
      *
-     * @param profileId The token ID of the profile to query approval with.
-     * @param toCheck The address to query approval for.
      *
      * @return
      */
     function hasSubscription(
-        uint256 profileId,
-        address toCheck
+  
     ) external view returns (bool) {
-        address profileOwner = IERC721(HUB).ownerOf(profileId);
+      
         return
-            _approvedByProfilebySubscription[profileOwner][profileId][toCheck];
+            _approvedByProfilebySubscription[profileOwner][1][msg.sender];
     }
 
     /**

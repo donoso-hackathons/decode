@@ -3,9 +3,8 @@ export interface Web3State {
     isNetworkBusy:boolean;
     signerNetwork:string;
     walletBalance:number;
-    etherToDollar:number;
-
-    
+    etherToDollar:number; 
+    readingContract:boolean;
   }
 
   export type NETWORK_STATUS = 'loading' 
