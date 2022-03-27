@@ -1,14 +1,23 @@
 # Desource
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
+The Decode project aims to be the first web3 social network based on lenshub protocol addressed to web3 coders creators and lovers.
+&nbsp; 
 
-## Development server
+In order to test some features of custom moduels required to inherit superfluid app on mumbai we have deployed all lens.protocol to mumbai and interact with them. 
+The addresses can be found below.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+&nbsp;  
+# 🏄‍♂️ Quick Start
+[See demo](https://dececode.web.app/)
+or If you want to work localhost`, use the famous angular command: ```ng serve```
+&nbsp; 
+ 
+### Not yet Wotking (one more day)
+-  follow 
+- collect when fee
+- mirror or comment
+&nbsp;   
+ 
 
 ## Contract addressess
 ```{
@@ -30,20 +39,8 @@ Run `ng generate component component-name` to generate a new component. You can 
   "empty collect module": "0x3494a2137b3cF4A35C714aF4Ba9763941971f843",
   "fee follow module": "0x0B13bf7C0e1AC13DC4BcCB25b2C417C6CEa4b07d",
   "approval follow module": "0x4FdA793307b938169475216F8BC72629e35eB459",
-  "follower only reference module": "0xBF2f2Cf181C4227840B77C40Aa4B9398962Fba95"
-}```
+  "follower only reference module": "0xBF2f2Cf181C4227840B77C40Aa4B9398962Fba95",
+}
+```
+Additional SuperfluidFollowModule conttract on Mumbai, address: 0xe47dF19FE218653264a5766408aF0bc7EAC74572
 
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
