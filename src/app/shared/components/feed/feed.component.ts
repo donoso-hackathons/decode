@@ -50,81 +50,6 @@ export class FeedComponent implements AfterViewInit {
 
   @Input() blockchain_status;
 
-
-
-
-  async follow(pub) {
- 
-    if (
-      this.blockchain_status == 'lens-profiles-found' ||
-      this.blockchain_status == 'success'
-    ) {
-      console.log('I am doing following', pub.profileId);
-      this.store.dispatch(Web3Actions.chainBusy({ status: true }));
-      try {
-      
-
-        const result_follow =  await this.dappInjectorService.config.defaultContract.contract.follow(
-          [pub.profileId],
-          [[]],
-          {
-            gasPrice: utils.parseUnits('100', 'gwei'),
-            gasLimit: 2000000,
-          }
-        );
-        const tx = await result_follow.wait();
-        this.alertService.showAlertOK('OK', `Succesfull follow Operation with tx:${tx.transactionHash}`)
-       console.log(tx.transactionHash)
-        this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-      } catch (error) {
-        console.log(error)
-        this.alertService.showAlertERROR('OOPS', 'Something went wrong')
-        this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-      }
-    } else {
-      this.alertService.showAlertERROR(
-        'OOPS',
-        'You need to be connected to be able to follow'
-      );
-    }
-  }
-
-  async collect(pub) {
-    console.log(pub);
-    if (
-      pub.collectModule ==
-      this.dappInjectorService.lensProtocolAddresses['empty collect module']
-    ) {
-      console.log('empty')
-    //   this.collectAddress = pub.collectModule;
-    //   this.store.dispatch(Web3Actions.chainBusy({ status: true }));
-    //  const result_collect =  await this.dappInjectorService.config.defaultContract.contract.collect(
-    //     pub.profileId,
-    //     pub.pubId,
-    //     [],
-    //     {
-    //       gasPrice: utils.parseUnits('100', 'gwei'),
-    //       gasLimit: 2000000,
-    //     }
-    //   );
-    //   const tx = await result_collect.wait();
-    //   this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-    //   this.show_success = true;
-    } else if (
-      pub.collectModule ==
-      this.dappInjectorService.lensProtocolAddresses['fee collect module']
-    ) {
-      console.log('collect');
-      const currency =
-        this.dappInjectorService.lensProtocolAddresses['currency'];
-      console.log(currency);
-      const encodedData = utils.defaultAbiCoder.encode(
-        ['string', 'uint256'],
-        [currency, 10000]
-      );
-    }
-  }
-
   async close() {
     this.show_success = false;
   }
@@ -235,7 +160,7 @@ export class FeedComponent implements AfterViewInit {
                   ...{ profile: json_Profile },
                   ...{ profile_src: image_Profile },
                 });
-               // return;
+               //return;
               }
             } catch (error) {
               console.log(error);
