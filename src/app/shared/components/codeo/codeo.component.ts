@@ -18,6 +18,9 @@ import { abi_FOLLOW_NFT } from 'src/app/dapp-injector/abis/FOLLOW_NFT';
 import { ICODEO } from '../../models/models-codeo';
 import { AlertService } from '../alerts/alert.service';
 
+import CollectFeeModuleMeatadata from '../../../../assets/contracts/feecollectmodule_metadata.json';
+
+
 @Component({
   selector: 'dececode-codeo',
   templateUrl: './codeo.component.html',
@@ -28,12 +31,15 @@ export class CodeoComponent implements OnChanges {
   followNftAngular: AngularContract;
   myAddress: string;
   tokensAmount: number = 0;
-
+  collectContract: AngularContract;
+  amount = 0
   constructor(
     private store: Store,
     public alertService: AlertService,
     private dappInjectorService: DappInjectorService
-  ) {}
+  ) {
+  
+  }
   disabled = true;
   @Input() codeo: any;
   @Input() blockchain_status: NETWORK_STATUS;
@@ -87,7 +93,31 @@ export class CodeoComponent implements OnChanges {
     ).toString();
 
     if (+this.tokensAmount > 0) {
+
+      if (
+        this.codeo.collectModule ==
+        this.dappInjectorService.lensProtocolAddresses['fee collect module']) {
+
+          this.collectContract = new AngularContract({
+            metadata: { 
+              abi:CollectFeeModuleMeatadata.abi, 
+              address:CollectFeeModuleMeatadata.address, 
+              name:'FeeColectmodule',
+              network:'mumbai'
+            },
+            provider: this.dappInjectorService.config.defaultProvider,
+            signer: this.dappInjectorService.config.signer
+          })
+          await  this.collectContract.init()
+          const data = await  this.collectContract.contract.getPublicationData(this.codeo.profileId, this.codeo.pubId)
+          this.amount = data.amount.toString();
+
+        } else {
+          this.amount = 0
+        }
       this.follower = 'follower';
+
+
     } else {
       this.follower = 'not';
     }
@@ -122,14 +152,18 @@ export class CodeoComponent implements OnChanges {
     this.onFollow.emit(this.codeo);
   }
 
-  collect() {
+ async  collect() {
+
+    console.log(this.codeo)
+ 
+   
     if (this.tokensAmount == 0) {
       this.alertService.showAlertERROR(
         'OOPS',
         'You have to follow the Creator in order to collect the publication'
       );
     }
-    this.onCollect.emit(this.codeo);
+   this.onCollect.emit(this.codeo);
   }
 
   decrypt() {

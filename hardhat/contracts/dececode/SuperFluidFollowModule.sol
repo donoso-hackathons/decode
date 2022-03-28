@@ -62,13 +62,14 @@ contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
     ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
     uint256 profileId = abi.decode(decodedContext.userData, (uint256));
     // (uint256 profileId) = parseFollowerStream(decodedContext.userData);
+    address owner = IERC721(HUB).ownerOf(profileId);
     emit FlowUpdated(profileId);
     (address follower, ) = abi.decode(_agreementData, (address, address));
-    emit ProfileAddress(profileOwner);
+    emit ProfileAddress(owner);
     emit ProfileAddress(follower);
 
-    // _approvedByProfilebySubscription[profileOwner][1][follower] = true;
-    setSubscription();
+     _approvedByProfilebySubscription[owner][profileId][follower] = true;
+    //setSubscription();
     return _ctx;
     // return _updateOutflow(_ctx, _agreementData);     onlyExpected(_superToken, _agreementClass)
   }
@@ -84,13 +85,14 @@ contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
     
      ISuperfluid.Context memory decodedContext = _host.decodeCtx(_ctx);
     uint256 profileId = abi.decode(decodedContext.userData, (uint256));
+    address owner = IERC721(HUB).ownerOf(profileId);
     emit FlowUpdated(profileId);
   
     (address follower, ) = abi.decode(_agreementData, (address, address));
-    emit ProfileAddress(profileOwner);
+    emit ProfileAddress(owner);
     emit ProfileAddress(follower);
-    // _approvedByProfilebySubscription[profileOwner][1][follower] = false;
-     revokeSubscription();
+     _approvedByProfilebySubscription[owner][profileId][follower] = false;
+     //revokeSubscription();
     return _ctx;
  
   }
@@ -133,12 +135,12 @@ contract SuperFluidFollowModule is SuperAppBase, SubscriptionBaseFollowModule {
     emit FlowUpdated(profileId);
     (address follower, ) = abi.decode(_agreementData, (address, address));
     //  address profileOwner = IERC721(HUB).ownerOf(profileId);
-
-    emit ProfileAddress(profileOwner);
+    address owner = IERC721(HUB).ownerOf(profileId);
+    emit ProfileAddress(owner);
     // address treasury = "";
 
-    require(address(profileOwner) != address(0), "Recipient is not registered");
-    require(!_host.isApp(ISuperApp(profileOwner)), "Recipient is an app!");
+    require(address(owner) != address(0), "Recipient is not registered");
+    require(!_host.isApp(ISuperApp(owner)), "Recipient is an app!");
 
     // (, int96 inFlowRate, , ) = _cfa.getFlow(
     //   _acceptedToken,

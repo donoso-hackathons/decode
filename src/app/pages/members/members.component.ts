@@ -60,18 +60,18 @@ export class MembersComponent implements AfterViewInit {
 
     try {
       this.store.dispatch(Web3Actions.chainBusy({ status: true }));
-      console.log('again');
+
       const contractAddress =
         this.dappInjectorService.config.contracts['superfluid'].address;
-      console.log(contractAddress);
+ 
       const flowRate = '3858024691358';
-      console.log('again');
+
       const sf = await Framework.create({
         networkName: 'mumbai',
         provider: this.dappInjectorService.config.defaultProvider,
       });
 
-      console.log('again');
+   
       const encodedData = utils.defaultAbiCoder.encode(['uint256'], ['4']);
       console.log(encodedData);
       const createFlowOperation = sf.cfaV1.createFlow({
@@ -86,23 +86,25 @@ export class MembersComponent implements AfterViewInit {
       });
       console.log('Creating your stream...');
 
-      const result = await createFlowOperation.exec(
-        this.dappInjectorService.config.signer
-      );
-      const result2 = await result.wait();
-      this.dappInjectorService.config.contracts[
-        'superfluid'
-      ].contract.setSubscription({
-        gasPrice: utils.parseUnits('100', 'gwei'),
-        gasLimit: 2000000,
-      });
-      console.log(result2);
+      // const result = await createFlowOperation.exec(
+      //   this.dappInjectorService.config.signer
+      // );
+      // const result2 = await result.wait();
+      // this.dappInjectorService.config.contracts[
+      //   'superfluid'
+      // ].contract.setSubscription({
+      //   gasPrice: utils.parseUnits('100', 'gwei'),
+      //   gasLimit: 2000000,
+      // });
+      // console.log(result2);
 
       console.log(
         `Congrats - you've just created a money stream!
 View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );
       this.hasSubscription = true;
+
+
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     } catch (error) {
       console.log(error);
@@ -146,16 +148,16 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
       });
       console.log('stoping your stream...');
 
-      const result = await createFlowOperation.exec(
-        this.dappInjectorService.config.signer
-      );
-      const result2 = await result.wait();
+      // const result = await createFlowOperation.exec(
+      //   this.dappInjectorService.config.signer
+      // );
+      // const result2 = await result.wait();
 
-      console.log(result2);
+      // console.log(result2);
 
       console.log( `Congrats - you've just created a money stream  View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );
-     this.hasSubscription = false;
+     
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     } catch (error) {
       console.log(error);
@@ -197,7 +199,11 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
 
         this.myBalance = +((await this.daiContract.contract.balanceOf(myaddress)).toString())
         this.niceBalance = (this.myBalance/(10**18)).toFixed(4)
-      
+        
+
+        // this.hasSubscription = await this.dappInjectorService.config.contracts[
+        //   'superfluid'
+        // ].contract._openSubscription
 
         //   this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
 

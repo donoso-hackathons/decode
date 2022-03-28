@@ -32,11 +32,11 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
     "followModuleTransferHook(uint256,address,address,uint256)": FunctionFragment;
     "getFlowDetails(address)": FunctionFragment;
     "getProfileData(uint256)": FunctionFragment;
-    "hasSubscription()": FunctionFragment;
+    "hasSubscription(uint256)": FunctionFragment;
     "initializeFollowModule(uint256,bytes)": FunctionFragment;
     "processFollow(address,uint256,bytes)": FunctionFragment;
-    "revokeSubscription()": FunctionFragment;
-    "setSubscription()": FunctionFragment;
+    "revokeSubscription(uint256)": FunctionFragment;
+    "setSubscription(uint256)": FunctionFragment;
     "validateFollow(uint256,address,uint256)": FunctionFragment;
   };
 
@@ -91,7 +91,7 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "hasSubscription",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "initializeFollowModule",
@@ -103,11 +103,11 @@ export interface SuperFluidFollowModuleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "revokeSubscription",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setSubscription",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "validateFollow",
@@ -336,7 +336,10 @@ export interface SuperFluidFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    hasSubscription(overrides?: CallOverrides): Promise<[boolean]>;
+    hasSubscription(
+      profileId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -352,10 +355,12 @@ export interface SuperFluidFollowModule extends BaseContract {
     ): Promise<ContractTransaction>;
 
     revokeSubscription(
+      profileId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     setSubscription(
+      profileId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -465,7 +470,10 @@ export interface SuperFluidFollowModule extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  hasSubscription(overrides?: CallOverrides): Promise<boolean>;
+  hasSubscription(
+    profileId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   initializeFollowModule(
     profileId: BigNumberish,
@@ -481,10 +489,12 @@ export interface SuperFluidFollowModule extends BaseContract {
   ): Promise<ContractTransaction>;
 
   revokeSubscription(
+    profileId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   setSubscription(
+    profileId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -594,7 +604,10 @@ export interface SuperFluidFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    hasSubscription(overrides?: CallOverrides): Promise<boolean>;
+    hasSubscription(
+      profileId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -609,9 +622,15 @@ export interface SuperFluidFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    revokeSubscription(overrides?: CallOverrides): Promise<void>;
+    revokeSubscription(
+      profileId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    setSubscription(overrides?: CallOverrides): Promise<void>;
+    setSubscription(
+      profileId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     validateFollow(
       profileId: BigNumberish,
@@ -721,7 +740,10 @@ export interface SuperFluidFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    hasSubscription(overrides?: CallOverrides): Promise<BigNumber>;
+    hasSubscription(
+      profileId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -737,10 +759,12 @@ export interface SuperFluidFollowModule extends BaseContract {
     ): Promise<BigNumber>;
 
     revokeSubscription(
+      profileId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     setSubscription(
+      profileId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -844,7 +868,10 @@ export interface SuperFluidFollowModule extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    hasSubscription(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    hasSubscription(
+      profileId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     initializeFollowModule(
       profileId: BigNumberish,
@@ -860,10 +887,12 @@ export interface SuperFluidFollowModule extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     revokeSubscription(
+      profileId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     setSubscription(
+      profileId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

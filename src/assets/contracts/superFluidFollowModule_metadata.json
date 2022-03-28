@@ -256,7 +256,9 @@
       "type": "function"
     },
     {
-      "inputs": [],
+      "inputs": [
+        { "internalType": "uint256", "name": "profileId", "type": "uint256" }
+      ],
       "name": "hasSubscription",
       "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
       "stateMutability": "view",
@@ -284,14 +286,18 @@
       "type": "function"
     },
     {
-      "inputs": [],
+      "inputs": [
+        { "internalType": "uint256", "name": "profileId", "type": "uint256" }
+      ],
       "name": "revokeSubscription",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
+      "inputs": [
+        { "internalType": "uint256", "name": "profileId", "type": "uint256" }
+      ],
       "name": "setSubscription",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -314,6 +320,6 @@
     }
   ],
   "name": "SuperFluidFollowModule",
-  "address": "0xe47dF19FE218653264a5766408aF0bc7EAC74572",
+  "address": "0xd7Bd8f52BE9a5f46D0CCFf5E6f3b72dA6c954C85",
   "network": "mumbai"
 }

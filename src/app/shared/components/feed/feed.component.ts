@@ -95,20 +95,21 @@ export class FeedComponent implements AfterViewInit {
       pub.collectModule ==
       this.dappInjectorService.lensProtocolAddresses['empty collect module']
     ) {
-      this.collectAddress = pub.collectModule;
-      this.store.dispatch(Web3Actions.chainBusy({ status: true }));
-     const result_collect =  await this.dappInjectorService.config.defaultContract.contract.collect(
-        pub.profileId,
-        pub.pubId,
-        [],
-        {
-          gasPrice: utils.parseUnits('100', 'gwei'),
-          gasLimit: 2000000,
-        }
-      );
-      const tx = await result_collect.wait();
-      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-      this.show_success = true;
+      console.log('empty')
+    //   this.collectAddress = pub.collectModule;
+    //   this.store.dispatch(Web3Actions.chainBusy({ status: true }));
+    //  const result_collect =  await this.dappInjectorService.config.defaultContract.contract.collect(
+    //     pub.profileId,
+    //     pub.pubId,
+    //     [],
+    //     {
+    //       gasPrice: utils.parseUnits('100', 'gwei'),
+    //       gasLimit: 2000000,
+    //     }
+    //   );
+    //   const tx = await result_collect.wait();
+    //   this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+    //   this.show_success = true;
     } else if (
       pub.collectModule ==
       this.dappInjectorService.lensProtocolAddresses['fee collect module']
@@ -201,7 +202,7 @@ export class FeedComponent implements AfterViewInit {
 
         if (imageError == false) {
           this.totalPub = this.totalPub + nrPubs;
-          for (let i = 1; i <= nrPubs; i++) {
+          for (let i = nrPubs; i >=1; i--) {
             try {
               const pub = await this.readingContract.contract.getPub(k, i);
               const pubjson = await this.ipfs.getFile(pub.contentURI);

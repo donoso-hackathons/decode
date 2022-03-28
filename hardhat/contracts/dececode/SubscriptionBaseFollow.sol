@@ -26,8 +26,7 @@ contract SubscriptionBaseFollowModule is
 {
     mapping(uint256 => bool) internal _dataByProfile;
     mapping(address => mapping(uint256 => mapping(address => bool)))
-        internal _approvedByProfilebySubscription;
-      address profileOwner = 0x59602504f4FA5EFEA24B2CE2DA21E7De2094B7Fd;
+    internal _approvedByProfilebySubscription;
     constructor(address hub, address moduleGlobals) ModuleBase(hub) {}
 
     /**
@@ -100,12 +99,14 @@ contract SubscriptionBaseFollowModule is
         // ILensNFTBase(nftAddress).burn(1);
 
     }
-       function setSubscription() public {
-        _approvedByProfilebySubscription[profileOwner][1][msg.sender] = true;
+       function setSubscription(uint256 profileId) public {
+        address owner = IERC721(HUB).ownerOf(profileId);
+        _approvedByProfilebySubscription[owner][profileId][msg.sender] = true;
        }
 
-         function revokeSubscription() public {
-        _approvedByProfilebySubscription[profileOwner][1][msg.sender] = false;
+         function revokeSubscription(uint256 profileId) public {
+        address owner = IERC721(HUB).ownerOf(profileId);
+        _approvedByProfilebySubscription[owner][profileId][msg.sender] = false;
        }
 
     /**
@@ -114,12 +115,11 @@ contract SubscriptionBaseFollowModule is
      *
      * @return
      */
-    function hasSubscription(
-  
-    ) external view returns (bool) {
-      
+    function hasSubscription(uint256 profileId)
+    external view returns (bool) {
+          address owner = IERC721(HUB).ownerOf(profileId);
         return
-            _approvedByProfilebySubscription[profileOwner][1][msg.sender];
+            _approvedByProfilebySubscription[owner][profileId][msg.sender];
     }
 
     /**
