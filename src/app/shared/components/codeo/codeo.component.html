@@ -22,7 +22,7 @@
         <dececode-button *ngIf="follower == 'follower' "  (onClick)="unfollow()" >
       Stop Following</dececode-button>
    
-        <dececode-button *ngIf="follower == 'not' || follower == 'loading' " [disabled]="disabled"  (onClick)="follow()" [outline]="true">Follow</dececode-button>
+        <dececode-button *ngIf="(follower == 'not' || follower == 'loading') && codeo.encrypted == false" [disabled]="disabled"  (onClick)="follow()" [outline]="true">Follow</dececode-button>
         <mat-spinner   *ngIf="follower == 'loading' "   style="    z-index: 1;margin-top:20px;
         width: 45px;
         height: 45px;

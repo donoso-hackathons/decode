@@ -1,31 +1,32 @@
 <div class="mainContainer">
   <div class="createModal">
     <i (click)="back()" class="close material-icons">close</i>
-    <div class="Title">Your stream</div>
+    <div class="Title">Your Subscription</div>
 
 
 
-    <div  *ngIf="hasSubscription== false" class="FollowModule">
+    <div style="line-height: 35px; font-size: 20px;"   *ngIf="hasSubscription== false" class="FollowModule">
       <div>
-        <span>The subscription test happen with DAIx Token (0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f) 
+        <span>The subscription is with DAIx Test Token<br>
+           0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f
            <br>
            <a href="https://mumbai.polygonscan.com/address/0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f">View on Polygon Scan</a> 
     </span>
-          <p>Please </p>
-          <p>Your Balance</p>
-          <p>{{myBalance}}</p>
+    
+          <p>Your Current Balance :<span style="font-weight:bold;color:var(--twitter)"> {{niceBalance}} </span> </p>
+      <div *ngIf="myBalance == 0">
           <p>In order to Start the stream please visit
             <a href="https://app.superfluid.finance/">Superfluid Dashboard</a> and then:<br>
             - Ask for test tokens <br>
             - Wrap your Dai to Daix tolens <br>
             - Once the transactionis completed, please click to refresh to see your balance
           </p>
-    </div>
-      <h3 class="thirdTitle">
+        </div>
+      <h3 style="color:var(--twitter)" class="thirdTitle">
        You have not yet subscribed, please start the stream subscription in order to support the amazing creators so 
        they continue producing amazing content
       </h3>
-
+    </div>
       <dececode-button style="margin-top:30px" (onClick)="startStream()" [outline]="true">Start Stream</dececode-button>
 
 

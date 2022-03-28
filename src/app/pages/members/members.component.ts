@@ -35,6 +35,7 @@ export class MembersComponent implements AfterViewInit {
   ERC20_METADATA: any;
   daiContract: AngularContract;
   myBalance: any;
+  niceBalance: string;
   constructor(
     private dappInjectorService: DappInjectorService,
     private store: Store,
@@ -52,6 +53,11 @@ export class MembersComponent implements AfterViewInit {
   }
 
   async startStream() {
+    if (this.myBalance == 0){
+      this.alertService.showAlertERROR('OOPS', 'to Start the subscription uyou require some tokens')
+      return
+    }
+
     try {
       this.store.dispatch(Web3Actions.chainBusy({ status: true }));
       console.log('again');
@@ -189,8 +195,9 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
         this.daiContract = new AngularContract({metadata:this.ERC20_METADATA, provider: this.dappInjectorService.config.defaultProvider, signer: this.dappInjectorService.config.signer})
         await this.daiContract.init()
 
-        this.myBalance = await this.daiContract.contract.balanceOf(myaddress)
-        console.log(this.myBalance)
+        this.myBalance = +((await this.daiContract.contract.balanceOf(myaddress)).toString())
+        this.niceBalance = (this.myBalance/(10**18)).toFixed(4)
+      
 
         //   this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
 
