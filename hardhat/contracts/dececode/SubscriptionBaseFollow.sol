@@ -112,14 +112,16 @@ contract SubscriptionBaseFollowModule is
     /**
      * @notice Returns whether the given address is approved for the profile owned by a given address.
      *
+     * @param profileId Profile subscription 
+     * @param follower address to check
      *
      * @return
      */
-    function hasSubscription(uint256 profileId)
+    function hasSubscription(uint256 profileId, address follower)
     external view returns (bool) {
           address owner = IERC721(HUB).ownerOf(profileId);
         return
-            _approvedByProfilebySubscription[owner][profileId][msg.sender];
+            _approvedByProfilebySubscription[owner][profileId][follower];
     }
 
     /**

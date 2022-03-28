@@ -13,6 +13,7 @@ import {
 } from 'fs';
 import { create } from 'ipfs-http-client';
 import { join } from 'path';
+import { utils } from 'ethers';
 task('create-lit', 'create lit').setAction(async ({}, hre) => {
   const [governance, , user1, user2, user3] = await initEnv(hre);
   const addrs = getAddrs();
@@ -33,17 +34,18 @@ task('create-lit', 'create lit').setAction(async ({}, hre) => {
   let user3_nonce = await hre.ethers.provider.getTransactionCount(
     user3.address
   );
-  let user3subscription = await superFluidContract.hasSubscription(1);
-  console.log(user3subscription);
+  let user3subscription = await superFluidContract.hasSubscription(1,user3.address);
 
   // await waitForTx(superFluidContract._openSubscription(1,user3.address,{
   //   nonce:user3_nonce++,
   //   gasPrice:  utils.parseUnits('100', 'gwei'),
   //   gasLimit: 2000000 }));
 
-  //   user3subscription = await superFluidContract.hasSubscription(1);
+  //   user3subscription = await superFluidContract.hasSubscription(1,user3.address);
   //   console.log(user3subscription)
 
+  console.log(user3subscription);
+  
   // await waitForTx(superFluidContract._cancelSubscription(1,user3.address,{
   //   nonce:user3_nonce++,
   //   gasPrice:  utils.parseUnits('100', 'gwei'),
@@ -80,22 +82,23 @@ task('create-lit', 'create lit').setAction(async ({}, hre) => {
 
   const evmContractConditions = [
     {
-      contractAddress: '0xd7Bd8f52BE9a5f46D0CCFf5E6f3b72dA6c954C85',
+      contractAddress: '0x0fc5726e5CC2f0eE4557ca69F5017f91b35a09F8',
       functionName: 'hasSubscription',
-      functionParams: ['1'],
-      functionAbi: {
-        inputs: [
-          { internalType: 'uint256', name: 'profileId', type: 'uint256' },
+      functionParams: ['1',":userAddress"],
+      functionAbi:    {
+        "inputs": [
+          { "internalType": "uint256", "name": "profileId", "type": "uint256" },
+          { "internalType": "address", "name": "follower", "type": "address" }
         ],
-        name: 'hasSubscription',
-        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-        stateMutability: 'view',
-        type: 'function',
+        "name": "hasSubscription",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
       },
       chain: 'mumbai',
       returnValueTest: {
         key: '',
-        comparator: '=',
+        comparator: '==',
         value: 'true',
       },
     },

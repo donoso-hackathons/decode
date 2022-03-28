@@ -257,7 +257,8 @@
     },
     {
       "inputs": [
-        { "internalType": "uint256", "name": "profileId", "type": "uint256" }
+        { "internalType": "uint256", "name": "profileId", "type": "uint256" },
+        { "internalType": "address", "name": "follower", "type": "address" }
       ],
       "name": "hasSubscription",
       "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
@@ -320,6 +321,6 @@
     }
   ],
   "name": "SuperFluidFollowModule",
-  "address": "0xd7Bd8f52BE9a5f46D0CCFf5E6f3b72dA6c954C85",
+  "address": "0x0fc5726e5CC2f0eE4557ca69F5017f91b35a09F8",
   "network": "mumbai"
 }

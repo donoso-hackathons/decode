@@ -215,7 +215,7 @@ export class CodeoComponent implements OnChanges {
       this.currencyContract = await this.createCurrencyContract();
       const result_mint = await this.currencyContract.contract.mint(
         this.myAddress,
-        +this.amount,
+        +this.amount +1,
         {
           gasPrice: utils.parseUnits('100', 'gwei'),
           gasLimit: 2000000,
@@ -268,10 +268,10 @@ export class CodeoComponent implements OnChanges {
       ).toString();
       console.log(this.balance);
 
-      if (this.balance < this.amount) {
+      if (this.balance <= this.amount) {
         await this.alertService.showAlertOK(
           'OK',
-          `you need ${this.amount} TOKENS and your balance is ${this.balance}, click the faucet to earn some test tokens`
+          `you need ${this.amount + 1} TOKENS and your balance is ${this.balance}, click the faucet to earn some test tokens`
         );
       } else {
         try {

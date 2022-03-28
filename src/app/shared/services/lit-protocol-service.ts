@@ -77,25 +77,27 @@ export class LitProtocolService {ipfs: any;
 
     const evmContractConditions = [
       {
-        contractAddress: "0xe47dF19FE218653264a5766408aF0bc7EAC74572",
-        functionName: "hasSubscription",
-        functionParams: [":userAddress"],
-        functionAbi:     {
-          "inputs": [],
+        contractAddress: '0x0fc5726e5CC2f0eE4557ca69F5017f91b35a09F8',
+        functionName: 'hasSubscription',
+        functionParams: ['1',":userAddress"],
+        functionAbi:    {
+          "inputs": [
+            { "internalType": "uint256", "name": "profileId", "type": "uint256" },
+            { "internalType": "address", "name": "follower", "type": "address" }
+          ],
           "name": "hasSubscription",
           "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
           "stateMutability": "view",
           "type": "function"
         },
-        chain: "mumbai",
+        chain: 'mumbai',
         returnValueTest: {
-          key:"",
-          comparator: "=",
-          value: "true",
+          key: '',
+          comparator: '==',
+          value: 'true',
         },
       },
     ];
-
 
 
     const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({

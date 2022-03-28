@@ -24,7 +24,7 @@ export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
     "_openSubscription(uint256,address)": FunctionFragment;
     "followModuleTransferHook(uint256,address,address,uint256)": FunctionFragment;
     "getProfileData(uint256)": FunctionFragment;
-    "hasSubscription(uint256)": FunctionFragment;
+    "hasSubscription(uint256,address)": FunctionFragment;
     "initializeFollowModule(uint256,bytes)": FunctionFragment;
     "processFollow(address,uint256,bytes)": FunctionFragment;
     "revokeSubscription(uint256)": FunctionFragment;
@@ -51,7 +51,7 @@ export interface SubscriptionBaseFollowModuleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "hasSubscription",
-    values: [BigNumberish]
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "initializeFollowModule",
@@ -175,6 +175,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
 
     hasSubscription(
       profileId: BigNumberish,
+      follower: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
@@ -238,6 +239,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
 
   hasSubscription(
     profileId: BigNumberish,
+    follower: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -301,6 +303,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
 
     hasSubscription(
       profileId: BigNumberish,
+      follower: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -367,6 +370,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
 
     hasSubscription(
       profileId: BigNumberish,
+      follower: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -431,6 +435,7 @@ export interface SubscriptionBaseFollowModule extends BaseContract {
 
     hasSubscription(
       profileId: BigNumberish,
+      follower: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
