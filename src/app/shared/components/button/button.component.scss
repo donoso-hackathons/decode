@@ -22,4 +22,12 @@
        &.outline-button {  background: var(--twitter-dark-hover)
            };
      }
+
+     .wrapper {
+       color:'#33a1f2';
+       &.disabled {
+       color:'grey';
+       }
+     }
+
 }

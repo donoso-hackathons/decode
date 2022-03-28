@@ -34,67 +34,34 @@ task('test-decode', 'follow paywall').setAction(async ({}, hre) => {
   console.log(addrs['lensHub proxy']);
 
   const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], user3);
-  const b = await lensHub.ownerOf(1);
-
+  const b = await lensHub.ownerOf(4);
+  console.log(b)
  
-
-
-
-  const superfluidContractAdress = contratMetadata.address;
-  console.log(superfluidContractAdress)
-  const recipient = superfluidContractAdress;
-  const decode = SuperFluidFollowModule__factory.connect(
-    superfluidContractAdress,
-    user3
-  );
   let user3_nonce = await hre.ethers.provider.getTransactionCount(
     user3.address
   );
 
 console.log(user3.address)
 
-let caca = await decode.hasSubscription()
-    console.log(caca)
 
-  // await waitForTx(decode.revokeSubscription({
-  // nonce:user3_nonce++,
-  // gasPrice:  utils.parseUnits('100', 'gwei'),
-  // gasLimit: 2000000 }));
-
-
-     caca = await decode.hasSubscription()
-    console.log(caca)
-
-  // const status = await decode.hasSubscription(4, user3.address);
-
-  // console.log(status)
- 
-
-
-  // decode.on('FlowUpdated', (args) => {
-  //   let payload;
-  //   console.log(args);
-  // });
-
-  // decode.on('ProfileAddress', (args) => {
-  //   let payload;
-  //   console.log(args);
-  // });
-
-  // let user3_nonce = await hre.ethers.provider.getTransactionCount(
-  //   user3.address
-  // );
-  // Retrieve the follow NFT for a given profile ID
 
   console.log(user3.address);
 
 
+  const followNFTAddr = await lensHub.getFollowNFT(4);
+  const followNFT = FollowNFT__factory.connect(followNFTAddr, user3);
+  const amOwner =  await followNFT.balanceOf(user3.address)
+  const amOwner2 =  await followNFT.balanceOf(user4.address)
 
-
+  console.log(amOwner,amOwner2)
   //return;
 
-  // await waitForTx(lensHub.follow([4], [[]],{
+  // const tsx = await waitForTx(lensHub.follow([4], [[]],{
   // nonce:user3_nonce++,
   // gasPrice:  utils.parseUnits('100', 'gwei'),
   // gasLimit: 2000000 }));
+
+  // console.log(tsx)
+
+
 });

@@ -8,7 +8,9 @@
           <h3 style="margin-top:10px;">Downlaoding your feed of codeos..</h3>
         </div>
     <div class="Codeos">
-    <dececode-codeo  (onCollect)="collect($event)"  (onDecrypt)="decrypt($event)"  [codeo]="codeo"  *ngFor="let codeo of publications"></dececode-codeo>
+    <dececode-codeo [blockchain_status]="blockchain_status" 
+    (onFollow)="follow($event)" 
+    (onCollect)="collect($event)"  (onDecrypt)="decrypt($event)"  [codeo]="codeo"  *ngFor="let codeo of publications"></dececode-codeo>
     </div>
 </div>
 </div>

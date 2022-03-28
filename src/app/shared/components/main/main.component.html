@@ -18,7 +18,7 @@
    <dececode-onboard  (connect)="connect()" (signUp)="signUp()"
    [blockchain_status]="blockchain_status" ></dececode-onboard>
 
-   <dececode-feed></dececode-feed>
+   <dececode-feed [blockchain_status]="blockchain_status"></dececode-feed>
 
    <div class="ProfilePage">
     <router-outlet></router-outlet>

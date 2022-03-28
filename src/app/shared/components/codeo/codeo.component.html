@@ -12,11 +12,22 @@
     </div>
 
     <div class="Content">
-      <div class="Header">
-        <strong>{{ codeo.profile.name }}</strong>
-        <span>{{ codeo.twitteruser }}</span>
-        <!-- <Dot /> -->
-        <div class="time">{{ codeo.posttime }}</div>
+      <div  class="Header">
+        <div>
+          <strong>{{ codeo.profile.name }}</strong>
+          <span>{{ codeo.twitteruser }}</span>
+          <!-- <Dot /> -->
+          <div class="time">{{ codeo.posttime }}</div>
+        </div>
+        <dececode-button *ngIf="follower == 'follower' "  (onClick)="unfollow()" >
+      Stop Following</dececode-button>
+   
+        <dececode-button *ngIf="follower == 'not' || follower == 'loading' " [disabled]="disabled"  (onClick)="follow()" [outline]="true">Follow</dececode-button>
+        <mat-spinner   *ngIf="follower == 'loading' "   style="    z-index: 1;margin-top:20px;
+        width: 45px;
+        height: 45px;
+        margin: auto;    position: absolute;
+    right: 15px;" [diameter]="45"  ></mat-spinner>
       </div>
 
       <div class="Description">{{ codeo.description }}</div>

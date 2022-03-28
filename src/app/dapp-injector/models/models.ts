@@ -26,7 +26,7 @@ export interface ISTARTUP_CONFIG {
 export interface IABI_OBJECT {
   inputs: Array<{ internalType: string; name: string; type: string }>;
   outputs?: Array<{ internalType: string; name: string; type: string }>;
-  stateMutability?: 'view' | 'nonpayable' | 'payable' | 'pure' ;
+  stateMutability?: 'view' | 'nonpayable' | 'payable' | 'pure' | undefined | any ; 
   type: 'function' | 'constructor' | 'event' | 'receive';
   name?: string;
 }
@@ -39,14 +39,14 @@ export interface BlockWithTransactions extends Omit<providers.Block , 'transacti
 export interface IMETA_CONTRACT {
   address:string,
   name:string
-  abi:Array<IABI_OBJECT>,
+  abi:Array<any>,
   contract:Contract
 }
 
 export interface ICONTRACT_METADATA {
   address:string;
   name:string;
-  abi:Array<IABI_OBJECT>;
+  abi:Array<any>;
   network: string;
 }
 

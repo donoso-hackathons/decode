@@ -229,8 +229,8 @@ export class DappInjectorService {
 
   async getLensProfilebyAddress() {
     const signerAddress = await this.config.signer.getAddress();
-
-    const profilesBalancebyAdress = +(
+    let profilesBalancebyAdress = 0;
+    profilesBalancebyAdress = +(
       await this.config.defaultContract.contract.balanceOf(signerAddress)
     ).toString();
     let pub = 0;
@@ -277,10 +277,11 @@ export class DappInjectorService {
       provider: dispatchObject.provider,
       signer: dispatchObject.signer,
     });
-
+    console.log(this.contractMetadata)
     await contract.init();
 
     this.config.defaultContract = contract;
+
 
     const fluidumContract = new AngularContract({
       metadata: SuperFluidMetadata,

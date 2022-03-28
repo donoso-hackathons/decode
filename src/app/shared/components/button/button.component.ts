@@ -10,6 +10,7 @@ export class ButtonComponent implements OnInit {
   constructor() { }
 
   @Input() outline;
+  @Input() disabled;
   @Output() public onClick  = new EventEmitter<any>();
 
   emitClick() {
