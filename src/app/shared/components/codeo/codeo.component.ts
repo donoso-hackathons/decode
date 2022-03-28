@@ -175,6 +175,7 @@ export class CodeoComponent implements OnChanges {
         );
         this.follower = 'follower';
         this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+        this.refreshFollowing()
       } catch (error) {
         console.log(error);
         this.alertService.showAlertERROR('OOPS', 'Something went wrong');
@@ -281,7 +282,7 @@ export class CodeoComponent implements OnChanges {
 
           const encodedData = utils.defaultAbiCoder.encode(
             ['address', 'uint256'],
-            [this.currencyContract.address, this.balance]
+            [this.currencyContract.address, this.amount]
           );
           this.collectAddress = this.codeo.collectModule;
              this.store.dispatch(Web3Actions.chainBusy({ status: true }));

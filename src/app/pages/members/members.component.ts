@@ -86,17 +86,17 @@ export class MembersComponent implements AfterViewInit {
       });
       console.log('Creating your stream...');
 
-      // const result = await createFlowOperation.exec(
-      //   this.dappInjectorService.config.signer
-      // );
-      // const result2 = await result.wait();
-      // this.dappInjectorService.config.contracts[
-      //   'superfluid'
-      // ].contract.setSubscription({
-      //   gasPrice: utils.parseUnits('100', 'gwei'),
-      //   gasLimit: 2000000,
-      // });
-      // console.log(result2);
+      const result = await createFlowOperation.exec(
+        this.dappInjectorService.config.signer
+      );
+      const result2 = await result.wait();
+      this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract.setSubscription({
+        gasPrice: utils.parseUnits('100', 'gwei'),
+        gasLimit: 2000000,
+      });
+      console.log(result2);
 
       console.log(
         `Congrats - you've just created a money stream!
@@ -148,12 +148,12 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
       });
       console.log('stoping your stream...');
 
-      // const result = await createFlowOperation.exec(
-      //   this.dappInjectorService.config.signer
-      // );
-      // const result2 = await result.wait();
+      const result = await createFlowOperation.exec(
+        this.dappInjectorService.config.signer
+      );
+      const result2 = await result.wait();
 
-      // console.log(result2);
+      console.log(result2);
 
       console.log( `Congrats - you've just created a money stream  View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );

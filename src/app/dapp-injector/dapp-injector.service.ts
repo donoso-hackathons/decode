@@ -378,6 +378,7 @@ export class DappInjectorService {
         console.log('wallet no connecte');
       }
       await this.webModal.loadWallets();
+      console.log('i should change');
       this.webModal.onConnect.subscribe(async (walletConnectProvider) => {
         this.store.dispatch(Web3Actions.chainStatus({ status: 'fail' }));
         this.store.dispatch(Web3Actions.chainBusy({ status: true }));
