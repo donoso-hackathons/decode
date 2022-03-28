@@ -18,7 +18,6 @@ or If you want to work localhost`, use the famous angular command: ```ng serve``
 - mirror or comment
 &nbsp;   
  
-
 ## Contract addressess
 ```{
   "proxy": "0x6e11fb244025A4f74A9BcAec58E8a142245301e4",

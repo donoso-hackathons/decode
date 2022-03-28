@@ -17,6 +17,7 @@
     "create-profile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json create-profile",
     "create-lit": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json create-lit",
     "create-publication": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json create-publication",
+    "create-stream": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json create-stream",
     "collect-publication": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json collect-publication",
     "follow-profile": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json follow-profile",
     "test-decode": "cd hardhat && npx hardhat --tsconfig ./tsconfig.hardhat.json test-decode",

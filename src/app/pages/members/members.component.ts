@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import {
   AngularContract,
   DappInjectorService,
+  ICONTRACT_METADATA,
   Web3Actions,
   web3Selectors,
 } from 'angular-web3';
@@ -17,6 +18,7 @@ import { IpfsService } from 'src/app/shared/services/ipfs-service';
 import { Framework } from '@superfluid-finance/sdk-core';
 import { utils } from 'ethers';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
+import { abi_ERC20 } from 'src/app/dapp-injector/abis/ERC20_ABI';
 
 @Component({
   selector: 'dececode-members',
@@ -30,6 +32,9 @@ export class MembersComponent implements AfterViewInit {
   profileId: string;
   profile: ProfileStructStruct;
   hasSubscription: boolean = false;
+  ERC20_METADATA: any;
+  daiContract: AngularContract;
+  myBalance: any;
   constructor(
     private dappInjectorService: DappInjectorService,
     private store: Store,
@@ -37,7 +42,14 @@ export class MembersComponent implements AfterViewInit {
     private ipfsService: IpfsService,
     public router: Router,
     public alertService: AlertService
-  ) {}
+  ) {
+    this.ERC20_METADATA = {
+        abi:abi_ERC20,
+        address:'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f',
+        network: 'mumbai'
+    }
+
+  }
 
   async startStream() {
     try {
@@ -145,18 +157,26 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
     }
   }
 
+  async checkBalace(){
+
+  }
+
   back() {
     this.router.navigateByUrl('');
   }
   ngAfterViewInit(): void {
+ 
     this.store.select(web3Selectors.chainStatus).subscribe(async (value) => {
       this.blockchain_status = value;
       console.log(value);
       if (
         ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value) !== -1
       ) {
+
         this.router.navigateByUrl('');
       } else {
+
+
         this.lensHubContract = this.dappInjectorService.config.defaultContract;
         // this.profile = this.dappInjectorService.currentProfile;
         const myaddress =
@@ -166,6 +186,12 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
           'superfluid'
         ].contract.hasSubscription();
      
+        this.daiContract = new AngularContract({metadata:this.ERC20_METADATA, provider: this.dappInjectorService.config.defaultProvider, signer: this.dappInjectorService.config.signer})
+        await this.daiContract.init()
+
+        this.myBalance = await this.daiContract.contract.balanceOf(myaddress)
+        console.log(this.myBalance)
+
         //   this.profileId = (await this.lensHubContract.contract.getProfileIdByHandle(this.profile.handle)).toString()
 
         this.dappInjectorService.config.contracts['superfluid'].contract.on(

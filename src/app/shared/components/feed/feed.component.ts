@@ -102,6 +102,7 @@ export class FeedComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.store.pipe(web3Selectors.isviewReady).subscribe(async (value) => {
       console.log(value);
+      return
       if (this.ready == value) {
         return;
       }

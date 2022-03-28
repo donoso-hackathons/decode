@@ -25,8 +25,8 @@ export interface ISTARTUP_CONFIG {
 
 export interface IABI_OBJECT {
   inputs: Array<{ internalType: string; name: string; type: string }>;
-  outputs: Array<{ internalType: string; name: string; type: string }>;
-  stateMutability: 'view' | 'nonpayable' | 'payable' | 'pure' ;
+  outputs?: Array<{ internalType: string; name: string; type: string }>;
+  stateMutability?: 'view' | 'nonpayable' | 'payable' | 'pure' ;
   type: 'function' | 'constructor' | 'event' | 'receive';
   name?: string;
 }
