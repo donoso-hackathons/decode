@@ -59,6 +59,7 @@ export class CodeoComponent implements OnChanges {
       this.blockchain_status == 'success'
     ) {
       this.disabled = false;
+      console.log(this.codeo)
       this.refreshFollowing();
     }
   }

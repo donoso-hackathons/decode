@@ -215,7 +215,7 @@ export class CreatePublicationComponent implements AfterViewInit {
       const tx = await result_mint.wait();
       console.log(tx);
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
-      await this.alertService.showAlertOK('OK', 'your Publication is Out');
+      await this.alertService.showAlertOK('OK', 'your Publication is Out, So far we have not implemented sorting, please scroll down in the feed');
       this.router.navigateByUrl('/')
     } catch (error) {
       console.log(error)

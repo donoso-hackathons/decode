@@ -9,7 +9,7 @@ import { ISUGGESTION } from '../../models/models-suggestions';
 export class FollowSuggestionsComponent implements OnInit {
 
   constructor() { }
-  @Input() suggestion:ISUGGESTION
+  @Input() suggestion:any
   ngOnInit(): void {
   }
 

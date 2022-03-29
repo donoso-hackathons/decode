@@ -89,6 +89,23 @@ export class FeedComponent implements AfterViewInit {
         //  this.publications.push(value)
       });
 
+      this.store
+      .select(web3Selectors.fetchedProfiles)
+      .subscribe(async (value) => {
+
+        const profiles = converterObjectToArray(value);
+
+        for (const profile of profiles) {
+          const tocheckProfile = this.fetchedProfiles[profile.profileId];
+            if (tocheckProfile == undefined) {
+              this.fetchedProfiles[profile.profileId] = profile;           
+            } 
+        }
+
+        //  this.publications.push(value)
+      });
+
+
     this.store.pipe(web3Selectors.isviewReady).subscribe(async (value) => {
       if (this.ready == value) {
         return;
@@ -116,7 +133,7 @@ export class FeedComponent implements AfterViewInit {
         let image_src;
         let json_Profile;
         const toCheckProfile = this.fetchedProfiles[k];
-        if (toCheckProfile == undefined) {
+        // if (toCheckProfile == undefined) {
           const profil_image_cid = profile.imageURI.replace(
             'https://ipfs.io/ipfs/',
             ''
@@ -142,12 +159,14 @@ export class FeedComponent implements AfterViewInit {
               },
             })
           );
-        } else {
-          console.log('profile already fetched')
-          imageError = false;
-          image_src = toCheckProfile.image_src;
-          json_Profile = toCheckProfile.json_Profile;
-        }
+       // } 
+        // else {
+        //   console.log('profile already fetched')
+        //   console.log(toCheckProfile)
+        //   imageError = false;
+        //   image_src = toCheckProfile.image_src;
+        //   json_Profile = toCheckProfile.json_Profile;
+        // }
         if (imageError == false) {
           this.totalPub = this.totalPub + nrPubs;
           for (let i = nrPubs; i >= 1; i--) {
@@ -189,6 +208,8 @@ export class FeedComponent implements AfterViewInit {
                 const image = await this.ipfs.getImage(pubjson.media[0].item);
 
                 this.pubs.push({ profileId: k, pubId: i });
+
+                console.log(json_Profile)
 
                 const publicationObject = {
                   ...{

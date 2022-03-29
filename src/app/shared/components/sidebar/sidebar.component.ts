@@ -6,6 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AngularContract, DappInjectorService, web3Selectors } from 'angular-web3';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
+import { converterObjectToArray } from '../../helpers/time';
 
 @Component({
   selector: 'dececode-sidebar',
@@ -23,6 +24,8 @@ export class SidebarComponent implements AfterViewInit {
   newsArray:Array<INEWS>
   totalSupply: number
   ready: boolean;
+  fetchedProfiles = {};
+  profiles = [];
   constructor(  public formBuilder: FormBuilder,
     private dappInjectorService: DappInjectorService,
     private store: Store,) { 
@@ -30,26 +33,22 @@ export class SidebarComponent implements AfterViewInit {
    }
 
    ngAfterViewInit(): void {
-  
-    this.store.pipe(web3Selectors.isviewReady).subscribe(async (value) => {
-      return
-      console.log(value)
-      if (this.ready  == value){
-        return
+    this.store
+    .select(web3Selectors.fetchedProfiles)
+    .subscribe(async (value) => {
+
+      const profiles = converterObjectToArray(value);
+
+      for (const profile of profiles) {
+        const tocheckProfile = this.fetchedProfiles[profile.profileId];
+          if (tocheckProfile == undefined) {
+            this.fetchedProfiles[profile.profileId] = profile; 
+            this.profiles.push(profile)          
+          } 
       }
 
-      this.ready = value;
-      this.readingContract = this.dappInjectorService.config.defaultViewContract;
-      console.log('I am defaulting.....')
       
-      this.totalSupply = +(await this.readingContract.contract.totalSupply()).toString()
+    });
   
-      const lastProfile = await this.readingContract.contract.getProfile(this.totalSupply)
-      //console.log(lastProfile)
-
-      const beforeProfile = await this.readingContract.contract.getProfile(this.totalSupply-1)
-      this.allProfiles = [lastProfile,beforeProfile]
-
-    })
   }
 }

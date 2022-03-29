@@ -46,11 +46,11 @@ export class CreateProfileComponent implements AfterViewInit, OnDestroy {
       name: 'Everyone Can Follow Me',
       address: '',
     },
-    {
-      id: 1,
-      name: 'Supporting followers must pay a fee',
-      address: '',
-    },
+    // {
+    //   id: 1,
+    //   name: 'Supporting followers must pay a fee',
+    //   address: '',
+    // },
   ];
   option = 0;
   samePictureCtrl: FormControl = new FormControl(false);
