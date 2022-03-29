@@ -98,7 +98,7 @@ task('create-lit', 'create lit').setAction(async ({}, hre) => {
       chain: 'mumbai',
       returnValueTest: {
         key: '',
-        comparator: '==',
+        comparator: '=',
         value: 'true',
       },
     },
@@ -134,9 +134,9 @@ task('create-lit', 'create lit').setAction(async ({}, hre) => {
     chain: 'mumbai',
     authSig,
   });
-  return;
 
-  console.log(symmetricKeyDecrypt);
+
+
 
   const decryptedString = await LitJsSdk.decryptString(
     encryptedString,

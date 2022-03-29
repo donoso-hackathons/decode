@@ -25,7 +25,13 @@ const setDollarExhange = createAction('[Set] Dollar', props<{exchange:number}>()
 
 const updateWalletBalance = createAction('[Update] WalletBalance', props<{walletBalance:number}>());
 
+///// lensprotocol
+const setProfile = createAction('[Set] Profile', props<{profile:any}>());
+const setImageProfile = createAction('[Set] ImageProfile', props<{image:string}>());
 
+
+const setPublication = createAction('[Set] Publication', props<{publication:any}>());
+const setImagePublication = createAction('[Set] ImagePublication', props<{image:string}>());
 
 
 export const Web3Actions = {
@@ -38,7 +44,15 @@ export const Web3Actions = {
   setSignerNetwork,
 
   setDollarExhange,
-  updateWalletBalance
+  updateWalletBalance,
+
+
+  setProfile,
+  setImageProfile,
+
+  setPublication,
+  setImagePublication
+
 
 };
 

@@ -52,8 +52,7 @@ export class CodeoComponent implements OnChanges {
   @Output() onUnFollow = new EventEmitter();
 
   ngOnChanges(): void {
-    console.log(this.codeo.id);
-    console.log(this.blockchain_status);
+  
     if (
       this.blockchain_status == 'lens-profiles-found' ||
       this.blockchain_status == 'success'
@@ -73,7 +72,7 @@ export class CodeoComponent implements OnChanges {
       await this.dappInjectorService.config.defaultContract.contract.getFollowNFT(
         this.codeo.profileId
       );
-    console.log(followNFTAddr);
+
     if (followNFTAddr == this.dappInjectorService.ZERO_ADDRESS) {
       this.follower = 'not';
       return;
@@ -96,7 +95,7 @@ export class CodeoComponent implements OnChanges {
     ).toString();
 
     if (+this.tokensAmount > 0) {
-      console.log(this.codeo.collectModule);
+    
       if (
         this.codeo.collectModule ==
         this.dappInjectorService.lensProtocolAddresses['fee collect module']
@@ -277,8 +276,7 @@ export class CodeoComponent implements OnChanges {
       } else {
         try {
           const currencyAddress = this.dappInjectorService.lensProtocolAddresses['currency']
-          console.log(currencyAddress);
-          console.log(this.currencyContract.address);
+      
 
           const encodedData = utils.defaultAbiCoder.encode(
             ['address', 'uint256'],

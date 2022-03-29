@@ -14,7 +14,9 @@ export const initialState: Web3State = {
   readingContract:false,
   signerNetwork:'',
   etherToDollar:0,
-  walletBalance:0
+  walletBalance:0,
+  lensProfiles:{},
+  lensPublications:{}
 };
 
 
@@ -29,6 +31,17 @@ const web3dReducer = createReducer(
 
   on(web3Actions.Web3Actions.updateWalletBalance, (state,{walletBalance}) => ({ ...state, walletBalance})),
   on(web3Actions.Web3Actions.setDollarExhange, (state,{exchange}) => ({ ...state, etherToDollar:exchange})),
+
+  on(web3Actions.Web3Actions.setProfile,(state,{profile})=>({
+    ...state, lensProfiles:{...state.lensProfiles, ...{[profile.profileId]:profile}}
+  })),
+
+
+  on(web3Actions.Web3Actions.setPublication,(state,{publication})=>({
+    ...state, lensPublications:{...state.lensPublications, ...{[publication.pubKey]:publication}}
+  }))
+
+
 
 );
 export function we3ReducerFunction(state: Web3State | undefined, action: Action) {

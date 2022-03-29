@@ -18,7 +18,7 @@ export class ButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.outline)
+ 
   }
 
 }

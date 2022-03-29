@@ -62,6 +62,20 @@ const selectDollarExchange= pipe(
   map(map=> map.etherToDollar)
 );
 
+
+//////// Profiles
+const fetchedProfiles = createSelector(
+  selectWeb3State,
+  (state: Web3State) => state.lensProfiles
+);
+
+
+//////// Profiles
+const fetchedPublications = createSelector(
+  selectWeb3State,
+  (state: Web3State) => state.lensPublications
+);
+
 export const web3Selectors = {
   chainStatus,
   selectChainReady,
@@ -70,5 +84,8 @@ export const web3Selectors = {
   isviewReady,
   selectSignerNetwork,
   selectWalletBalance,
-  selectDollarExchange
+  selectDollarExchange,
+  ///// lens protocol State
+  fetchedProfiles,
+  fetchedPublications
 };

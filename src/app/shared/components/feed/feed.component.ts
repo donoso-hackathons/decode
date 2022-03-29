@@ -21,6 +21,7 @@ import { ProfileStructStruct } from 'src/assets/types/ILensHub';
 import { LitProtocolService } from '../../services/lit-protocol-service';
 import { AlertService } from '../alerts/alert.service';
 import { utils } from 'ethers';
+import { converterObjectToArray } from '../../helpers/time';
 
 @Component({
   selector: 'dececode-feed',
@@ -58,7 +59,9 @@ export class FeedComponent implements AfterViewInit {
     const json = this.encrypted[id];
     try {
       const result = await this.litProtocolService.decrypt(json);
+      console.log(result)
       this.alertService.showAlertOK('OK', 'Somehow now it is working');
+
     } catch (error) {
       const myaddress =
         await this.dappInjectorService.config.signer.getAddress();
@@ -76,8 +79,16 @@ export class FeedComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.store.select(web3Selectors.fetchedPublications).subscribe(async (value) => {
+      console.log(value)
+      this.loading = true;
+    this.publications = converterObjectToArray(value)
+    this.loading = false;
+   //  this.publications.push(value)
+    })
+
     this.store.pipe(web3Selectors.isviewReady).subscribe(async (value) => {
-      console.log(value);
+   
 
       if (this.ready == value) {
         return;
@@ -101,7 +112,7 @@ export class FeedComponent implements AfterViewInit {
 
         const profile: ProfileStructStruct =
           await this.readingContract.contract.getProfile(k);
-          console.log(profile)
+       
         let imageError = false;
         let image_Profile;
         let json_Profile;
@@ -124,6 +135,8 @@ export class FeedComponent implements AfterViewInit {
           console.log(error);
           imageError = true;
         }
+      
+        this.store.dispatch(Web3Actions.setProfile({ profile:{...json_Profile, ...{profileId:k,image_src:image_Profile.toString()}}}));
 
         if (imageError == false) {
           this.totalPub = this.totalPub + nrPubs;
@@ -152,14 +165,19 @@ export class FeedComponent implements AfterViewInit {
                 const image = await this.ipfs.getImage(pubjson.media[0].item);
 
                 this.pubs.push({ profileId: k, pubId: i });
-                this.publications.push({
-                  ...{ profileId: k, pubId: i },
+
+                const publicationObject = {
+                  ...{ profileId: k, pubId: i, pubKey:`${k}-${i}` },
                   ...pubjson,
                   ...pub,
-                  ...{ src: image },
+                  ...{ src: image.toString()},
                   ...{ profile: json_Profile },
-                  ...{ profile_src: image_Profile },
-                });
+                  ...{ profile_src: image_Profile.toString() },
+                }
+
+              //  this.publications.push(publicationObject);
+                this.store.dispatch(Web3Actions.setPublication({ publication:publicationObject}));
+
                //return;
               }
             } catch (error) {
@@ -168,7 +186,7 @@ export class FeedComponent implements AfterViewInit {
           }
         }
       }
-      this.loading = false;
+     // this.loading = false;
     });
   }
 

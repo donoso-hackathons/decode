@@ -5,6 +5,8 @@ export interface Web3State {
     walletBalance:number;
     etherToDollar:number; 
     readingContract:boolean;
+    lensProfiles:{[key:number]:any};
+    lensPublications:{[key:string]:any}
   }
 
   export type NETWORK_STATUS = 'loading' 

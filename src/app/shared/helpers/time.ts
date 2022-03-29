@@ -1,3 +1,11 @@
+export const converterObjectToArray = (object:Object):  Array<any> =>  {
+  return Object.keys(object).map(key=> { return { ...{key}, ...object[key] }} )
+}
+
+
+export const converterObjectToKeysArray = (object:Object):  Array<any> =>  {
+  return Object.keys(object) 
+}
 
 export function pad(n:any) {
   return n < 10 ? '0' + n : n;

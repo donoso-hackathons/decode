@@ -75,7 +75,7 @@ export class LitProtocolService {ipfs: any;
     const buffer = Buffer.from(arrayBuffer);
  
 
-    const evmContractConditions = [
+    const evmContractConditions =  [
       {
         contractAddress: '0x0fc5726e5CC2f0eE4557ca69F5017f91b35a09F8',
         functionName: 'hasSubscription',
@@ -93,7 +93,7 @@ export class LitProtocolService {ipfs: any;
         chain: 'mumbai',
         returnValueTest: {
           key: '',
-          comparator: '==',
+          comparator: '=',
           value: 'true',
         },
       },
