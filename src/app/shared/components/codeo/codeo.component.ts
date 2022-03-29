@@ -21,6 +21,8 @@ import { AlertService } from '../alerts/alert.service';
 import CollectFeeModuleMeatadata from '../../../../assets/contracts/feecollectmodule_metadata.json';
 import { abi_ERC20 } from 'src/app/dapp-injector/abis/ERC20_ABI';
 import { abi_CURRENCY } from 'src/app/dapp-injector/abis/CURRENCY';
+import { LitProtocolService } from '../../services/lit-protocol-service';
+import { IpfsService } from '../../services/ipfs-service';
 
 @Component({
   selector: 'dececode-codeo',
@@ -41,15 +43,14 @@ export class CodeoComponent implements OnChanges {
   constructor(
     private store: Store,
     public alertService: AlertService,
-    private dappInjectorService: DappInjectorService
+    private dappInjectorService: DappInjectorService,
+    private ipfs: IpfsService,
+    private litProtocolService: LitProtocolService,
   ) {}
   disabled = true;
   @Input() codeo: any;
   @Input() blockchain_status: NETWORK_STATUS;
-  @Output() onDecrypt = new EventEmitter();
-  @Output() onCollect = new EventEmitter();
-  @Output() onFollow = new EventEmitter();
-  @Output() onUnFollow = new EventEmitter();
+
 
   ngOnChanges(): void {
   
@@ -306,9 +307,52 @@ export class CodeoComponent implements OnChanges {
     }
   }
 
-  decrypt() {
-    console.log('decrp');
-    console.log(this.codeo);
-    this.onDecrypt.emit(this.codeo.id);
+  async decrypt() {
+    this.store.dispatch(Web3Actions.chainBusy({ status: true }));
+    const json = this.codeo;
+    console.log(json)
+
+    let pubjson_e = json.pubjson;
+    try {
+      console.log('ok')
+      const pubjson = await this.litProtocolService.decrypt(pubjson_e);
+      console.log(pubjson);
+      const image = await this.ipfs.getImage(pubjson.media[0].item);
+
+      let k = json.profileId;
+      let i = json.pubId;
+      let pub = json.pub;
+      const publicationObject = {
+        ...{ profileId: k, pubId: i, pubKey: `${k}-${i}`,   encrypted: false, },
+        ...pubjson,
+        ...pub,
+        ...{ src: image.toString() },
+        ...{ profile: this.codeo.profile},
+        ...{ profile_src: this.codeo.profile_src.toString() },
+      };
+
+      //  this.publications.push(publicationObject);
+      this.store.dispatch(
+        Web3Actions.setPublication({ publication: publicationObject })
+      );
+      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+      this.alertService.showAlertOK('OK', 'DECRYPTED !!!!!');
+
+
+    } catch (error) {
+      console.log(error)
+      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+      const myaddress =   await this.dappInjectorService.config.signer.getAddress();
+      const amIallowed = await this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract.hasSubscription(1,myaddress);
+      let message = `You have to be subscribed to decode this publication`;
+      if (amIallowed == true) {
+        message = `Althought you are subscribed we have temprary problems with the network`;
+        this.alertService.showAlertOK('OK', message);
+      } else {
+        this.alertService.showAlertERROR('OOPS', message);
+      }
+    }
   }
 }

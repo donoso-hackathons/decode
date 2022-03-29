@@ -36,6 +36,7 @@ export class MembersComponent implements AfterViewInit {
   daiContract: AngularContract;
   myBalance: any;
   niceBalance: string;
+  myaddress: string;
   constructor(
     private dappInjectorService: DappInjectorService,
     private store: Store,
@@ -45,17 +46,19 @@ export class MembersComponent implements AfterViewInit {
     public alertService: AlertService
   ) {
     this.ERC20_METADATA = {
-        abi:abi_ERC20,
-        address:'0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f',
-        network: 'mumbai'
-    }
-
+      abi: abi_ERC20,
+      address: '0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f',
+      network: 'mumbai',
+    };
   }
 
   async startStream() {
-    if (this.myBalance == 0){
-      this.alertService.showAlertERROR('OOPS', 'to Start the subscription uyou require some tokens')
-      return
+    if (this.myBalance == 0) {
+      this.alertService.showAlertERROR(
+        'OOPS',
+        'to Start the subscription uyou require some tokens'
+      );
+      return;
     }
 
     try {
@@ -63,7 +66,7 @@ export class MembersComponent implements AfterViewInit {
 
       const contractAddress =
         this.dappInjectorService.config.contracts['superfluid'].address;
- 
+
       const flowRate = '3858024691358';
 
       const sf = await Framework.create({
@@ -71,9 +74,8 @@ export class MembersComponent implements AfterViewInit {
         provider: this.dappInjectorService.config.defaultProvider,
       });
 
-   
-      const encodedData = utils.defaultAbiCoder.encode(['uint256'], ['4']);
-      console.log(encodedData);
+      const encodedData = utils.defaultAbiCoder.encode(['uint256'], [1]);
+  
       const createFlowOperation = sf.cfaV1.createFlow({
         flowRate: flowRate,
         receiver: contractAddress,
@@ -90,20 +92,16 @@ export class MembersComponent implements AfterViewInit {
         this.dappInjectorService.config.signer
       );
       const result2 = await result.wait();
-      this.dappInjectorService.config.contracts[
-        'superfluid'
-      ].contract.setSubscription({
-        gasPrice: utils.parseUnits('100', 'gwei'),
-        gasLimit: 2000000,
-      });
-      console.log(result2);
+ 
+    
 
       console.log(
         `Congrats - you've just created a money stream!
 View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );
-      this.hasSubscription = true;
-
+      this.hasSubscription = await this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract.hasSubscription(1, this.myaddress);
 
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     } catch (error) {
@@ -124,14 +122,9 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
         networkName: 'mumbai',
         provider: this.dappInjectorService.config.defaultProvider,
       });
-      this.dappInjectorService.config.contracts[
-        'superfluid'
-      ].contract.revokeSubscription({
-        gasPrice: utils.parseUnits('100', 'gwei'),
-        gasLimit: 2000000,
-      });
+
       console.log('again');
-      const encodedData = utils.defaultAbiCoder.encode(['uint256'], ['4']);
+      const encodedData = utils.defaultAbiCoder.encode(['uint256'], ['1']);
       console.log(encodedData);
       const myaddress =
         await this.dappInjectorService.config.signer.getAddress();
@@ -155,9 +148,10 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
 
       console.log(result2);
 
-      console.log( `Congrats - you've just created a money stream  View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
+      console.log(
+        `Congrats - you've just stoped a money stream  View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}`
       );
-     
+
       this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     } catch (error) {
       console.log(error);
@@ -165,41 +159,90 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
     }
   }
 
-  async checkBalace(){
+  async mockStartStream() {
+    try {
+      this.store.dispatch(Web3Actions.chainBusy({ status: true }));
+      console.log(this.myaddress)
+      console.log(await this.dappInjectorService.config.contracts['superfluid'].contract)
+      const mock_tx = await this.dappInjectorService.config.contracts['superfluid'].contract._openSubscription(1,this.myaddress,{
+        gasPrice:  utils.parseUnits('100', 'gwei'),
+        gasLimit: 2000000 });
+       
+      const tx = await mock_tx.wait()
+
+      this.hasSubscription = await this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract.hasSubscription(1, this.myaddress);
+      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+      this.alertService.showAlertOK('OK','mock subscription has started')
+    } catch (error) {
+      console.log(error)
+      this.alertService.showAlertERROR('OOOPS','Something went wrong')
+      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+    }
 
   }
+
+  async mockStopStream() {
+    try {
+      this.store.dispatch(Web3Actions.chainBusy({ status: true }));
+      const mock_tx = await this.dappInjectorService.config.contracts['superfluid'].contract._cancelSubscription(1,this.myaddress,{
+        gasPrice:  utils.parseUnits('100', 'gwei'),
+        gasLimit: 2000000 });
+       
+      const tx = await mock_tx.wait()
+      this.hasSubscription = await this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract.hasSubscription(1, this.myaddress);
+      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+      this.alertService.showAlertOK('OK','mock subscription has been cancelled')
+   
+    } catch (error) {
+      this.alertService.showAlertOK('OOOPS','Something went wrong')
+      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+    }
+  }
+  async checkBalace() {}
 
   back() {
     this.router.navigateByUrl('');
   }
   ngAfterViewInit(): void {
- 
+    console.log('AFTER VIEW INNNNINTINTITNITN')
+
     this.store.select(web3Selectors.chainStatus).subscribe(async (value) => {
       this.blockchain_status = value;
       console.log(value);
+      console.log(  ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value))
       if (
         ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value) !== -1
       ) {
-
         this.router.navigateByUrl('');
+      } else if( value == 'loading'){
+
       } else {
-
-
+        const contractAddress =
+        this.dappInjectorService.config.contracts['superfluid'].address;
+        console.log(contractAddress)
         this.lensHubContract = this.dappInjectorService.config.defaultContract;
         // this.profile = this.dappInjectorService.currentProfile;
-        const myaddress =
-          await this.dappInjectorService.config.signer.getAddress();
-     
+        this.myaddress = await this.dappInjectorService.config.signer.getAddress();
+
         this.hasSubscription = await this.dappInjectorService.config.contracts[
           'superfluid'
-        ].contract.hasSubscription();
-     
-        this.daiContract = new AngularContract({metadata:this.ERC20_METADATA, provider: this.dappInjectorService.config.defaultProvider, signer: this.dappInjectorService.config.signer})
-        await this.daiContract.init()
+        ].contract.hasSubscription(1, this.myaddress);
 
-        this.myBalance = +((await this.daiContract.contract.balanceOf(myaddress)).toString())
-        this.niceBalance = (this.myBalance/(10**18)).toFixed(4)
-        
+        this.daiContract = new AngularContract({
+          metadata: this.ERC20_METADATA,
+          provider: this.dappInjectorService.config.defaultProvider,
+          signer: this.dappInjectorService.config.signer,
+        });
+        await this.daiContract.init();
+
+        this.myBalance = +(
+          await this.daiContract.contract.balanceOf(this.myaddress)
+        ).toString();
+        this.niceBalance = (this.myBalance / 10 ** 18).toFixed(4);
 
         // this.hasSubscription = await this.dappInjectorService.config.contracts[
         //   'superfluid'

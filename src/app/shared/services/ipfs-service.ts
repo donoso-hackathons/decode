@@ -62,7 +62,7 @@ export class IpfsService {
           tag[attribute.name]= attribute.value
         
       }
-      console.log(tag)
+
         tag.onload = () => {
       
           resolve();
@@ -93,7 +93,7 @@ export class IpfsService {
           },
         ],
       });
-      console.log('doen');
+
       await this.loadTagToPromise({
         name: 'ipfs_client',
         type: 'script',
@@ -106,7 +106,7 @@ export class IpfsService {
           { name: 'type', value: 'text/javascript' },
         ],
       });
-      console.log('doen');
+
       this.ipfs = window.IpfsHttpClient.create({
         host: 'ipfs.infura.io',
         port: 5001,

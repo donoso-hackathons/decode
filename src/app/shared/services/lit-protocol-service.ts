@@ -30,19 +30,21 @@ export class LitProtocolService {ipfs: any;
   // }
 
   async decrypt(objtoDecrypt): Promise<any> {
-    console.log('422222')
+   
+    console.log(' iam here')
+    console.log(objtoDecrypt)
     const de_buffer = Buffer.from(objtoDecrypt.buffer)
-
-    console.log('422222')
+    console.log(objtoDecrypt.evmContractConditions)
+   
     const encryptBuffer = Object.keys(objtoDecrypt.encryptedSymmetricKey).map(key=>objtoDecrypt.encryptedSymmetricKey[key]);
     const encrypted8 =  Uint8Array.from(encryptBuffer);
-    console.log('422222')
+   
 
     const blob = new Blob([de_buffer])
     const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: 'mumbai'})
 
-    console.log('422222')
     console.log(objtoDecrypt.evmContractConditions)
+
 
     const symmetricKey = await window.litNodeClient.getEncryptionKey({
       evmContractConditions:objtoDecrypt.evmContractConditions,
@@ -51,8 +53,6 @@ export class LitProtocolService {ipfs: any;
       chain:'mumbai',
       authSig
     })
-
-    console.log(symmetricKey)
 
     const decryptedString = await LitJsSdk.decryptString(
       blob,

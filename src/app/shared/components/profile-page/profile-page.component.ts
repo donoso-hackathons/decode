@@ -30,15 +30,14 @@ export class ProfilePageComponent implements OnChanges {
 
   async asyncStuff() {
 
-    console.log(this.currentProfile.handle)
-   console.log(this.currentProfile)
+   
     const profil_image_cid = this.currentProfile.imageURI.replace('https://ipfs.io/ipfs/','');
     const profil_json_cid  = this.currentProfile.followNFTURI.replace('https://ipfs.io/ipfs/','');
     try {
       
       this.image_src = await this.ipfsService.getImage(profil_image_cid)
       const jsonFile = await this.ipfsService.getFile(profil_json_cid)
-      console.log(jsonFile)
+
       this.loading_image = false;
     } catch (error) {
       this.image_src =avatarBase64;

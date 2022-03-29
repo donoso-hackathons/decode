@@ -23,21 +23,14 @@ export class AppComponent implements AfterContentInit {
   }
 
   async asyncStuff(){
- 
+    await this.ipfsService.init()
     await  this.litProtocolService.init()
-   const result = await this.litProtocolService.encrypt({profile:4, description:'ahora que clarooooooi'})
-    // console.log(result)
-    // const { cid } = await this.ipfsService.add(JSON.stringify(result));
-    // const result2 =  await this.ipfsService.getFile(cid)
- 
-    const result3 = await this.litProtocolService.decrypt(result)
-     console.log(result3)
 
   }
 
   ngAfterContentInit(): void {
   this.asyncStuff()
-  this.ipfsService.init()
+
    this.store
    .select(web3Selectors.isNetworkBusy)
    .subscribe((isBusy: boolean) => {
