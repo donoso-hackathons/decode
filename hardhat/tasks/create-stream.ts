@@ -12,7 +12,9 @@ task('create-stream', 'creating stream').setAction(async ({}, hre) => {
     const addrs = getAddrs();
     // const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
-  console.log(addrs)
+
+    
+    console.log(addrs)
 
     // ////get currecy Factiry and a
     // const currency = Currency__factory.connect(addrs['currency'], user3);

@@ -75,7 +75,7 @@ export class MembersComponent implements AfterViewInit {
       });
 
       const encodedData = utils.defaultAbiCoder.encode(['uint256'], [1]);
-  
+
       const createFlowOperation = sf.cfaV1.createFlow({
         flowRate: flowRate,
         receiver: contractAddress,
@@ -92,8 +92,6 @@ export class MembersComponent implements AfterViewInit {
         this.dappInjectorService.config.signer
       );
       const result2 = await result.wait();
- 
-    
 
       console.log(
         `Congrats - you've just created a money stream!
@@ -129,7 +127,6 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
       const myaddress =
         await this.dappInjectorService.config.signer.getAddress();
       const createFlowOperation = sf.cfaV1.deleteFlow({
-        flowRate: flowRate,
         sender: myaddress,
         receiver: contractAddress,
         superToken: '0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f', //environment.mumbaiDAIx,
@@ -162,44 +159,53 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
   async mockStartStream() {
     try {
       this.store.dispatch(Web3Actions.chainBusy({ status: true }));
-      console.log(this.myaddress)
-      console.log(await this.dappInjectorService.config.contracts['superfluid'].contract)
-      const mock_tx = await this.dappInjectorService.config.contracts['superfluid'].contract._openSubscription(1,this.myaddress,{
-        gasPrice:  utils.parseUnits('100', 'gwei'),
-        gasLimit: 2000000 });
-       
-      const tx = await mock_tx.wait()
+      console.log(this.myaddress);
+      console.log(
+        await this.dappInjectorService.config.contracts['superfluid'].contract
+      );
+      const mock_tx = await this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract._openSubscription(1, this.myaddress, {
+        gasPrice: utils.parseUnits('100', 'gwei'),
+        gasLimit: 2000000,
+      });
+
+      const tx = await mock_tx.wait();
 
       this.hasSubscription = await this.dappInjectorService.config.contracts[
         'superfluid'
       ].contract.hasSubscription(1, this.myaddress);
-      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
-      this.alertService.showAlertOK('OK','mock subscription has started')
+      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+      this.alertService.showAlertOK('OK', 'mock subscription has started');
     } catch (error) {
-      console.log(error)
-      this.alertService.showAlertERROR('OOOPS','Something went wrong')
-      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+      console.log(error);
+      this.alertService.showAlertERROR('OOOPS', 'Something went wrong');
+      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     }
-
   }
 
   async mockStopStream() {
     try {
       this.store.dispatch(Web3Actions.chainBusy({ status: true }));
-      const mock_tx = await this.dappInjectorService.config.contracts['superfluid'].contract._cancelSubscription(1,this.myaddress,{
-        gasPrice:  utils.parseUnits('100', 'gwei'),
-        gasLimit: 2000000 });
-       
-      const tx = await mock_tx.wait()
+      const mock_tx = await this.dappInjectorService.config.contracts[
+        'superfluid'
+      ].contract._cancelSubscription(1, this.myaddress, {
+        gasPrice: utils.parseUnits('100', 'gwei'),
+        gasLimit: 2000000,
+      });
+
+      const tx = await mock_tx.wait();
       this.hasSubscription = await this.dappInjectorService.config.contracts[
         'superfluid'
       ].contract.hasSubscription(1, this.myaddress);
-      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
-      this.alertService.showAlertOK('OK','mock subscription has been cancelled')
-   
+      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
+      this.alertService.showAlertOK(
+        'OK',
+        'mock subscription has been cancelled'
+      );
     } catch (error) {
-      this.alertService.showAlertOK('OOOPS','Something went wrong')
-      this.store.dispatch(Web3Actions.chainBusy({ status: false}));
+      this.alertService.showAlertOK('OOOPS', 'Something went wrong');
+      this.store.dispatch(Web3Actions.chainBusy({ status: false }));
     }
   }
   async checkBalace() {}
@@ -208,25 +214,27 @@ View Your Stream At: https://app.superfluid.finance/dashboard/${contractAddress}
     this.router.navigateByUrl('');
   }
   ngAfterViewInit(): void {
-    console.log('AFTER VIEW INNNNINTINTITNITN')
+    console.log('AFTER VIEW INNNNINTINTITNITN');
 
     this.store.select(web3Selectors.chainStatus).subscribe(async (value) => {
       this.blockchain_status = value;
       console.log(value);
-      console.log(  ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value))
+      console.log(
+        ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value)
+      );
       if (
         ['fail', 'wallet-not-connected', 'disconnected'].indexOf(value) !== -1
       ) {
         this.router.navigateByUrl('');
-      } else if( value == 'loading'){
-
+      } else if (value == 'loading') {
       } else {
         const contractAddress =
-        this.dappInjectorService.config.contracts['superfluid'].address;
-        console.log(contractAddress)
+          this.dappInjectorService.config.contracts['superfluid'].address;
+        console.log(contractAddress);
         this.lensHubContract = this.dappInjectorService.config.defaultContract;
         // this.profile = this.dappInjectorService.currentProfile;
-        this.myaddress = await this.dappInjectorService.config.signer.getAddress();
+        this.myaddress =
+          await this.dappInjectorService.config.signer.getAddress();
 
         this.hasSubscription = await this.dappInjectorService.config.contracts[
           'superfluid'

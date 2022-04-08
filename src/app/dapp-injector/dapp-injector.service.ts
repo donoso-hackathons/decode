@@ -26,6 +26,8 @@ import { LensApiService } from '../shared/services/lens-api-service';
 import { ProfileStructStruct } from 'src/assets/types/ILensHub';
 import { take } from 'rxjs';
 
+interface ab  { run: ()=>{}} 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -309,11 +311,14 @@ export class DappInjectorService {
     const hardhatProvider = await this.createProvider([
       NETWORKS[this.config.defaultNetwork].rpcUrl,
     ]);
-    const contract = new AngularContract({
+    const contract = new AngularContract<ab>({
       metadata: this.contractMetadata,
       provider: hardhatProvider,
       signer: hardhatProvider,
     });
+
+ 
+
 
     await contract.init();
 

@@ -10,9 +10,12 @@ import {
 } from '../models/models';
 import { Subject, takeUntil } from 'rxjs';
 
+
+
+
 @Injectable()
-export class AngularContract implements OnDestroy {
-  private _contract!: Contract;
+export class AngularContract<T>   implements OnDestroy {
+  private _contract!: Contract | T
   public contractReady: Subject<void> = new Subject();
   private _provider!: providers.JsonRpcProvider;
   private _balance: any;
@@ -29,7 +32,7 @@ export class AngularContract implements OnDestroy {
       signer: Signer;
     }
   ) {
-    
+  
   }
 
   async init() {
@@ -93,7 +96,7 @@ export class AngularContract implements OnDestroy {
     };
 
     try {
-      const result_tx = await this._contract.functions[functionName].apply(
+      const result_tx = await (this._contract as Contract).functions[functionName].apply(
         this,
         args,
       );
@@ -147,7 +150,7 @@ export class AngularContract implements OnDestroy {
     };
 
     try {
-      const result = await this._contract.functions[functionName].apply(
+      const result = await (this._contract as Contract).functions[functionName].apply(
         this,
         args
       );
