@@ -1,9 +1,9 @@
-import '@nomiclabs/hardhat-ethers';
+
 import { utils, Wallet } from 'ethers';
 import { BytesLike, hexlify, keccak256, RLP, SigningKey } from 'ethers/lib/utils';
 import { ensureDir, writeFileSync } from 'fs-extra';
 
-
+import '@nomiclabs/hardhat-ethers';
 import { task } from 'hardhat/config';
 import { join } from 'path';
 import {
@@ -82,8 +82,6 @@ let treasuryAddress
     const governance_wallet = new Wallet(privKeyGovernance);
     governance = await governance_wallet.connect(deployer_provider);
   
-  
-  
     treasuryAddress = '0xe09E488A6E1B8237b63e028218CCf72a2a398CB1';
   }
 
@@ -126,6 +124,8 @@ let treasuryAddress
       profileTokenURILogic.address,
   };
 
+
+
   // Here, we pre-compute the nonces and addresses used to deploy the contracts.
   // const nonce = await deployer.getTransactionCount();
   const followNFTNonce = hexlify(deployerNonce + 1);
@@ -150,6 +150,8 @@ let treasuryAddress
   );
   copyMetadataToassetsFolder(lensHubImpl,LensHub__factory,network)
  
+
+
 
   console.log('\n\t-- Deploying Follow & Collect NFT Implementations --');
   await deployContract(
@@ -180,8 +182,11 @@ let treasuryAddress
   // Connect the hub proxy to the LensHub factory and the governance for ease of use.
   const lensHub = LensHub__factory.connect(proxy.address, governance);
 
+  
+
   copyMetadataToassetsFolder(proxy ,LensHub__factory,network)
 
+  
 
   const peripheryDataProvider = await new LensPeripheryDataProvider__factory(deployer).deploy(
     lensHub.address,
